@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KHTISPORT — Спорт для всех</title>
+  <link rel="stylesheet" href="{% static 'main/main.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="inheader">
+        <a href="/" class="logo">KHTISPORT</a>
+        <nav id="main-nav">
+          <ul>
+            <li><a href="{% url 'home' %}">Главная</a></li>
+            <li><a href="{% url 'services' %}">Услуги</a></li>
+            <li><a href="{% url 'schedule' %}">Расписание</a></li>
+            <li><a href="{% url 'persacc' %}">Личный кабинет</a></li>
+            <li><a href="{% url 'contacts' %}">Контакты</a></li>
+            <li class="btn"><a href="{% url 'join' %}">Войти</a></li>
+          </ul>
+        </nav>
+        <button class="burger" id="burger" aria-label="Открыть меню">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+    <div class="hero container">
+      <div class="hero--info reveal-left">
+        <h1>Спорт для всех</h1>
+        <h2>Добро пожаловать в KHTISPORT</h2>
+        <p>Мы предлагаем широкий выбор спортивных товаров для всех возрастов и уровней подготовки. Независимо от того, являетесь ли вы профессиональным спортсменом или просто любителем, у нас есть все необходимое для достижения ваших спортивных целей.</p>
+        <a href="#" class="btn">Узнать больше</a>
+      </div>
+      <div class="hero--image reveal-right">
+        <img src="{% static 'main/img/Sport.png' %}" alt="Спортсмен KHTISPORT">
+      </div>
+    </div>
+
+    <div class="services container">
+      <div class="services__header reveal">
+        <div>
+          <h3>Наши услуги</h3>
+          <h4>Тренировки</h4>
+        </div>
+        <a href="{% url 'services' %}" class="see-all">Смотреть все услуги</a>
+      </div>
+      <div class="services--blocks">
+        <div class="block reveal reveal-delay-1">
+          <div class="block--image">
+            <img src="{% static 'main/img/service1.png' %}" alt="Волейбол">
+          </div>
+          <span>
+            <img src="{% static 'main/img/ball1.png' %}" alt="">
+            Волейбол
+          </span>
+        </div>
+        <div class="block reveal reveal-delay-2">
+          <div class="block--image">
+            <img src="{% static 'main/img/service2.png' %}" alt="Баскетбол">
+          </div>
+          <span>
+            <img src="{% static 'main/img/ball2.png' %}" alt="">
+            Баскетбол
+          </span>
+        </div>
+        <div class="block reveal reveal-delay-3">
+          <div class="block--image">
+            <img src="{% static 'main/img/service3.png' %}" alt="Футбол">
+          </div>
+          <span>
+            <img src="{% static 'main/img/ball3.png' %}" alt="">
+            Футбол
+          </span>
+        </div>
+        <div class="block reveal reveal-delay-4">
+          <div class="block--image">
+            <img src="{% static 'main/img/service4.png' %}" alt="Фитнес">
+          </div>
+          <span>
+            <img src="{% static 'main/img/ball4.png' %}" alt="">
+            Фитнес
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer__glow"></div>
+    <div class="footer__inner container">
+
+      <div class="footer__brand">
+        <a href="/" class="footer__logo">KHTISPORT</a>
+        <p class="footer__tagline">Спорт для каждого.<br>Победа для всех.</p>
+        <div class="footer__socials">
+          <a href="#" class="footer__social" aria-label="VK">
+            <i class="fa-brands fa-vk"></i>
+          </a>
+          <a href="#" class="footer__social" aria-label="Telegram">
+            <i class="fa-brands fa-telegram"></i>
+          </a>
+          <a href="#" class="footer__social" aria-label="WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer__nav-group">
+        <span class="footer__heading">Навигация</span>
+        <ul class="footer__list">
+          <li><a href="{% url 'home' %}">Главная</a></li>
+          <li><a href="{% url 'services' %}">Услуги</a></li>
+          <li><a href="{% url 'schedule' %}">Расписание</a></li>
+          <li><a href="{% url 'persacc' %}">Личный кабинет</a></li>
+          <li><a href="{% url 'contacts' %}">Контакты</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__nav-group">
+        <span class="footer__heading">Спорт</span>
+        <ul class="footer__list">
+          <li><a href="#">Волейбол</a></li>
+          <li><a href="#">Баскетбол</a></li>
+          <li><a href="#">Футбол</a></li>
+          <li><a href="#">Фитнес</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__nav-group">
+        <span class="footer__heading">Контакты</span>
+        <ul class="footer__list footer__contacts">
+          <li>
+            <i class="fa-solid fa-location-dot"></i>
+            <span>ул. Спортивная, 1</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <span>+7 (800) 555-35-35</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <span>info@khtisport.ru</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <div class="footer__bottom-inner container">
+        <p>© 2025 KHTISPORT. Все права защищены.</p>
+        <div class="footer__bottom-links">
+          <a href="#">Политика конфиденциальности</a>
+          <a href="#">Пользовательское соглашение</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'main/main.js' %}"></script>
+</body>
+</html>
