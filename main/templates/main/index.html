@@ -89,6 +89,312 @@
         </div>
       </div>
     </div>
+    <!-- РАСПИСАНИЕ -->
+    <div class="schedule-preview container">
+      <div class="schedule-preview__header reveal">
+        <div>
+          <h3>Расписание</h3>
+          <h4>Ближайшие тренировки</h4>
+        </div>
+        <a href="{% url 'schedule' %}" class="see-all">Смотреть всё расписание</a>
+      </div>
+
+      <div class="schedule-preview__tabs reveal">
+        <button class="sched-tab active" data-day="mon">Пн</button>
+        <button class="sched-tab" data-day="tue">Вт</button>
+        <button class="sched-tab" data-day="wed">Ср</button>
+        <button class="sched-tab" data-day="thu">Чт</button>
+        <button class="sched-tab" data-day="fri">Пт</button>
+        <button class="sched-tab" data-day="sat">Сб</button>
+        <button class="sched-tab" data-day="sun">Вс</button>
+      </div>
+
+      <div class="schedule-preview__list">
+
+        <!-- ПН -->
+        <div class="sched-day active" id="day-mon">
+          <div class="sched-card">
+            <div class="sched-card__time">09:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport volleyball">Волейбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Иванов А.В.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 12/16</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">11:30</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport fitness">Фитнес</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Петрова М.С.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №2</span>
+              <span><i class="fa-solid fa-users"></i> 8/12</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">18:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport football">Футбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Сидоров К.Р.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Поле</span>
+              <span><i class="fa-solid fa-users"></i> 18/22</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">20:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport basketball">Баскетбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Козлов Д.Н.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 10/10</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn sched-card__btn--full">Мест нет</a>
+          </div>
+        </div>
+
+        <!-- ВТ -->
+        <div class="sched-day" id="day-tue">
+          <div class="sched-card">
+            <div class="sched-card__time">10:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport fitness">Фитнес</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Петрова М.С.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №2</span>
+              <span><i class="fa-solid fa-users"></i> 5/12</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">17:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport volleyball">Волейбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Иванов А.В.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 6/16</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">19:30</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport basketball">Баскетбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Козлов Д.Н.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 7/10</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+        </div>
+
+        <!-- СР -->
+        <div class="sched-day" id="day-wed">
+          <div class="sched-card">
+            <div class="sched-card__time">09:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport football">Футбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Сидоров К.Р.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Поле</span>
+              <span><i class="fa-solid fa-users"></i> 14/22</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">12:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport fitness">Фитнес</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Петрова М.С.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №2</span>
+              <span><i class="fa-solid fa-users"></i> 9/12</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">18:30</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport volleyball">Волейбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Иванов А.В.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 11/16</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+        </div>
+
+        <!-- ЧТ -->
+        <div class="sched-day" id="day-thu">
+          <div class="sched-card">
+            <div class="sched-card__time">10:30</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport basketball">Баскетбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Козлов Д.Н.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 4/10</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">19:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport football">Футбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Сидоров К.Р.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Поле</span>
+              <span><i class="fa-solid fa-users"></i> 20/22</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+        </div>
+
+        <!-- ПТ -->
+        <div class="sched-day" id="day-fri">
+          <div class="sched-card">
+            <div class="sched-card__time">09:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport fitness">Фитнес</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Петрова М.С.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №2</span>
+              <span><i class="fa-solid fa-users"></i> 7/12</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">17:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport volleyball">Волейбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Иванов А.В.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 13/16</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">20:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport basketball">Баскетбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Козлов Д.Н.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 8/10</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+        </div>
+
+        <!-- СБ -->
+        <div class="sched-day" id="day-sat">
+          <div class="sched-card">
+            <div class="sched-card__time">10:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport football">Футбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Сидоров К.Р.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Поле</span>
+              <span><i class="fa-solid fa-users"></i> 16/22</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">12:30</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport volleyball">Волейбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Иванов А.В.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 9/16</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">15:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport fitness">Фитнес</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Петрова М.С.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №2</span>
+              <span><i class="fa-solid fa-users"></i> 3/12</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">18:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport basketball">Баскетбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Козлов Д.Н.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 9/10</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+        </div>
+
+        <!-- ВС -->
+        <div class="sched-day" id="day-sun">
+          <div class="sched-card">
+            <div class="sched-card__time">11:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport volleyball">Волейбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Иванов А.В.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Зал №1</span>
+              <span><i class="fa-solid fa-users"></i> 7/16</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+          <div class="sched-card">
+            <div class="sched-card__time">14:00</div>
+            <div class="sched-card__info">
+              <span class="sched-card__sport football">Футбол</span>
+              <p class="sched-card__coach"><i class="fa-solid fa-user"></i> Сидоров К.Р.</p>
+            </div>
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> Поле</span>
+              <span><i class="fa-solid fa-users"></i> 12/22</span>
+            </div>
+            <a href="{% url 'join' %}" class="sched-card__btn">Записаться</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- / РАСПИСАНИЕ -->
+
   </div>
 
   <footer class="footer">

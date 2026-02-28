@@ -67,12 +67,33 @@ function initReveal() {
   els.forEach(el => observer.observe(el));
 }
 
+// Переключение табов расписания
+function initScheduleTabs() {
+  const tabs = document.querySelectorAll('.sched-tab');
+  const days = document.querySelectorAll('.sched-day');
+  if (!tabs.length) return;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const day = tab.dataset.day;
+
+      tabs.forEach(t => t.classList.remove('active'));
+      days.forEach(d => d.classList.remove('active'));
+
+      tab.classList.add('active');
+      const targetDay = document.getElementById('day-' + day);
+      if (targetDay) targetDay.classList.add('active');
+    });
+  });
+}
+
 // Запуск
 async function init() {
   setActiveNav();
   initBurger();
   initScrollHeader();
   initReveal();
+  initScheduleTabs();
 }
 
 init();
