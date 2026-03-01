@@ -1,0 +1,2 @@
+DROP DATABASE mysite;
+CREATE DATABASE mysite CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
