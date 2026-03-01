@@ -461,3 +461,37 @@
     padding: 32px 24px 28px;
   }
 }
+
+.rol-pereklyuchateli {
+  display: flex;
+  gap: 10px;
+}
+
+.rol-btn {
+  flex: 1;
+  padding: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: rgba(255,255,255,0.45);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Roboto", sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 200ms, border-color 200ms, color 200ms;
+}
+
+.rol-btn.aktivny {
+  background: rgba(137,28,28,0.2);
+  border-color: rgba(137,28,28,0.45);
+  color: white;
+}
+
+.rol-btn:not(.aktivny):hover {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.75);
+}

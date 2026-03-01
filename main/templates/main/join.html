@@ -123,6 +123,19 @@
           </div>
 
           <div class="pole-gruppa">
+            <label>Я регистрируюсь как</label>
+            <div class="rol-pereklyuchateli">
+              <button type="button" class="rol-btn aktivny" data-rol="student">
+                <i class="fa-solid fa-graduation-cap"></i> Ученик
+              </button>
+              <button type="button" class="rol-btn" data-rol="coach">
+                <i class="fa-solid fa-whistle"></i> Тренер
+              </button>
+            </div>
+            <input type="hidden" id="vybranaya-rol" value="student">
+          </div>          
+
+          <div class="pole-gruppa">
             <label for="parol-reg">Пароль</label>
             <div class="pole-obertka" id="obertka-parol-reg">
               <i class="fa-solid fa-lock"></i>

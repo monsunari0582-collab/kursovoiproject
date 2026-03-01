@@ -1,0 +1,704 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KHTISPORT — Кабинет тренера</title>
+  <link rel="stylesheet" href="{% static 'main/main.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'main/persacc_coach.css' %}">
+</head>
+<body>
+  <div class="wrapper">
+    <header class="headercontainer">
+      <div class="inheader">
+        <a href="/" class="logo">KHTISPORT</a>
+        <nav id="main-nav">
+          <ul>
+            <li><a href="{% url 'home' %}">Главная</a></li>
+            <li><a href="{% url 'services' %}">Услуги</a></li>
+            <li><a href="{% url 'schedule' %}">Расписание</a></li>
+            <li><a href="{% url 'persacc' %}">Личный кабинет</a></li>
+            <li><a href="{% url 'contacts' %}">Контакты</a></li>
+            <li class="btn"><a href="{% url 'join' %}">Войти</a></li>
+          </ul>
+        </nav>
+        <button class="burger" id="burger" aria-label="Открыть меню">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+  </div>
+
+  <div class="cab-bg">
+    <div class="cab-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="cab-sidebar">
+        <!-- Profile mini -->
+        <div class="cab-profile">
+          <div class="cab-ava-row">
+            <div class="cab-ava">
+              ИА
+              <div class="cab-ava__star"><i class="fa-solid fa-star"></i></div>
+            </div>
+            <div class="cab-ava-info">
+              <div class="cab-ava-info__name">Иванов А.П.</div>
+              <div class="cab-ava-info__role">Тренер</div>
+            </div>
+          </div>
+          <div class="cab-mini-stats">
+            <div class="cab-ms"><div class="cab-ms__val">34</div><div class="cab-ms__lbl">Учеников</div></div>
+            <div class="cab-ms"><div class="cab-ms__val">6</div><div class="cab-ms__lbl">Групп</div></div>
+            <div class="cab-ms"><div class="cab-ms__val">12</div><div class="cab-ms__lbl">Зан/нед</div></div>
+          </div>
+        </div>
+
+        <!-- Nav -->
+        <nav class="cab-nav">
+          <button class="cab-nav__item active" data-tab="schedule">
+            <i class="fa-solid fa-calendar-days"></i>
+            Расписание
+          </button>
+          <button class="cab-nav__item" data-tab="students">
+            <i class="fa-solid fa-users"></i>
+            Ученики
+          </button>
+          <button class="cab-nav__item" data-tab="profile">
+            <i class="fa-solid fa-circle-user"></i>
+            Профиль
+          </button>
+          <div class="cab-nav__sep"></div>
+        </nav>
+
+        <div class="cab-nav__logout">
+          <button class="cab-nav__item" onclick="window.location='{% url 'join' %}'">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            Выйти
+          </button>
+        </div>
+      </aside>
+
+      <!-- CONTENT -->
+      <main class="cab-main">
+
+        <!-- =================== РАСПИСАНИЕ =================== -->
+        <section class="cab-section active" id="sec-schedule">
+          <div class="sec-head">
+            <div>
+              <div class="sec-head__title">Расписание тренировок</div>
+              <div class="sec-head__sub">Управление занятиями на неделю</div>
+            </div>
+            <button class="btn-primary" onclick="openModal('modal-add-session')">
+              <i class="fa-solid fa-plus"></i> Добавить тренировку
+            </button>
+          </div>
+
+          <!-- Неделя навигация -->
+          <div class="week-nav">
+            <button class="week-nav__btn"><i class="fa-solid fa-chevron-left"></i></button>
+            <span class="week-nav__label">24 февраля — 2 марта 2026</span>
+            <button class="week-nav__btn"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="week-nav__today">Сегодня</button>
+          </div>
+
+          <!-- Дни недели -->
+          <div class="week-days">
+            <div class="week-day has-sessions" data-day="0">
+              <div class="week-day__name">Пн</div>
+              <div class="week-day__num">24</div>
+              <div class="week-day__dot"></div>
+            </div>
+            <div class="week-day has-sessions" data-day="1">
+              <div class="week-day__name">Вт</div>
+              <div class="week-day__num">25</div>
+              <div class="week-day__dot"></div>
+            </div>
+            <div class="week-day" data-day="2">
+              <div class="week-day__name">Ср</div>
+              <div class="week-day__num">26</div>
+              <div class="week-day__dot"></div>
+            </div>
+            <div class="week-day has-sessions" data-day="3">
+              <div class="week-day__name">Чт</div>
+              <div class="week-day__num">27</div>
+              <div class="week-day__dot"></div>
+            </div>
+            <div class="week-day has-sessions active" data-day="4">
+              <div class="week-day__name">Пт</div>
+              <div class="week-day__num">28</div>
+              <div class="week-day__dot"></div>
+            </div>
+            <div class="week-day has-sessions" data-day="5">
+              <div class="week-day__name">Сб</div>
+              <div class="week-day__num">01</div>
+              <div class="week-day__dot"></div>
+            </div>
+            <div class="week-day" data-day="6">
+              <div class="week-day__name">Вс</div>
+              <div class="week-day__num">02</div>
+              <div class="week-day__dot"></div>
+            </div>
+          </div>
+
+          <!-- Тайм-слоты -->
+          <div class="schedule-grid">
+
+            <div class="sched-slot">
+              <div class="sched-slot__time">
+                <div class="sched-slot__hour">09:00</div>
+                <div class="sched-slot__dur">90 мин</div>
+              </div>
+              <div class="sched-slot__card">
+                <div class="sched-card-info">
+                  <div class="sched-card-info__title">Волейбол — Начальная группа</div>
+                  <div class="sched-card-info__meta">
+                    <span><i class="fa-solid fa-location-dot"></i> Зал №2</span>
+                    <span><i class="fa-solid fa-users"></i> 12 учеников</span>
+                    <span><i class="fa-solid fa-layer-group"></i> Начинающие</span>
+                  </div>
+                </div>
+                <div class="sched-card-right">
+                  <div class="sched-fill">12/15</div>
+                  <div class="sched-fill__bar"><div class="sched-fill__inner" style="width:80%"></div></div>
+                  <div class="sched-actions">
+                    <button class="sched-act-btn" title="Редактировать"><i class="fa-solid fa-pen"></i></button>
+                    <button class="sched-act-btn" title="Отметить посещаемость" onclick="showToast('Посещаемость отмечена')"><i class="fa-solid fa-clipboard-check"></i></button>
+                    <button class="sched-act-btn sched-act-btn--del" title="Удалить" onclick="deleteSession(this)"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sched-slot">
+              <div class="sched-slot__time">
+                <div class="sched-slot__hour">11:00</div>
+                <div class="sched-slot__dur">60 мин</div>
+              </div>
+              <div class="sched-slot__card sched-slot__card--free" onclick="openModal('modal-add-session')">
+                <div class="sched-slot__add">
+                  <i class="fa-solid fa-plus"></i>
+                  Добавить тренировку в этот слот
+                </div>
+              </div>
+            </div>
+
+            <div class="sched-slot">
+              <div class="sched-slot__time">
+                <div class="sched-slot__hour">14:00</div>
+                <div class="sched-slot__dur">90 мин</div>
+              </div>
+              <div class="sched-slot__card">
+                <div class="sched-card-info">
+                  <div class="sched-card-info__title">Баскетбол — Продвинутая группа</div>
+                  <div class="sched-card-info__meta">
+                    <span><i class="fa-solid fa-location-dot"></i> Спортзал</span>
+                    <span><i class="fa-solid fa-users"></i> 10 учеников</span>
+                    <span><i class="fa-solid fa-layer-group"></i> Продвинутые</span>
+                  </div>
+                </div>
+                <div class="sched-card-right">
+                  <div class="sched-fill">10/12</div>
+                  <div class="sched-fill__bar"><div class="sched-fill__inner" style="width:83%"></div></div>
+                  <div class="sched-actions">
+                    <button class="sched-act-btn" title="Редактировать"><i class="fa-solid fa-pen"></i></button>
+                    <button class="sched-act-btn" title="Отметить посещаемость" onclick="showToast('Посещаемость отмечена')"><i class="fa-solid fa-clipboard-check"></i></button>
+                    <button class="sched-act-btn sched-act-btn--del" title="Удалить" onclick="deleteSession(this)"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sched-slot">
+              <div class="sched-slot__time">
+                <div class="sched-slot__hour">18:00</div>
+                <div class="sched-slot__dur">90 мин</div>
+              </div>
+              <div class="sched-slot__card">
+                <div class="sched-card-info">
+                  <div class="sched-card-info__title">Волейбол — Средняя группа</div>
+                  <div class="sched-card-info__meta">
+                    <span><i class="fa-solid fa-location-dot"></i> Зал №2</span>
+                    <span><i class="fa-solid fa-users"></i> 6 учеников</span>
+                    <span><i class="fa-solid fa-layer-group"></i> Средний уровень</span>
+                  </div>
+                </div>
+                <div class="sched-card-right">
+                  <div class="sched-fill">6/12</div>
+                  <div class="sched-fill__bar"><div class="sched-fill__inner" style="width:50%"></div></div>
+                  <div class="sched-actions">
+                    <button class="sched-act-btn" title="Редактировать"><i class="fa-solid fa-pen"></i></button>
+                    <button class="sched-act-btn" title="Отметить посещаемость" onclick="showToast('Посещаемость отмечена')"><i class="fa-solid fa-clipboard-check"></i></button>
+                    <button class="sched-act-btn sched-act-btn--del" title="Удалить" onclick="deleteSession(this)"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- =================== УЧЕНИКИ =================== -->
+        <section class="cab-section" id="sec-students">
+          <div class="sec-head">
+            <div>
+              <div class="sec-head__title">Мои ученики</div>
+              <div class="sec-head__sub">34 ученика в 6 группах</div>
+            </div>
+            <button class="btn-primary" onclick="openModal('modal-add-student')">
+              <i class="fa-solid fa-user-plus"></i> Добавить ученика
+            </button>
+          </div>
+
+          <div class="students-toolbar">
+            <div class="search-input">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" placeholder="Поиск по имени..." id="student-search">
+            </div>
+            <select class="filter-select" id="student-filter">
+              <option value="all">Все секции</option>
+              <option value="volleyball">Волейбол</option>
+              <option value="basketball">Баскетбол</option>
+              <option value="football">Футбол</option>
+            </select>
+            <select class="filter-select">
+              <option value="all">Все статусы</option>
+              <option value="active">Активные</option>
+              <option value="inactive">Неактивные</option>
+              <option value="trial">Пробные</option>
+            </select>
+          </div>
+
+          <div class="students-grid" id="students-grid">
+
+            <div class="student-card" data-section="volleyball">
+              <div class="student-card__top">
+                <div class="student-card__ava-row">
+                  <div class="student-card__ava">АК</div>
+                  <div>
+                    <div class="student-card__name">Алексей Козлов</div>
+                    <div class="student-card__since">с сентября 2024</div>
+                  </div>
+                </div>
+                <div class="student-card__actions">
+                  <button class="sc-btn" title="Написать"><i class="fa-solid fa-envelope"></i></button>
+                  <button class="sc-btn sc-btn--del" title="Удалить" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </div>
+              <div class="student-card__body">
+                <div class="student-card__row">
+                  <span class="student-card__label">Телефон</span>
+                  <span class="student-card__value">+7 (912) 345-67-89</span>
+                </div>
+                <div class="student-card__row">
+                  <span class="student-card__label">Тренировок</span>
+                  <span class="student-card__value">47 всего</span>
+                </div>
+              </div>
+              <div class="student-card__attend">
+                <div class="attend-label-row">
+                  <span>Посещаемость</span><span>80%</span>
+                </div>
+                <div class="attend-bar-full"><div class="attend-bar-fill" style="width:80%"></div></div>
+              </div>
+              <div class="student-card__footer">
+                <span class="status-dot status-dot--active"><span class="status-dot__circle"></span>Активен</span>
+                <span class="sc-section-pill">Волейбол</span>
+              </div>
+            </div>
+
+            <div class="student-card" data-section="basketball">
+              <div class="student-card__top">
+                <div class="student-card__ava-row">
+                  <div class="student-card__ava">МП</div>
+                  <div>
+                    <div class="student-card__name">Мария Петрова</div>
+                    <div class="student-card__since">с января 2025</div>
+                  </div>
+                </div>
+                <div class="student-card__actions">
+                  <button class="sc-btn" title="Написать"><i class="fa-solid fa-envelope"></i></button>
+                  <button class="sc-btn sc-btn--del" title="Удалить" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </div>
+              <div class="student-card__body">
+                <div class="student-card__row">
+                  <span class="student-card__label">Телефон</span>
+                  <span class="student-card__value">+7 (901) 234-56-78</span>
+                </div>
+                <div class="student-card__row">
+                  <span class="student-card__label">Тренировок</span>
+                  <span class="student-card__value">31 всего</span>
+                </div>
+              </div>
+              <div class="student-card__attend">
+                <div class="attend-label-row">
+                  <span>Посещаемость</span><span>95%</span>
+                </div>
+                <div class="attend-bar-full"><div class="attend-bar-fill" style="width:95%"></div></div>
+              </div>
+              <div class="student-card__footer">
+                <span class="status-dot status-dot--active"><span class="status-dot__circle"></span>Активен</span>
+                <span class="sc-section-pill">Баскетбол</span>
+              </div>
+            </div>
+
+            <div class="student-card" data-section="volleyball">
+              <div class="student-card__top">
+                <div class="student-card__ava-row">
+                  <div class="student-card__ava">ДС</div>
+                  <div>
+                    <div class="student-card__name">Дмитрий Савин</div>
+                    <div class="student-card__since">пробное занятие</div>
+                  </div>
+                </div>
+                <div class="student-card__actions">
+                  <button class="sc-btn" title="Написать"><i class="fa-solid fa-envelope"></i></button>
+                  <button class="sc-btn sc-btn--del" title="Удалить" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </div>
+              <div class="student-card__body">
+                <div class="student-card__row">
+                  <span class="student-card__label">Телефон</span>
+                  <span class="student-card__value">+7 (965) 876-54-32</span>
+                </div>
+                <div class="student-card__row">
+                  <span class="student-card__label">Тренировок</span>
+                  <span class="student-card__value">2 всего</span>
+                </div>
+              </div>
+              <div class="student-card__attend">
+                <div class="attend-label-row">
+                  <span>Посещаемость</span><span>33%</span>
+                </div>
+                <div class="attend-bar-full"><div class="attend-bar-fill" style="width:33%"></div></div>
+              </div>
+              <div class="student-card__footer">
+                <span class="status-dot status-dot--trial"><span class="status-dot__circle"></span>Пробный</span>
+                <span class="sc-section-pill">Волейбол</span>
+              </div>
+            </div>
+
+            <div class="student-card" data-section="basketball">
+              <div class="student-card__top">
+                <div class="student-card__ava-row">
+                  <div class="student-card__ava">НВ</div>
+                  <div>
+                    <div class="student-card__name">Наталья Волкова</div>
+                    <div class="student-card__since">с октября 2024</div>
+                  </div>
+                </div>
+                <div class="student-card__actions">
+                  <button class="sc-btn" title="Написать"><i class="fa-solid fa-envelope"></i></button>
+                  <button class="sc-btn sc-btn--del" title="Удалить" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </div>
+              <div class="student-card__body">
+                <div class="student-card__row">
+                  <span class="student-card__label">Телефон</span>
+                  <span class="student-card__value">+7 (999) 111-22-33</span>
+                </div>
+                <div class="student-card__row">
+                  <span class="student-card__label">Тренировок</span>
+                  <span class="student-card__value">18 всего</span>
+                </div>
+              </div>
+              <div class="student-card__attend">
+                <div class="attend-label-row">
+                  <span>Посещаемость</span><span>45%</span>
+                </div>
+                <div class="attend-bar-full"><div class="attend-bar-fill" style="width:45%"></div></div>
+              </div>
+              <div class="student-card__footer">
+                <span class="status-dot status-dot--inactive"><span class="status-dot__circle"></span>Неактивен</span>
+                <span class="sc-section-pill">Баскетбол</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- =================== ПРОФИЛЬ =================== -->
+        <section class="cab-section" id="sec-profile">
+          <div class="sec-head">
+            <div>
+              <div class="sec-head__title">Мой профиль</div>
+              <div class="sec-head__sub">Личная информация и настройки</div>
+            </div>
+          </div>
+
+          <div class="profile-layout">
+            <!-- Карточка профиля -->
+            <div class="prof-card">
+              <div class="prof-ava-wrap">
+                <div class="prof-ava">ИА</div>
+                <div class="prof-ava__badge"><i class="fa-solid fa-star"></i></div>
+              </div>
+              <div class="prof-name">Иванов Андрей Петрович</div>
+              <div class="prof-role">Тренер</div>
+              <div class="prof-spec">Волейбол · Баскетбол</div>
+
+              <div class="prof-divider"></div>
+
+              <ul class="prof-contact-list">
+                <li><i class="fa-solid fa-envelope"></i>ivanov.coach@khtisport.ru</li>
+                <li><i class="fa-solid fa-phone"></i>+7 (900) 123-45-67</li>
+                <li><i class="fa-solid fa-location-dot"></i>Зал №2, Спортзал</li>
+                <li><i class="fa-solid fa-id-badge"></i>Тренер с 2019 года</li>
+                <li><i class="fa-solid fa-cake-candles"></i>12 апреля 1990</li>
+              </ul>
+            </div>
+
+            <!-- Форма редактирования -->
+            <div class="prof-form-card">
+              <div class="form-section-title">Личные данные</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Имя</label>
+                  <input class="form-input" type="text" value="Андрей">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Фамилия</label>
+                  <input class="form-input" type="text" value="Иванов">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Отчество</label>
+                  <input class="form-input" type="text" value="Петрович">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Дата рождения</label>
+                  <input class="form-input" type="date" value="1990-04-12">
+                </div>
+                <div class="form-group form-group--full">
+                  <label class="form-label">О себе</label>
+                  <textarea class="form-input" placeholder="Расскажите о себе...">Тренер по волейболу и баскетболу. Работаю с начинающими и продвинутыми группами. Специализируюсь на командном взаимодействии.</textarea>
+                </div>
+              </div>
+
+              <div class="form-sep"></div>
+              <div class="form-section-title">Контакты</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input class="form-input" type="email" value="ivanov.coach@khtisport.ru">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Телефон</label>
+                  <input class="form-input" type="tel" value="+7 (900) 123-45-67">
+                </div>
+              </div>
+
+              <div class="form-sep"></div>
+              <div class="form-section-title">Специализация</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Секции</label>
+                  <input class="form-input" type="text" value="Волейбол, Баскетбол">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Локация (залы)</label>
+                  <input class="form-input" type="text" value="Зал №2, Спортзал">
+                </div>
+              </div>
+
+              <div class="form-sep"></div>
+              <div class="form-section-title">Безопасность</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Текущий пароль</label>
+                  <input class="form-input" type="password" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Новый пароль</label>
+                  <input class="form-input" type="password" placeholder="••••••••">
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn-ghost">Отменить</button>
+                <button class="btn-primary" onclick="showToast('Профиль сохранён')">
+                  <i class="fa-solid fa-floppy-disk"></i> Сохранить изменения
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- =================== МОДАЛКА: ДОБАВИТЬ ТРЕНИРОВКУ =================== -->
+  <div class="modal-overlay" id="modal-add-session" onclick="closeModalOnOverlay(event, 'modal-add-session')">
+    <div class="modal">
+      <div class="modal__head">
+        <div class="modal__title">Новая тренировка</div>
+        <button class="modal__close" onclick="closeModal('modal-add-session')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group form-group--full">
+          <label class="form-label">Название тренировки</label>
+          <input class="form-input" type="text" placeholder="Волейбол — Начальная группа">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Дата</label>
+          <input class="form-input" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Время начала</label>
+          <input class="form-input" type="time" value="10:00">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Продолжительность</label>
+          <select class="form-input filter-select" style="border-radius:10px;padding:11px 14px">
+            <option>60 минут</option>
+            <option selected>90 минут</option>
+            <option>120 минут</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Зал</label>
+          <input class="form-input" type="text" placeholder="Зал №2">
+        </div>
+        <div class="form-group form-group--full">
+          <label class="form-label">Макс. кол-во учеников</label>
+          <input class="form-input" type="number" placeholder="15">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeModal('modal-add-session')">Отмена</button>
+        <button class="btn-primary" onclick="closeModal('modal-add-session'); showToast('Тренировка добавлена')">
+          <i class="fa-solid fa-plus"></i> Добавить
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== МОДАЛКА: ДОБАВИТЬ УЧЕНИКА =================== -->
+  <div class="modal-overlay" id="modal-add-student" onclick="closeModalOnOverlay(event, 'modal-add-student')">
+    <div class="modal">
+      <div class="modal__head">
+        <div class="modal__title">Добавить ученика</div>
+        <button class="modal__close" onclick="closeModal('modal-add-student')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Имя</label>
+          <input class="form-input" type="text" placeholder="Иван">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Фамилия</label>
+          <input class="form-input" type="text" placeholder="Иванов">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Телефон</label>
+          <input class="form-input" type="tel" placeholder="+7 (___) ___-__-__">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="email@mail.ru">
+        </div>
+        <div class="form-group form-group--full">
+          <label class="form-label">Секция</label>
+          <select class="form-input filter-select" style="border-radius:10px;padding:11px 14px">
+            <option>Волейбол</option>
+            <option>Баскетбол</option>
+            <option>Футбол</option>
+            <option>Фитнес</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeModal('modal-add-student')">Отмена</button>
+        <button class="btn-primary" onclick="closeModal('modal-add-student'); showToast('Ученик добавлен')">
+          <i class="fa-solid fa-user-plus"></i> Добавить
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toast-text">Готово</span>
+  </div>
+
+  <footer class="footer">
+    <div class="footer__glow"></div>
+    <div class="footer__inner container">
+
+      <div class="footer__brand">
+        <a href="/" class="footer__logo">KHTISPORT</a>
+        <p class="footer__tagline">Спорт для каждого.<br>Победа для всех.</p>
+        <div class="footer__socials">
+          <a href="#" class="footer__social" aria-label="VK">
+            <i class="fa-brands fa-vk"></i>
+          </a>
+          <a href="#" class="footer__social" aria-label="Telegram">
+            <i class="fa-brands fa-telegram"></i>
+          </a>
+          <a href="#" class="footer__social" aria-label="WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer__nav-group">
+        <span class="footer__heading">Навигация</span>
+        <ul class="footer__list">
+          <li><a href="{% url 'home' %}">Главная</a></li>
+          <li><a href="{% url 'services' %}">Услуги</a></li>
+          <li><a href="{% url 'schedule' %}">Расписание</a></li>
+          <li><a href="{% url 'persacc' %}">Личный кабинет</a></li>
+          <li><a href="{% url 'contacts' %}">Контакты</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__nav-group">
+        <span class="footer__heading">Спорт</span>
+        <ul class="footer__list">
+          <li><a href="#">Волейбол</a></li>
+          <li><a href="#">Баскетбол</a></li>
+          <li><a href="#">Футбол</a></li>
+          <li><a href="#">Фитнес</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__nav-group">
+        <span class="footer__heading">Контакты</span>
+        <ul class="footer__list footer__contacts">
+          <li>
+            <i class="fa-solid fa-location-dot"></i>
+            <span>ул. Спортивная, 1</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <span>+7 (800) 555-35-35</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <span>info@khtisport.ru</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <div class="footer__bottom-inner container">
+        <p>© 2025 KHTISPORT. Все права защищены.</p>
+        <div class="footer__bottom-links">
+          <a href="#">Политика конфиденциальности</a>
+          <a href="#">Пользовательское соглашение</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'main/main.js' %}"></script>
+  <script src="{% static 'main/persacc_coach.js' %}"></script>
+</body>
+</html>

@@ -104,3 +104,12 @@ function pokazatUspeh(zagolovok, tekst) {
   document.getElementById('uspeh-tekst').textContent = tekst;
   uspeh.classList.add('aktivny');
 }
+
+// ── Выбор роли ──
+document.querySelectorAll('.rol-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.rol-btn').forEach(b => b.classList.remove('aktivny'));
+    btn.classList.add('aktivny');
+    document.getElementById('vybranaya-rol').value = btn.dataset.rol;
+  });
+});
