@@ -110,3 +110,5 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'main.User'
+AUTHENTICATION_BACKENDS = ['main.backends.EmailBackend']
+LOGIN_URL = '/join/'

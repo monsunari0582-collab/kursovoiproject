@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KHTISPORT — Личный кабинет</title>
+  <link rel="stylesheet" href="{% static 'main/main.css' %}">
+  <link rel="stylesheet" href="{% static 'main/persacc_student.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- HEADER (такой же, как на остальных страницах) -->
+    <header>
+      <div class="inheader">
+        <a href="/" class="logo">KHTISPORT</a>
+        <nav id="main-nav">
+          <ul>
+            <li><a href="{% url 'home' %}">Главная</a></li>
+            <li><a href="{% url 'services' %}">Услуги</a></li>
+            <li><a href="{% url 'schedule' %}">Расписание</a></li>
+            <li><a href="{% url 'persacc' %}">Личный кабинет</a></li>
+            <li><a href="{% url 'contacts' %}">Контакты</a></li>
+            <li class="btn">
+              <form method="post" action="{% url 'logout' %}" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Выйти</button>
+              </form>
+            </li>
+          </ul>
+        </nav>
+        <button class="burger" id="burger" aria-label="Открыть меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- СТРАНИЦА ЛИЧНОГО КАБИНЕТА -->
+    <div class="persacc container">
+
+      <!-- ШАПКА ПРОФИЛЯ -->
+      <div class="persacc__hero reveal">
+        <div class="persacc__avatar-wrap">
+          <div class="persacc__avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="persacc__avatar-ring"></div>
+        </div>
+        <div class="persacc__hero-info">
+          <span class="persacc__label">Личный кабинет</span>
+          <h1 class="persacc__name">{{ user.get_full_name|default:user.username }}</h1>
+          <div class="persacc__meta">
+            <span><i class="fa-solid fa-envelope"></i> {{ user.email }}</span>
+            <span><i class="fa-solid fa-calendar-days"></i> Зарегистрирован с {{ user.date_joined|date:"d.m.Y" }}</span>
+          </div>
+        </div>
+        <div class="persacc__hero-stats">
+          <div class="persacc__stat">
+            <span class="persacc__stat-num">{{ enrollments_count|default:"0" }}</span>
+            <span class="persacc__stat-label">Записей</span>
+          </div>
+          <div class="persacc__stat">
+            <span class="persacc__stat-num">{{ trainings_done|default:"0" }}</span>
+            <span class="persacc__stat-label">Тренировок</span>
+          </div>
+          <div class="persacc__stat">
+            <span class="persacc__stat-num">{{ active_days|default:"0" }}</span>
+            <span class="persacc__stat-label">Активных дней</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ОСНОВНАЯ СЕТКА -->
+      <div class="persacc__grid">
+
+        <!-- ЛЕВАЯ КОЛОНКА: Мои записи -->
+        <section class="persacc__section persacc__enrollments reveal-left">
+          <div class="persacc__section-header">
+            <h2><i class="fa-solid fa-calendar-check"></i> Мои записи</h2>
+            <a href="{% url 'schedule' %}" class="persacc__section-link">Записаться <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          {% if enrollments %}
+            <div class="persacc__enroll-list">
+              {% for enroll in enrollments %}
+              <div class="persacc__enroll-card {% if enroll.is_past %}persacc__enroll-card--past{% endif %}">
+                <div class="persacc__enroll-time">
+                  <span class="persacc__enroll-hour">{{ enroll.session.time|time:"H:i" }}</span>
+                  <span class="persacc__enroll-date">{{ enroll.session.date|date:"d.m" }}</span>
+                </div>
+                <div class="persacc__enroll-info">
+                  <span class="sched-card__sport {{ enroll.session.sport_class }}">{{ enroll.session.sport_name }}</span>
+                  <p class="persacc__enroll-coach">
+                    <i class="fa-solid fa-user"></i> {{ enroll.session.coach }}
+                  </p>
+                  <p class="persacc__enroll-place">
+                    <i class="fa-solid fa-location-dot"></i> {{ enroll.session.location }}
+                  </p>
+                </div>
+                <div class="persacc__enroll-action">
+                  {% if enroll.is_past %}
+                    <span class="persacc__badge persacc__badge--done">Прошла</span>
+                  {% else %}
+                    <span class="persacc__badge persacc__badge--upcoming">Предстоит</span>
+                    <button class="persacc__cancel-btn" data-id="{{ enroll.id }}"
+                            hx-post="{% url 'cancel_enrollment' enroll.id %}"
+                            hx-confirm="Отменить запись?">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="persacc__empty">
+              <i class="fa-regular fa-calendar-xmark"></i>
+              <p>У вас пока нет активных записей.</p>
+              <a href="{% url 'schedule' %}" class="persacc__empty-btn">Перейти в расписание</a>
+            </div>
+          {% endif %}
+        </section>
+
+        <!-- ПРАВАЯ КОЛОНКА -->
+        <aside class="persacc__aside">
+
+          <!-- ДАННЫЕ ПРОФИЛЯ -->
+          <section class="persacc__section persacc__profile reveal-right">
+            <div class="persacc__section-header">
+              <h2><i class="fa-solid fa-id-card"></i> Профиль</h2>
+              <button class="persacc__section-link" id="editProfileBtn">
+                Изменить <i class="fa-solid fa-pen"></i>
+              </button>
+            </div>
+
+            <form class="persacc__profile-form" id="profileForm" method="post" action="{% url 'update_profile' %}">
+              {% csrf_token %}
+              <div class="persacc__field">
+                <label>Имя</label>
+                <input type="text" name="first_name" value="{{ user.first_name }}" disabled>
+              </div>
+              <div class="persacc__field">
+                <label>Фамилия</label>
+                <input type="text" name="last_name" value="{{ user.last_name }}" disabled>
+              </div>
+              <div class="persacc__field">
+                <label>Email</label>
+                <input type="email" name="email" value="{{ user.email }}" disabled>
+              </div>
+              <div class="persacc__field">
+                <label>Телефон</label>
+                <input type="tel" name="phone" value="{{ user.profile.phone|default:'' }}" placeholder="+7 (___) ___-__-__" disabled>
+              </div>
+              <div class="persacc__form-actions" id="profileFormActions" style="display:none;">
+                <button type="submit" class="persacc__save-btn">Сохранить</button>
+                <button type="button" class="persacc__cancel-edit-btn" id="cancelEditBtn">Отмена</button>
+              </div>
+            </form>
+          </section>
+
+          <!-- СМЕНА ПАРОЛЯ -->
+          <section class="persacc__section persacc__password reveal-right">
+            <div class="persacc__section-header">
+              <h2><i class="fa-solid fa-lock"></i> Безопасность</h2>
+            </div>
+            <form class="persacc__profile-form" method="post" action="{% url 'change_password' %}">
+              {% csrf_token %}
+              <div class="persacc__field">
+                <label>Текущий пароль</label>
+                <input type="password" name="old_password" placeholder="••••••••">
+              </div>
+              <div class="persacc__field">
+                <label>Новый пароль</label>
+                <input type="password" name="new_password1" placeholder="••••••••">
+              </div>
+              <div class="persacc__field">
+                <label>Повторите пароль</label>
+                <input type="password" name="new_password2" placeholder="••••••••">
+              </div>
+              <div class="persacc__form-actions" style="display:flex;">
+                <button type="submit" class="persacc__save-btn">Изменить пароль</button>
+              </div>
+            </form>
+          </section>
+
+        </aside>
+      </div>
+      <!-- / ОСНОВНАЯ СЕТКА -->
+
+    </div>
+    <!-- / ЛИЧНЫЙ КАБИНЕТ -->
+
+  </div>
+
+  <!-- ФУТЕР -->
+  <footer class="footer">
+    <div class="footer__glow"></div>
+    <div class="footer__inner container">
+      <div class="footer__brand">
+        <a href="/" class="footer__logo">KHTISPORT</a>
+        <p class="footer__tagline">Спорт для каждого.<br>Победа для всех.</p>
+        <div class="footer__socials">
+          <a href="#" class="footer__social" aria-label="VK"><i class="fa-brands fa-vk"></i></a>
+          <a href="#" class="footer__social" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+          <a href="#" class="footer__social" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer__nav-group">
+        <span class="footer__heading">Навигация</span>
+        <ul class="footer__list">
+          <li><a href="{% url 'home' %}">Главная</a></li>
+          <li><a href="{% url 'services' %}">Услуги</a></li>
+          <li><a href="{% url 'schedule' %}">Расписание</a></li>
+          <li><a href="{% url 'persacc' %}">Личный кабинет</a></li>
+          <li><a href="{% url 'contacts' %}">Контакты</a></li>
+        </ul>
+      </div>
+      <div class="footer__nav-group">
+        <span class="footer__heading">Спорт</span>
+        <ul class="footer__list">
+          <li><a href="#">Волейбол</a></li>
+          <li><a href="#">Баскетбол</a></li>
+          <li><a href="#">Футбол</a></li>
+          <li><a href="#">Фитнес</a></li>
+        </ul>
+      </div>
+      <div class="footer__nav-group">
+        <span class="footer__heading">Контакты</span>
+        <ul class="footer__list footer__contacts">
+          <li><i class="fa-solid fa-location-dot"></i><span>ул. Спортивная, 1</span></li>
+          <li><i class="fa-solid fa-phone"></i><span>+7 (800) 555-35-35</span></li>
+          <li><i class="fa-solid fa-envelope"></i><span>info@khtisport.ru</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__bottom-inner container">
+        <p>© 2025 KHTISPORT. Все права защищены.</p>
+        <div class="footer__bottom-links">
+          <a href="#">Политика конфиденциальности</a>
+          <a href="#">Пользовательское соглашение</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'main/main.js' %}"></script>
+  <script src="{% static 'main/persacc_student.js' %}"></script>
+</body>
+</html>

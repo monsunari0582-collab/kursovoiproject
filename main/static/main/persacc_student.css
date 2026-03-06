@@ -1,0 +1,646 @@
+/* =========================================
+   ЛИЧНЫЙ КАБИНЕТ — persacc_student.css
+   Дополняет main.css, не переопределяет его
+   ========================================= */
+
+/* ---- HERO-ПРОФИЛЬ ---- */
+
+.persacc {
+  padding-top: 130px;
+  padding-bottom: 80px;
+}
+
+.persacc__hero {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 40px 44px;
+  margin-bottom: 40px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(137, 28, 28, 0.2);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.persacc__hero::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(137, 28, 28, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.persacc__hero::after {
+  content: 'STUDENT';
+  position: absolute;
+  right: -10px;
+  bottom: -18px;
+  font-size: 110px;
+  font-weight: 900;
+  color: rgba(137, 28, 28, 0.04);
+  letter-spacing: -3px;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+
+/* Аватар */
+.persacc__avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.persacc__avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  color: rgba(255, 255, 255, 0.85);
+  position: relative;
+  z-index: 1;
+}
+
+.persacc__avatar-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(137, 28, 28, 0.45);
+  animation: ringPulse 3s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.06); }
+}
+
+/* Инфо */
+.persacc__hero-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.persacc__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-accent-light);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+
+.persacc__label::before {
+  content: '';
+  display: inline-block;
+  width: 22px;
+  height: 1px;
+  background: var(--color-accent-light);
+  opacity: 0.6;
+}
+
+.persacc__name {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.persacc__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.persacc__meta span {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.persacc__meta i {
+  color: var(--color-accent);
+  opacity: 0.7;
+  font-size: 12px;
+}
+
+/* Статистика */
+.persacc__hero-stats {
+  display: flex;
+  gap: 28px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.persacc__stat {
+  text-align: center;
+  padding: 16px 20px;
+  background: rgba(137, 28, 28, 0.1);
+  border: 1px solid rgba(137, 28, 28, 0.2);
+  border-radius: 14px;
+  min-width: 80px;
+  transition: background 250ms ease, border-color 250ms ease, transform 250ms ease;
+}
+
+.persacc__stat:hover {
+  background: rgba(137, 28, 28, 0.18);
+  border-color: rgba(137, 28, 28, 0.4);
+  transform: translateY(-2px);
+}
+
+.persacc__stat-num {
+  display: block;
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.persacc__stat-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+/* ---- ОСНОВНАЯ СЕТКА ---- */
+
+.persacc__grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ---- СЕКЦИИ ---- */
+
+.persacc__section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  padding: 30px 32px;
+  transition: border-color 300ms ease;
+}
+
+.persacc__section:hover {
+  border-color: rgba(137, 28, 28, 0.2);
+}
+
+.persacc__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.persacc__section-header h2 {
+  font-size: 17px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.1px;
+}
+
+.persacc__section-header h2 i {
+  color: var(--color-accent);
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+.persacc__section-link {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(137, 28, 28, 0.12);
+  border: 1px solid rgba(137, 28, 28, 0.25);
+  border-radius: 50px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 250ms ease, background 250ms ease, border-color 250ms ease;
+  text-decoration: none;
+}
+
+.persacc__section-link:hover {
+  color: white;
+  background: rgba(137, 28, 28, 0.25);
+  border-color: rgba(137, 28, 28, 0.5);
+}
+
+/* ---- СПИСОК ЗАПИСЕЙ ---- */
+
+.persacc__enroll-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.persacc__enroll-card {
+  display: grid;
+  grid-template-columns: 58px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  transition: background 250ms ease, border-color 250ms ease, transform 200ms ease;
+}
+
+.persacc__enroll-card:hover {
+  background: rgba(137, 28, 28, 0.07);
+  border-color: rgba(137, 28, 28, 0.2);
+  transform: translateX(3px);
+}
+
+.persacc__enroll-card--past {
+  opacity: 0.45;
+}
+
+.persacc__enroll-card--past:hover {
+  transform: none;
+  background: rgba(255, 255, 255, 0.025);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.persacc__enroll-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.persacc__enroll-hour {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  color: white;
+}
+
+.persacc__enroll-date {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.3px;
+}
+
+.persacc__enroll-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.persacc__enroll-coach,
+.persacc__enroll-place {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.persacc__enroll-coach i,
+.persacc__enroll-place i {
+  font-size: 11px;
+  color: rgba(137, 28, 28, 0.7);
+  width: 11px;
+}
+
+.persacc__enroll-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+/* Бейджи */
+.persacc__badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 50px;
+  white-space: nowrap;
+}
+
+.persacc__badge--upcoming {
+  background: rgba(137, 28, 28, 0.2);
+  color: var(--color-accent-light);
+  border: 1px solid rgba(137, 28, 28, 0.35);
+}
+
+.persacc__badge--done {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Кнопка отмены */
+.persacc__cancel-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+  font-family: inherit;
+}
+
+.persacc__cancel-btn:hover {
+  background: rgba(137, 28, 28, 0.3);
+  border-color: rgba(137, 28, 28, 0.5);
+  color: var(--color-accent-light);
+}
+
+/* Пустое состояние */
+.persacc__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 48px 24px;
+  color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.persacc__empty i {
+  font-size: 36px;
+  opacity: 0.4;
+}
+
+.persacc__empty p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.persacc__empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-primary);
+  color: white;
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid rgba(232, 119, 119, 0.2);
+  transition: background 250ms ease, box-shadow 250ms ease, transform 200ms ease;
+  text-decoration: none;
+}
+
+.persacc__empty-btn:hover {
+  background: var(--color-primary-dark);
+  box-shadow: 0 4px 16px rgba(137, 28, 28, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ---- БОКОВАЯ ПАНЕЛЬ ---- */
+
+.persacc__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---- ФОРМА ПРОФИЛЯ ---- */
+
+.persacc__profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.persacc__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.persacc__field label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.persacc__field input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 250ms ease, background 250ms ease, color 250ms ease;
+}
+
+.persacc__field input:disabled {
+  color: rgba(255, 255, 255, 0.55);
+  cursor: default;
+}
+
+.persacc__field input:not(:disabled):focus {
+  border-color: rgba(137, 28, 28, 0.55);
+  background: rgba(137, 28, 28, 0.06);
+  color: white;
+}
+
+.persacc__field input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Кнопки формы */
+.persacc__form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.persacc__save-btn {
+  flex: 1;
+  background: var(--color-primary);
+  color: white;
+  border: 1px solid rgba(232, 119, 119, 0.2);
+  border-radius: 10px;
+  padding: 11px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: background 250ms ease, box-shadow 250ms ease, transform 200ms ease;
+}
+
+.persacc__save-btn:hover {
+  background: var(--color-primary-dark);
+  box-shadow: 0 4px 16px rgba(137, 28, 28, 0.4);
+  transform: translateY(-1px);
+}
+
+.persacc__save-btn:active {
+  transform: translateY(0);
+}
+
+.persacc__cancel-edit-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 11px 18px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease;
+}
+
+.persacc__cancel-edit-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: white;
+}
+
+/* ---- КНОПКА ВЫХОДА В ХЕДЕРЕ ---- */
+
+.logout-btn {
+  background: var(--color-primary);
+  color: white;
+  border: 1px solid rgba(232, 119, 119, 0.15);
+  border-radius: 7px;
+  padding: 9px 22px;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: background 250ms ease, box-shadow 250ms ease, transform 200ms ease;
+}
+
+.logout-btn:hover {
+  background: var(--color-primary-dark);
+  box-shadow: 0 4px 16px rgba(137, 28, 28, 0.45);
+  transform: translateY(-1px);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
+
+
+
+@media (max-width: 1199.98px) {
+  .persacc__grid {
+    grid-template-columns: 1fr 340px;
+  }
+}
+
+@media (max-width: 990.98px) {
+  .persacc__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .persacc__aside {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .persacc__hero-stats {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768.98px) {
+  .persacc {
+    padding-top: 110px;
+  }
+
+  .persacc__hero {
+    flex-wrap: wrap;
+    padding: 28px 24px;
+    gap: 24px;
+  }
+
+  .persacc__hero-stats {
+    width: 100%;
+    justify-content: space-around;
+    margin-left: 0;
+  }
+
+  .persacc__name {
+    font-size: 28px;
+  }
+
+  .persacc__aside {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576.98px) {
+  .persacc__hero::after {
+    font-size: 70px;
+  }
+
+  .persacc__section {
+    padding: 22px 18px;
+  }
+
+  .persacc__enroll-card {
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: auto auto;
+    gap: 8px 12px;
+  }
+
+  .persacc__enroll-time {
+    grid-row: 1;
+  }
+
+  .persacc__enroll-info {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+
+  .persacc__enroll-action {
+    grid-column: 1;
+    grid-row: 2;
+    align-items: flex-start;
+    flex-direction: row;
+  }
+
+  .persacc__stat {
+    padding: 12px 14px;
+    min-width: 70px;
+  }
+
+  .persacc__stat-num {
+    font-size: 22px;
+  }
+}

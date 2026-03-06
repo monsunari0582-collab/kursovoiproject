@@ -54,56 +54,48 @@ function pokazatOshibku(id, pokazat) {
 function proveritEmail(znachenie) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(znachenie); }
 function proveritTelefon(znachenie) { return znachenie.replace(/\D/g, '').length === 11; }
 
-// ── Отправка формы входа ──
+// ── Отправка формы входа — только валидация, форма сабмитится нативно ──
 document.getElementById('forma-login').addEventListener('submit', e => {
-  e.preventDefault();
   const email = document.getElementById('email-vhod').value.trim();
   const parol = document.getElementById('parol-vhod').value;
-  let vsePoryadke = true;
 
-  pokazatOshibku('obertka-email-vhod', !proveritEmail(email));
-  pokazatOshibku('obertka-parol-vhod', !parol);
-  if (!proveritEmail(email) || !parol) vsePoryadke = false;
+  const emailErr = !proveritEmail(email);
+  const parolErr = !parol;
+  pokazatOshibku('obertka-email-vhod', emailErr);
+  pokazatOshibku('obertka-parol-vhod', parolErr);
 
-  if (vsePoryadke) {
-    // >>> Здесь Django POST запрос на login <<<
-    pokazatUspeh('Вы вошли!', 'Добро пожаловать в KHTISPORT');
+  if (emailErr || parolErr) {
+    e.preventDefault(); // блокируем только если есть ошибки
   }
+  // иначе — форма уходит на сервер сама
 });
 
-// ── Отправка формы регистрации ──
+// ── Отправка формы регистрации — только валидация, форма сабмитится нативно ──
 document.getElementById('forma-register').addEventListener('submit', e => {
-  e.preventDefault();
   const imya    = document.getElementById('imya').value.trim();
   const email   = document.getElementById('email-reg').value.trim();
   const telefon = document.getElementById('telefon').value;
   const parol   = document.getElementById('parol-reg').value;
   const parol2  = document.getElementById('parol-reg2').value;
   const soglasie = document.getElementById('checkbox-soglasie').checked;
-  let vsePoryadke = true;
 
-  pokazatOshibku('obertka-imya',       !imya);
-  pokazatOshibku('obertka-email-reg',  !proveritEmail(email));
-  pokazatOshibku('obertka-telefon',    !proveritTelefon(telefon));
-  pokazatOshibku('obertka-parol-reg',  parol.length < 8);
-  pokazatOshibku('obertka-parol-reg2', parol !== parol2);
+  const imyaErr   = !imya;
+  const emailErr  = !proveritEmail(email);
+  const telErr    = !proveritTelefon(telefon);
+  const parolErr  = parol.length < 8;
+  const parol2Err = parol !== parol2;
 
-  if (!imya || !proveritEmail(email) || !proveritTelefon(telefon) || parol.length < 8 || parol !== parol2 || !soglasie) vsePoryadke = false;
+  pokazatOshibku('obertka-imya',       imyaErr);
+  pokazatOshibku('obertka-email-reg',  emailErr);
+  pokazatOshibku('obertka-telefon',    telErr);
+  pokazatOshibku('obertka-parol-reg',  parolErr);
+  pokazatOshibku('obertka-parol-reg2', parol2Err);
 
-  if (vsePoryadke) {
-    // >>> Здесь Django POST запрос на register <<<
-    pokazatUspeh('Аккаунт создан!', 'Добро пожаловать в семью KHTISPORT');
+  if (imyaErr || emailErr || telErr || parolErr || parol2Err || !soglasie) {
+    e.preventDefault(); // блокируем только если есть ошибки
   }
+  // иначе — форма уходит на сервер сама
 });
-
-function pokazatUspeh(zagolovok, tekst) {
-  formy.forEach(f => f.classList.remove('aktivny'));
-  pereklyuchateli.forEach(t => t.style.display = 'none');
-  document.querySelector('.vhod-logo').style.marginBottom = '16px';
-  document.getElementById('uspeh-zagolovok').textContent = zagolovok;
-  document.getElementById('uspeh-tekst').textContent = tekst;
-  uspeh.classList.add('aktivny');
-}
 
 // ── Выбор роли ──
 document.querySelectorAll('.rol-btn').forEach(btn => {

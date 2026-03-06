@@ -19,15 +19,12 @@
             <li><a href="{% url 'home' %}">Главная</a></li>
             <li><a href="{% url 'services' %}">Услуги</a></li>
             <li><a href="{% url 'schedule' %}">Расписание</a></li>
-            <li><a href="{% url 'persacc' %}">Личный кабинет</a></li>
             <li><a href="{% url 'contacts' %}">Контакты</a></li>
             <li class="btn"><a href="{% url 'join' %}">Войти</a></li>
           </ul>
         </nav>
         <button class="burger" id="burger" aria-label="Открыть меню">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </button>
       </div>
     </header>
@@ -35,26 +32,40 @@
     <main class="vhod-telo">
       <div class="vhod-kartochka">
 
-        <!-- Логотип -->
         <div class="vhod-logo">
           <div class="vhod-logo__nazvanie">KHTISPORT</div>
           <div class="vhod-logo__podpis">Ваш спортивный портал</div>
         </div>
 
-        <!-- Переключатели -->
         <div class="pereklyuchateli" role="tablist">
-          <button class="pereklyuchatel aktivny" role="tab" data-tab="login" aria-selected="true">Войти</button>
-          <button class="pereklyuchatel" role="tab" data-tab="register" aria-selected="false">Регистрация</button>
+          <button class="pereklyuchatel {% if active_tab == 'login' %}aktivny{% endif %}"
+                  role="tab" data-tab="login"
+                  aria-selected="{% if active_tab == 'login' %}true{% else %}false{% endif %}">Войти</button>
+          <button class="pereklyuchatel {% if active_tab == 'register' %}aktivny{% endif %}"
+                  role="tab" data-tab="register"
+                  aria-selected="{% if active_tab == 'register' %}true{% else %}false{% endif %}">Регистрация</button>
         </div>
 
-        <!-- Форма входа -->
-        <form class="forma aktivny" id="forma-login" novalidate>
+        <!-- ===== ФОРМА ВХОДА ===== -->
+        <form class="forma {% if active_tab == 'login' or not active_tab %}aktivny{% endif %}"
+              id="forma-login"
+              method="post"
+              action="{% url 'join' %}">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="login">
+
+          {% if login_error %}
+            <div class="forma-oshibka-global">
+              <i class="fa-solid fa-triangle-exclamation"></i> {{ login_error }}
+            </div>
+          {% endif %}
 
           <div class="pole-gruppa">
             <label for="email-vhod">E-mail</label>
             <div class="pole-obertka" id="obertka-email-vhod">
               <i class="fa-solid fa-envelope"></i>
-              <input type="email" id="email-vhod" placeholder="example@mail.ru" autocomplete="email">
+              <input type="email" id="email-vhod" name="email"
+                     placeholder="example@mail.ru" autocomplete="email">
             </div>
             <span class="pole-oshibka">Введите корректный e-mail</span>
           </div>
@@ -63,7 +74,8 @@
             <label for="parol-vhod">Пароль</label>
             <div class="pole-obertka" id="obertka-parol-vhod">
               <i class="fa-solid fa-lock"></i>
-              <input type="password" id="parol-vhod" class="s-glazom" placeholder="••••••••" autocomplete="current-password">
+              <input type="password" id="parol-vhod" name="password"
+                     class="s-glazom" placeholder="••••••••" autocomplete="current-password">
               <button type="button" class="knopka-glaz" aria-label="Показать пароль" data-target="parol-vhod">
                 <i class="fa-solid fa-eye"></i>
               </button>
@@ -81,43 +93,49 @@
           <button type="submit" class="knopka-otpravit">Войти</button>
 
           <div class="razdelitel">или</div>
-
           <div class="socialnye-seti">
-            <button type="button" class="socialnaya-knopka">
-              <i class="fa-brands fa-vk"></i> ВКонтакте
-            </button>
-            <button type="button" class="socialnaya-knopka">
-              <i class="fa-brands fa-telegram"></i> Telegram
-            </button>
+            <button type="button" class="socialnaya-knopka"><i class="fa-brands fa-vk"></i> ВКонтакте</button>
+            <button type="button" class="socialnaya-knopka"><i class="fa-brands fa-telegram"></i> Telegram</button>
           </div>
         </form>
 
-        <!-- Форма регистрации -->
-        <form class="forma" id="forma-register" novalidate>
+        <!-- ===== ФОРМА РЕГИСТРАЦИИ ===== -->
+        <form class="forma {% if active_tab == 'register' %}aktivny{% endif %}"
+              id="forma-register"
+              method="post"
+              action="{% url 'join' %}">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="register">
 
-          <div class="pole-gruppa">
+          <div class="pole-gruppa {% if register_errors.full_name %}s-oshibkoy{% endif %}">
             <label for="imya">Имя и фамилия</label>
             <div class="pole-obertka" id="obertka-imya">
               <i class="fa-solid fa-user"></i>
-              <input type="text" id="imya" placeholder="Иван Иванов" autocomplete="name">
+              <input type="text" id="imya" name="full_name"
+                     placeholder="Иван Иванов" autocomplete="name"
+                     value="{{ reg_data.full_name|default:'' }}">
             </div>
-            <span class="pole-oshibka">Введите имя и фамилию</span>
+            <span class="pole-oshibka">{{ register_errors.full_name|default:"Введите имя и фамилию" }}</span>
           </div>
 
-          <div class="pole-gruppa">
+          <div class="pole-gruppa {% if register_errors.email %}s-oshibkoy{% endif %}">
             <label for="email-reg">E-mail</label>
             <div class="pole-obertka" id="obertka-email-reg">
               <i class="fa-solid fa-envelope"></i>
-              <input type="email" id="email-reg" placeholder="example@mail.ru" autocomplete="email">
+              <input type="email" id="email-reg" name="email"
+                     placeholder="example@mail.ru" autocomplete="email"
+                     value="{{ reg_data.email|default:'' }}">
             </div>
-            <span class="pole-oshibka">Введите корректный e-mail</span>
+            <span class="pole-oshibka">{{ register_errors.email|default:"Введите корректный e-mail" }}</span>
           </div>
 
           <div class="pole-gruppa">
             <label for="telefon">Телефон</label>
             <div class="pole-obertka" id="obertka-telefon">
               <i class="fa-solid fa-phone"></i>
-              <input type="tel" id="telefon" placeholder="+7 (___) ___-__-__" autocomplete="tel">
+              <input type="tel" id="telefon" name="phone"
+                     placeholder="+7 (___) ___-__-__" autocomplete="tel"
+                     value="{{ reg_data.phone|default:'' }}">
             </div>
             <span class="pole-oshibka">Введите корректный номер телефона</span>
           </div>
@@ -125,38 +143,40 @@
           <div class="pole-gruppa">
             <label>Я регистрируюсь как</label>
             <div class="rol-pereklyuchateli">
-              <button type="button" class="rol-btn aktivny" data-rol="student">
+              <button type="button" class="rol-btn {% if reg_data.role != 'coach' %}aktivny{% endif %}" data-rol="student">
                 <i class="fa-solid fa-graduation-cap"></i> Ученик
               </button>
-              <button type="button" class="rol-btn" data-rol="coach">
+              <button type="button" class="rol-btn {% if reg_data.role == 'coach' %}aktivny{% endif %}" data-rol="coach">
                 <i class="fa-solid fa-whistle"></i> Тренер
               </button>
             </div>
-            <input type="hidden" id="vybranaya-rol" value="student">
-          </div>          
+            <input type="hidden" id="vybranaya-rol" name="role" value="{{ reg_data.role|default:'student' }}">
+          </div>
 
-          <div class="pole-gruppa">
+          <div class="pole-gruppa {% if register_errors.password1 %}s-oshibkoy{% endif %}">
             <label for="parol-reg">Пароль</label>
             <div class="pole-obertka" id="obertka-parol-reg">
               <i class="fa-solid fa-lock"></i>
-              <input type="password" id="parol-reg" class="s-glazom" placeholder="Минимум 8 символов" autocomplete="new-password">
+              <input type="password" id="parol-reg" name="password1"
+                     class="s-glazom" placeholder="Минимум 8 символов" autocomplete="new-password">
               <button type="button" class="knopka-glaz" aria-label="Показать пароль" data-target="parol-reg">
                 <i class="fa-solid fa-eye"></i>
               </button>
             </div>
-            <span class="pole-oshibka">Пароль должен содержать минимум 8 символов</span>
+            <span class="pole-oshibka">{{ register_errors.password1|default:"Пароль должен содержать минимум 8 символов" }}</span>
           </div>
 
-          <div class="pole-gruppa">
+          <div class="pole-gruppa {% if register_errors.password2 %}s-oshibkoy{% endif %}">
             <label for="parol-reg2">Повторите пароль</label>
             <div class="pole-obertka" id="obertka-parol-reg2">
               <i class="fa-solid fa-lock"></i>
-              <input type="password" id="parol-reg2" class="s-glazom" placeholder="••••••••" autocomplete="new-password">
+              <input type="password" id="parol-reg2" name="password2"
+                     class="s-glazom" placeholder="••••••••" autocomplete="new-password">
               <button type="button" class="knopka-glaz" aria-label="Показать пароль" data-target="parol-reg2">
                 <i class="fa-solid fa-eye"></i>
               </button>
             </div>
-            <span class="pole-oshibka">Пароли не совпадают</span>
+            <span class="pole-oshibka">{{ register_errors.password2|default:"Пароли не совпадают" }}</span>
           </div>
 
           <label class="soglasie">
@@ -167,7 +187,6 @@
           <button type="submit" class="knopka-otpravit">Создать аккаунт</button>
         </form>
 
-        <!-- Экран успеха -->
         <div class="uspeh" id="ekran-uspeha">
           <div class="uspeh-ikonka"><i class="fa-solid fa-check"></i></div>
           <h3 id="uspeh-zagolovok">Вы вошли!</h3>
@@ -180,7 +199,6 @@
     <footer class="footer">
       <div class="footer__glow"></div>
       <div class="footer__inner container">
-
         <div class="footer__brand">
           <a href="/" class="footer__logo">KHTISPORT</a>
           <p class="footer__tagline">Спорт для каждого.<br>Победа для всех.</p>
@@ -190,7 +208,6 @@
             <a href="#" class="footer__social" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
           </div>
         </div>
-
         <div class="footer__nav-group">
           <span class="footer__heading">Навигация</span>
           <ul class="footer__list">
@@ -201,7 +218,6 @@
             <li><a href="{% url 'contacts' %}">Контакты</a></li>
           </ul>
         </div>
-
         <div class="footer__nav-group">
           <span class="footer__heading">Спорт</span>
           <ul class="footer__list">
@@ -211,7 +227,6 @@
             <li><a href="#">Фитнес</a></li>
           </ul>
         </div>
-
         <div class="footer__nav-group">
           <span class="footer__heading">Контакты</span>
           <ul class="footer__list footer__contacts">
@@ -220,9 +235,7 @@
             <li><i class="fa-solid fa-envelope"></i><span>info@khtisport.ru</span></li>
           </ul>
         </div>
-
       </div>
-
       <div class="footer__bottom">
         <div class="footer__bottom-inner container">
           <p>© 2025 KHTISPORT. Все права защищены.</p>
@@ -236,6 +249,103 @@
   </div>
 
   <script src="{% static 'main/main.js' %}"></script>
-  <script src="{% static 'main/join.js' %}"></script>
+  <!-- join.js встроен инлайн чтобы исключить проблемы с кешем -->
+  <script>
+  // ── Переключение вкладок ──
+  const pereklyuchateli = document.querySelectorAll('.pereklyuchatel');
+  const formy = document.querySelectorAll('.forma');
+  const uspeh = document.getElementById('ekran-uspeha');
+
+  pereklyuchateli.forEach(tab => {
+    tab.addEventListener('click', () => {
+      pereklyuchateli.forEach(t => { t.classList.remove('aktivny'); t.setAttribute('aria-selected', 'false'); });
+      formy.forEach(f => f.classList.remove('aktivny'));
+      uspeh.classList.remove('aktivny');
+      tab.classList.add('aktivny');
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById('forma-' + tab.dataset.tab).classList.add('aktivny');
+    });
+  });
+
+  // ── Показ/скрытие пароля ──
+  document.querySelectorAll('.knopka-glaz').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      const icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    });
+  });
+
+  // ── Маска телефона ──
+  const poleTelefona = document.getElementById('telefon');
+  poleTelefona.addEventListener('input', () => {
+    let v = poleTelefona.value.replace(/\D/g, '');
+    if (v.startsWith('8')) v = '7' + v.slice(1);
+    if (!v.startsWith('7')) v = '7' + v;
+    v = v.slice(0, 11);
+    let rezultat = '+7';
+    if (v.length > 1) rezultat += ' (' + v.slice(1, 4);
+    if (v.length >= 4) rezultat += ') ' + v.slice(4, 7);
+    if (v.length >= 7) rezultat += '-' + v.slice(7, 9);
+    if (v.length >= 9) rezultat += '-' + v.slice(9, 11);
+    poleTelefona.value = rezultat;
+  });
+
+  // ── Проверка полей ──
+  function pokazatOshibku(id, pokazat) {
+    const obertka = document.getElementById(id);
+    if (!obertka) return;
+    obertka.classList.toggle('s-oshibkoy', pokazat);
+  }
+  function proveritEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+  function proveritTelefon(v) { return v.replace(/\D/g, '').length === 11; }
+
+  // ── Форма входа: только валидация, без preventDefault при успехе ──
+  document.getElementById('forma-login').addEventListener('submit', function(e) {
+    const email = document.getElementById('email-vhod').value.trim();
+    const parol = document.getElementById('parol-vhod').value;
+    const emailErr = !proveritEmail(email);
+    const parolErr = !parol;
+    pokazatOshibku('obertka-email-vhod', emailErr);
+    pokazatOshibku('obertka-parol-vhod', parolErr);
+    if (emailErr || parolErr) e.preventDefault();
+  });
+
+  // ── Форма регистрации: только валидация, без preventDefault при успехе ──
+  document.getElementById('forma-register').addEventListener('submit', function(e) {
+    const imya    = document.getElementById('imya').value.trim();
+    const email   = document.getElementById('email-reg').value.trim();
+    const telefon = document.getElementById('telefon').value;
+    const parol   = document.getElementById('parol-reg').value;
+    const parol2  = document.getElementById('parol-reg2').value;
+    const soglasie = document.getElementById('checkbox-soglasie').checked;
+    const imyaErr   = !imya;
+    const emailErr  = !proveritEmail(email);
+    const telErr    = !proveritTelefon(telefon);
+    const parolErr  = parol.length < 8;
+    const parol2Err = parol !== parol2;
+    pokazatOshibku('obertka-imya',       imyaErr);
+    pokazatOshibku('obertka-email-reg',  emailErr);
+    pokazatOshibku('obertka-telefon',    telErr);
+    pokazatOshibku('obertka-parol-reg',  parolErr);
+    pokazatOshibku('obertka-parol-reg2', parol2Err);
+    if (imyaErr || emailErr || telErr || parolErr || parol2Err || !soglasie) e.preventDefault();
+  });
+
+  // ── Выбор роли ──
+  document.querySelectorAll('.rol-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.rol-btn').forEach(b => b.classList.remove('aktivny'));
+      btn.classList.add('aktivny');
+      document.getElementById('vybranaya-rol').value = btn.dataset.rol;
+    });
+  });
+  </script>
 </body>
 </html>

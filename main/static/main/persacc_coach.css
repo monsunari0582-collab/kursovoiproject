@@ -1,783 +1,566 @@
-/* ============================================================
-   КАБИНЕТ ТРЕНЕРА — KHTISPORT
-   Подключать после main.css
-============================================================ */
+/* =========================================
+   КАБИНЕТ ТРЕНЕРА — persacc_coach.css
+   Подключать ПОСЛЕ persacc_student.css
+   ========================================= */
 
-/* ---- LAYOUT ---- */
-.cab-bg {
-  min-height: 100vh;
-  background: #060606;
-  padding-top: 88px;
-}
-
-.cab-layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  min-height: calc(100vh - 88px);
-}
-
-/* ============================================================
-   SIDEBAR
-============================================================ */
-.cab-sidebar {
-  background: rgba(255,255,255,0.018);
-  border-right: 1px solid rgba(255,255,255,0.055);
-  padding: 32px 0 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  position: sticky;
-  top: 88px;
-  height: calc(100vh - 88px);
-  overflow-y: auto;
-}
-
-/* Profile mini */
-.cab-profile {
-  padding: 0 24px 28px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  margin-bottom: 12px;
-}
-
-.cab-ava-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
-.cab-ava {
-  width: 54px;
-  height: 54px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #891c1c, #550101);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
+/* Аватар тренера со звёздочкой */
+.coach-avatar {
+  font-size: 22px;
   font-weight: 800;
-  color: rgba(255,255,255,0.9);
-  border: 1.5px solid rgba(232,119,119,0.25);
-  flex-shrink: 0;
   position: relative;
 }
 
-.cab-ava__star {
+.coach-avatar__star {
   position: absolute;
-  bottom: -5px;
-  right: -5px;
-  width: 18px;
-  height: 18px;
+  bottom: -5px; right: -5px;
+  width: 20px; height: 20px;
   background: linear-gradient(135deg, #d4a017, #f5c842);
   border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; color: #1a1000;
+  border: 2px solid #000;
+}
+
+/* Бейдж количества */
+.coach-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(137,28,28,0.2);
+  border: 1px solid rgba(137,28,28,0.35);
+  color: var(--color-accent-light);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 50px;
+  padding: 1px 9px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* ---- ТАБЫ ---- */
+.coach-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 6px;
+}
+
+.coach-tab {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 8px;
-  color: #1a1000;
-  border: 1.5px solid #060606;
-}
-
-.cab-ava-info__name {
-  font-size: 15px;
-  font-weight: 700;
-  color: white;
-  line-height: 1.2;
-}
-
-.cab-ava-info__role {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: #f5c842;
-  opacity: 0.8;
-  margin-top: 3px;
-}
-
-.cab-mini-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-}
-
-.cab-ms {
-  background: rgba(137,28,28,0.1);
-  border: 1px solid rgba(137,28,28,0.18);
-  border-radius: 10px;
-  padding: 10px 8px;
-  text-align: center;
-}
-
-.cab-ms__val {
-  font-size: 18px;
-  font-weight: 800;
-  color: white;
-  line-height: 1;
-}
-
-.cab-ms__lbl {
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: rgba(255,255,255,0.3);
-  margin-top: 3px;
-}
-
-/* Nav */
-.cab-nav {
-  padding: 0 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.cab-nav__item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 14px;
+  padding: 11px 16px;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
+  font-family: "Roboto", sans-serif;
   color: rgba(255,255,255,0.45);
+  background: none;
+  border: none;
   cursor: pointer;
   transition: background 200ms, color 200ms;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-  font-family: "Roboto", sans-serif;
 }
 
-.cab-nav__item i {
-  width: 18px;
-  font-size: 14px;
-  opacity: 0.6;
-  transition: opacity 200ms;
-}
+.coach-tab i { font-size: 13px; opacity: 0.7; }
 
-.cab-nav__item:hover {
+.coach-tab:hover {
   background: rgba(255,255,255,0.04);
   color: rgba(255,255,255,0.75);
 }
 
-.cab-nav__item.active {
-  background: rgba(137,28,28,0.18);
-  color: white;
+.coach-tab.active {
+  background: rgba(137,28,28,0.2);
   border: 1px solid rgba(137,28,28,0.3);
+  color: white;
 }
 
-.cab-nav__item.active i {
-  opacity: 1;
-  color: var(--color-accent-light);
-}
+.coach-tab.active i { opacity: 1; color: var(--color-accent-light); }
 
-.cab-nav__sep {
-  height: 1px;
-  background: rgba(255,255,255,0.05);
-  margin: 10px 14px;
-}
+/* ---- СЕКЦИИ ---- */
+.coach-section { display: none; }
+.coach-section.active { display: block; animation: coachFadeIn 250ms ease; }
 
-.cab-nav__logout {
-  margin-top: auto;
-  padding: 0 12px;
-}
-
-.cab-nav__logout .cab-nav__item {
-  color: rgba(239,68,68,0.5);
-}
-
-.cab-nav__logout .cab-nav__item:hover {
-  background: rgba(239,68,68,0.07);
-  color: rgba(239,68,68,0.8);
-}
-
-/* ============================================================
-   MAIN CONTENT
-============================================================ */
-.cab-main {
-  padding: 36px 40px;
-  overflow-x: hidden;
-}
-
-/* Секция — скрыта по умолчанию */
-.cab-section {
-  display: none;
-  animation: fadeIn 250ms ease;
-}
-
-.cab-section.active {
-  display: block;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+@keyframes coachFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Заголовок секции */
-.sec-head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 28px;
-  gap: 16px;
-}
-
-.sec-head__title {
-  font-size: 26px;
-  font-weight: 800;
-  color: white;
-  letter-spacing: -0.5px;
-  line-height: 1;
-}
-
-.sec-head__sub {
-  font-size: 13px;
-  color: rgba(255,255,255,0.35);
-  margin-top: 6px;
-  font-weight: 400;
-}
-
-/* Кнопки */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--color-primary);
-  color: white;
-  padding: 11px 22px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: "Roboto", sans-serif;
-  border: 1px solid rgba(232,119,119,0.2);
-  cursor: pointer;
-  transition: background 250ms, box-shadow 250ms, transform 200ms;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.btn-primary:hover {
-  background: var(--color-primary-dark);
-  box-shadow: 0 6px 20px rgba(137,28,28,0.45);
-  transform: translateY(-1px);
-}
-
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.6);
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 500;
-  font-family: "Roboto", sans-serif;
-  border: 1px solid rgba(255,255,255,0.08);
-  cursor: pointer;
-  transition: background 200ms, color 200ms;
-}
-
-.btn-ghost:hover {
-  background: rgba(255,255,255,0.07);
-  color: white;
-}
-
-/* ============================================================
-   РАСПИСАНИЕ
-============================================================ */
-
-/* Неделя-навигация */
-.week-nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* ---- НЕДЕЛЯ ---- */
+.coach-week {
   margin-bottom: 20px;
 }
 
-.week-nav__btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 9px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
+.coach-week__nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: rgba(255,255,255,0.5);
-  font-size: 13px;
-  cursor: pointer;
-  transition: background 200ms, color 200ms;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
-.week-nav__btn:hover {
+.coach-week__btn {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 200ms, color 200ms;
+  font-family: inherit;
+}
+
+.coach-week__btn:hover {
   background: rgba(137,28,28,0.2);
   border-color: rgba(137,28,28,0.35);
   color: white;
 }
 
-.week-nav__label {
-  font-size: 15px;
+.coach-week__label {
+  font-size: 14px;
   font-weight: 600;
   color: white;
-  padding: 0 8px;
+  flex: 1;
 }
 
-.week-nav__today {
-  margin-left: auto;
-  font-size: 12px;
-  padding: 7px 14px;
-  border-radius: 8px;
-  background: rgba(137,28,28,0.12);
-  border: 1px solid rgba(137,28,28,0.25);
-  color: var(--color-accent-light);
-  cursor: pointer;
-  transition: background 200ms;
-}
-
-.week-nav__today:hover { background: rgba(137,28,28,0.22); }
-
-/* Дни недели — табы */
-.week-days {
+.coach-week__days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
-  margin-bottom: 24px;
+  gap: 5px;
 }
 
-.week-day {
-  padding: 10px 6px;
+.coach-week__day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px;
   border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
   border: 1px solid rgba(255,255,255,0.05);
   background: rgba(255,255,255,0.02);
+  cursor: pointer;
+  font-family: inherit;
   transition: background 200ms, border-color 200ms;
 }
 
-.week-day:hover {
+.coach-week__day:hover {
   background: rgba(255,255,255,0.04);
   border-color: rgba(255,255,255,0.08);
 }
 
-.week-day.active {
+.coach-week__day.active {
   background: rgba(137,28,28,0.18);
   border-color: rgba(137,28,28,0.35);
 }
 
-.week-day__name {
+.coach-week__dn {
   font-size: 9px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: rgba(255,255,255,0.3);
-  margin-bottom: 5px;
 }
 
-.week-day.active .week-day__name { color: var(--color-accent-light); }
+.coach-week__day.active .coach-week__dn { color: var(--color-accent-light); }
 
-.week-day__num {
-  font-size: 18px;
+.coach-week__dd {
+  font-size: 17px;
   font-weight: 800;
   color: rgba(255,255,255,0.5);
   line-height: 1;
 }
 
-.week-day.active .week-day__num { color: white; }
+.coach-week__day.active .coach-week__dd { color: white; }
 
-.week-day__dot {
-  width: 5px;
-  height: 5px;
+.coach-week__dot {
+  width: 5px; height: 5px;
   border-radius: 50%;
   background: var(--color-accent);
-  margin: 5px auto 0;
-  opacity: 0;
+  opacity: 0.6;
 }
 
-.week-day.has-sessions .week-day__dot { opacity: 1; }
-
-/* Тайм-слоты */
-.schedule-grid {
+/* ---- СЛОТЫ ТРЕНИРОВОК ---- */
+.coach-slots {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.sched-slot {
+.coach-slot {
   display: grid;
-  grid-template-columns: 72px 1fr;
-  gap: 16px;
-  align-items: stretch;
-  min-height: 88px;
+  grid-template-columns: 58px 1fr;
+  gap: 14px;
+  padding: 16px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  transition: border-color 250ms, background 250ms;
 }
 
-.sched-slot__time {
+.coach-slot:hover {
+  background: rgba(137,28,28,0.06);
+  border-color: rgba(137,28,28,0.2);
+}
+
+.coach-slot--free {
+  cursor: pointer;
+  border-style: dashed;
+  border-color: rgba(255,255,255,0.07);
+}
+
+.coach-slot--free:hover {
+  border-color: rgba(137,28,28,0.3);
+  background: rgba(137,28,28,0.05);
+}
+
+.coach-slot__time {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  padding-top: 4px;
-  gap: 2px;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
 }
 
-.sched-slot__hour {
-  font-size: 20px;
-  font-weight: 800;
+.coach-slot__hour {
+  font-size: 18px;
+  font-weight: 700;
   color: white;
   line-height: 1;
 }
 
-.sched-slot__dur {
-  font-size: 11px;
-  color: rgba(255,255,255,0.25);
-  font-weight: 500;
+.coach-slot__dur {
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
 }
 
-.sched-slot__card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(137,28,28,0.22);
-  border-left: 3px solid var(--color-primary);
-  border-radius: 12px;
-  padding: 16px 20px;
+.coach-slot__body { display: flex; flex-direction: column; gap: 6px; }
+
+.coach-slot__body--free {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: rgba(255,255,255,0.2);
+  font-size: 13px;
+  height: 100%;
+}
+
+.coach-slot__top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  transition: background 200ms, border-color 200ms;
 }
 
-.sched-slot__card:hover {
-  background: rgba(137,28,28,0.07);
-  border-color: rgba(137,28,28,0.38);
-}
-
-.sched-slot__card--free {
-  background: rgba(255,255,255,0.015);
-  border: 1px dashed rgba(255,255,255,0.07);
-  border-left: 3px dashed rgba(255,255,255,0.1);
-  cursor: pointer;
-  justify-content: center;
-}
-
-.sched-slot__card--free:hover {
-  background: rgba(137,28,28,0.06);
-  border-color: rgba(137,28,28,0.25);
-}
-
-.sched-slot__add {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  color: rgba(255,255,255,0.2);
-}
-
-.sched-slot__add i {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: rgba(137,28,28,0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  color: rgba(137,28,28,0.6);
-}
-
-.sched-card-info__title {
-  font-size: 15px;
-  font-weight: 700;
+.coach-slot__title {
+  font-size: 14px;
+  font-weight: 600;
   color: white;
-  margin-bottom: 6px;
 }
 
-.sched-card-info__meta {
+.coach-slot__meta {
   display: flex;
+  gap: 14px;
   flex-wrap: wrap;
-  gap: 12px;
 }
 
-.sched-card-info__meta span {
+.coach-slot__meta span {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
-  color: rgba(255,255,255,0.4);
 }
 
-.sched-card-info__meta i {
-  font-size: 11px;
-  color: rgba(137,28,28,0.7);
-}
+.coach-slot__meta i { color: rgba(137,28,28,0.7); font-size: 11px; }
 
-.sched-card-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.sched-fill {
-  font-size: 13px;
-  font-weight: 700;
-  color: white;
-}
-
-.sched-fill__bar {
-  width: 80px;
-  height: 4px;
-  background: rgba(255,255,255,0.07);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.sched-fill__inner {
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-accent-light));
-  border-radius: 10px;
-}
-
-.sched-actions {
-  display: flex;
-  gap: 6px;
-}
-
-.sched-act-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  color: rgba(255,255,255,0.4);
-  cursor: pointer;
-  transition: background 200ms, color 200ms, border-color 200ms;
-}
-
-.sched-act-btn:hover { background: rgba(255,255,255,0.08); color: white; }
-
-.sched-act-btn--del:hover {
-  background: rgba(239,68,68,0.12);
-  border-color: rgba(239,68,68,0.25);
-  color: #f87171;
-}
-
-/* ============================================================
-   УЧЕНИКИ
-============================================================ */
-
-.students-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.search-input {
-  flex: 1;
-  max-width: 320px;
+.coach-slot__fill {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 10px 14px;
-}
-
-.search-input i { color: rgba(255,255,255,0.25); font-size: 13px; }
-
-.search-input input {
-  background: none;
-  border: none;
-  outline: none;
-  color: white;
-  font-size: 13px;
-  font-family: "Roboto", sans-serif;
-  width: 100%;
-}
-
-.search-input input::placeholder { color: rgba(255,255,255,0.25); }
-
-.filter-select {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 10px 14px;
-  color: rgba(255,255,255,0.6);
-  font-size: 13px;
-  font-family: "Roboto", sans-serif;
-  outline: none;
-  cursor: pointer;
-}
-
-.filter-select option { background: #1a0000; }
-
-/* Карточки учеников */
-.students-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 14px;
-}
-
-.student-card {
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 16px;
-  padding: 20px;
-  transition: background 200ms, border-color 200ms, transform 200ms;
-  position: relative;
-  overflow: hidden;
-}
-
-.student-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(232,119,119,0.1), transparent);
-}
-
-.student-card:hover {
-  background: rgba(137,28,28,0.07);
-  border-color: rgba(137,28,28,0.22);
-  transform: translateY(-2px);
-}
-
-.student-card__top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.student-card__ava-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.student-card__ava {
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(137,28,28,0.5), rgba(85,1,1,0.9));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 800;
-  color: rgba(255,255,255,0.85);
-  flex-shrink: 0;
-}
-
-.student-card__name {
-  font-size: 15px;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 3px;
-}
-
-.student-card__since {
-  font-size: 11px;
-  color: rgba(255,255,255,0.3);
-}
-
-.student-card__actions {
-  display: flex;
-  gap: 6px;
-}
-
-.sc-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 12px;
-  color: rgba(255,255,255,0.4);
-  cursor: pointer;
-  transition: background 200ms, color 200ms;
+  color: rgba(255,255,255,0.35);
 }
 
-.sc-btn:hover { background: rgba(255,255,255,0.08); color: white; }
-
-.sc-btn--del:hover {
-  background: rgba(239,68,68,0.12);
-  border-color: rgba(239,68,68,0.25);
-  color: #f87171;
-}
-
-.student-card__body {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.student-card__row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.student-card__label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: rgba(255,255,255,0.25);
-}
-
-.student-card__value {
-  font-size: 12px;
-  color: rgba(255,255,255,0.6);
-}
-
-.student-card__attend {
-  margin-top: 12px;
-}
-
-.attend-label-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: rgba(255,255,255,0.3);
-  margin-bottom: 6px;
-}
-
-.attend-bar-full {
-  height: 5px;
+.coach-slot__bar {
+  flex: 1;
+  height: 4px;
   background: rgba(255,255,255,0.06);
   border-radius: 10px;
   overflow: hidden;
 }
 
-.attend-bar-fill {
+.coach-slot__bar-inner {
   height: 100%;
   background: linear-gradient(90deg, var(--color-primary), var(--color-accent-light));
   border-radius: 10px;
 }
 
-.student-card__footer {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255,255,255,0.05);
+/* Кнопки действий */
+.coach-slot__actions { display: flex; gap: 5px; }
+
+.coach-act-btn {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.35);
+  font-size: 11px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 200ms, color 200ms, border-color 200ms;
+  font-family: inherit;
+}
+
+.coach-act-btn:hover {
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+
+.coach-act-btn--del:hover {
+  background: rgba(239,68,68,0.15);
+  border-color: rgba(239,68,68,0.3);
+  color: #f87171;
+}
+
+/* ---- СЕГОДНЯ ---- */
+.coach-today {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.coach-today__item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  background: rgba(137,28,28,0.08);
+  border: 1px solid rgba(137,28,28,0.15);
+  border-radius: 10px;
+}
+
+.coach-today__item > i {
+  font-size: 16px;
+  color: var(--color-accent);
+  opacity: 0.8;
+  width: 20px;
+  text-align: center;
+}
+
+.coach-today__val {
+  display: block;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  color: white;
+}
+
+.coach-today__lbl {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 2px;
+  display: block;
+}
+
+/* ---- УВЕДОМЛЕНИЯ ---- */
+.coach-notifs { display: flex; flex-direction: column; gap: 12px; }
+
+.coach-notif {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+
+.coach-notif__icon {
+  font-size: 13px;
+  color: var(--color-accent);
+  opacity: 0.8;
+  margin-top: 2px;
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.coach-notif__icon--cancel { color: #f87171; }
+
+.coach-notif__text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.65);
+  margin: 0 0 3px;
+  line-height: 1.4;
+}
+
+.coach-notif__time {
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+}
+
+/* ---- УЧЕНИКИ ---- */
+.coach-toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.coach-search {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.coach-search i { color: rgba(255,255,255,0.25); font-size: 13px; }
+
+.coach-search input {
+  background: none;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 14px;
+  font-family: inherit;
+  width: 100%;
+}
+
+.coach-search input::placeholder { color: rgba(255,255,255,0.2); }
+
+.coach-filter {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: rgba(255,255,255,0.6);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+}
+
+.coach-students {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.coach-student {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 250ms, background 250ms, transform 200ms;
+}
+
+.coach-student:hover {
+  border-color: rgba(137,28,28,0.2);
+  background: rgba(137,28,28,0.04);
+  transform: translateY(-2px);
+}
+
+.coach-student__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.coach-student__ava {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-accent));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800;
+  color: rgba(255,255,255,0.9);
+  flex-shrink: 0;
+}
+
+.coach-student__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.coach-student__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coach-student__since {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+}
+
+.coach-student__btns { display: flex; gap: 5px; flex-shrink: 0; }
+
+.coach-student__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.coach-student__stats span {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.coach-student__stats i { color: rgba(137,28,28,0.7); font-size: 11px; width: 11px; }
+
+.coach-student__attend { display: flex; flex-direction: column; gap: 5px; }
+
+.coach-student__attend-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+}
+
+.coach-student__bar {
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.coach-student__bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent-light));
+  border-radius: 10px;
+}
+
+.coach-student__footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-.status-dot {
+.coach-status {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -785,229 +568,37 @@
   font-weight: 600;
 }
 
-.status-dot__circle {
-  width: 7px;
-  height: 7px;
+.coach-status span {
+  width: 7px; height: 7px;
   border-radius: 50%;
+  display: block;
 }
 
-.status-dot--active .status-dot__circle { background: #4ade80; }
-.status-dot--active { color: #4ade80; }
+.coach-status--active { color: #4ade80; }
+.coach-status--active span { background: #4ade80; }
+.coach-status--inactive { color: #f87171; }
+.coach-status--inactive span { background: #f87171; }
+.coach-status--trial { color: #fbbf24; }
+.coach-status--trial span { background: #fbbf24; }
 
-.status-dot--inactive .status-dot__circle { background: #f87171; }
-.status-dot--inactive { color: #f87171; }
-
-.status-dot--trial .status-dot__circle { background: #fbbf24; }
-.status-dot--trial { color: #fbbf24; }
-
-.sc-section-pill {
-  font-size: 11px;
-  padding: 3px 10px;
-  border-radius: 50px;
-  background: rgba(137,28,28,0.15);
-  border: 1px solid rgba(137,28,28,0.25);
-  color: var(--color-accent-light);
-  font-weight: 600;
-}
-
-/* ============================================================
-   ПРОФИЛЬ
-============================================================ */
-.profile-layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 24px;
-  align-items: start;
-}
-
-.prof-card {
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 18px;
-  padding: 28px 22px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.prof-card::before {
-  content: '';
-  position: absolute;
-  top: -80px; left: 50%;
-  transform: translateX(-50%);
-  width: 240px; height: 240px;
-  background: radial-gradient(circle, rgba(137,28,28,0.18) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.prof-ava-wrap {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 18px;
-}
-
-.prof-ava {
-  width: 96px;
-  height: 96px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #891c1c, #550101);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 38px;
-  font-weight: 900;
-  color: rgba(255,255,255,0.9);
-  border: 2px solid rgba(232,119,119,0.3);
-  box-shadow: 0 0 50px rgba(137,28,28,0.3);
-  margin: 0 auto;
-}
-
-.prof-ava__badge {
-  position: absolute;
-  bottom: -6px; right: -6px;
-  background: linear-gradient(135deg, #d4a017, #f5c842);
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  color: #1a1000;
-  border: 2px solid #060606;
-}
-
-.prof-name {
-  font-size: 20px;
-  font-weight: 800;
-  color: white;
-  margin-bottom: 4px;
-}
-
-.prof-role {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #f5c842;
-  opacity: 0.8;
-  margin-bottom: 6px;
-}
-
-.prof-spec {
-  font-size: 13px;
-  color: rgba(255,255,255,0.35);
-  margin-bottom: 22px;
-}
-
-.prof-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(137,28,28,0.35), transparent);
-  margin: 20px 0;
-}
-
-.prof-contact-list {
-  list-style: none;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.prof-contact-list li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
-}
-
-.prof-contact-list li i {
-  width: 16px;
-  color: var(--color-accent);
-  opacity: 0.7;
-  font-size: 13px;
-}
-
-/* Edit form */
-.prof-form-card {
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 18px;
-  padding: 28px;
-}
-
-.form-section-title {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
-  margin-bottom: 18px;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 24px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.form-group--full { grid-column: 1 / -1; }
-
-.form-label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: rgba(255,255,255,0.3);
-}
-
-.form-input {
+/* select внутри persacc__field */
+.persacc__field-select {
   background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.07);
   border-radius: 10px;
   padding: 11px 14px;
-  color: white;
+  color: rgba(255,255,255,0.85);
   font-size: 14px;
-  font-family: "Roboto", sans-serif;
+  font-family: inherit;
   outline: none;
-  transition: border-color 200ms, background 200ms;
+  width: 100%;
+  transition: border-color 250ms;
 }
 
-.form-input:focus {
-  border-color: rgba(137,28,28,0.5);
-  background: rgba(137,28,28,0.06);
-}
+.persacc__field-select:focus { border-color: rgba(137,28,28,0.55); }
 
-.form-input::placeholder { color: rgba(255,255,255,0.2); }
-
-textarea.form-input {
-  resize: vertical;
-  min-height: 90px;
-}
-
-.form-sep {
-  height: 1px;
-  background: rgba(255,255,255,0.05);
-  margin-bottom: 24px;
-}
-
-.form-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-/* ============================================================
-   МОДАЛКА
-============================================================ */
-.modal-overlay {
+/* ---- МОДАЛКА ---- */
+.coach-modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.75);
@@ -1021,72 +612,72 @@ textarea.form-input {
   transition: opacity 250ms;
 }
 
-.modal-overlay.open {
+.coach-modal-overlay.open {
   opacity: 1;
   pointer-events: all;
 }
 
-.modal {
-  background: #0e0e0e;
+.coach-modal {
+  background: #0a0a0a;
   border: 1px solid rgba(137,28,28,0.3);
   border-radius: 20px;
-  padding: 32px;
+  padding: 30px;
   width: 100%;
   max-width: 480px;
-  transform: translateY(20px) scale(0.97);
+  transform: translateY(16px) scale(0.97);
   transition: transform 250ms ease;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.modal-overlay.open .modal {
+.coach-modal-overlay.open .coach-modal {
   transform: translateY(0) scale(1);
 }
 
-.modal__head {
+.coach-modal__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
 }
 
-.modal__title {
-  font-size: 20px;
+.coach-modal__title {
+  font-size: 18px;
   font-weight: 800;
   color: white;
 }
 
-.modal__close {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
+.coach-modal__close {
+  width: 30px; height: 30px;
+  border-radius: 8px;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: rgba(255,255,255,0.4);
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
   transition: background 200ms, color 200ms;
+  font-family: inherit;
 }
 
-.modal__close:hover { background: rgba(255,255,255,0.09); color: white; }
+.coach-modal__close:hover { background: rgba(255,255,255,0.09); color: white; }
 
-.modal .form-grid { margin-bottom: 20px; }
+.coach-modal__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
 
-.modal-actions {
+.coach-modal__actions {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
 }
 
-/* ============================================================
-   TOAST
-============================================================ */
-.toast {
+/* ---- TOAST ---- */
+.coach-toast {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 28px; right: 28px;
   background: #0e0e0e;
   border: 1px solid rgba(34,197,94,0.3);
   border-radius: 12px;
@@ -1096,6 +687,7 @@ textarea.form-input {
   gap: 12px;
   font-size: 13px;
   color: white;
+  font-family: "Roboto", sans-serif;
   z-index: 3000;
   transform: translateY(20px);
   opacity: 0;
@@ -1103,46 +695,15 @@ textarea.form-input {
   pointer-events: none;
 }
 
-.toast.show {
-  transform: translateY(0);
-  opacity: 1;
-}
+.coach-toast.show { transform: translateY(0); opacity: 1; }
+.coach-toast i { color: #4ade80; font-size: 16px; }
 
-.toast i { color: #4ade80; font-size: 16px; }
-
-/* ============================================================
-   RESPONSIVE
-============================================================ */
-@media (max-width: 1100px) {
-  .cab-main { padding: 28px 24px; }
-  .profile-layout { grid-template-columns: 240px 1fr; }
-}
-
-@media (max-width: 900px) {
-  .cab-layout { grid-template-columns: 1fr; }
-  .cab-sidebar {
-    position: static;
-    height: auto;
-    flex-direction: row;
-    padding: 12px 16px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    gap: 8px;
-    align-items: center;
-  }
-  .cab-profile { display: none; }
-  .cab-nav { flex-direction: row; padding: 0; gap: 4px; }
-  .cab-nav__sep, .cab-nav__logout { display: none; }
-  .cab-nav__item { white-space: nowrap; padding: 9px 12px; }
-  .profile-layout { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 600px) {
-  .cab-main { padding: 20px 16px; }
-  .week-days { grid-template-columns: repeat(7, 1fr); gap: 4px; }
-  .week-day__num { font-size: 14px; }
-  .students-grid { grid-template-columns: 1fr; }
-  .form-grid { grid-template-columns: 1fr; }
+/* ---- АДАПТИВ ---- */
+@media (max-width: 768px) {
+  .coach-tabs { flex-wrap: wrap; }
+  .coach-tab { font-size: 13px; padding: 9px 12px; }
+  .coach-week__days { grid-template-columns: repeat(7,1fr); gap: 3px; }
+  .coach-week__dd { font-size: 14px; }
+  .coach-students { grid-template-columns: 1fr; }
+  .coach-modal__row { grid-template-columns: 1fr; }
 }
