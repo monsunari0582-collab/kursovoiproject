@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import (
     logout, login as auth_login,
     authenticate, update_session_auth_hash,
@@ -6,6 +6,7 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
 
 
 def home(request):
@@ -25,11 +26,16 @@ def join(request):
 
         # -------- ВХОД --------
         if action == 'login':
+            User     = get_user_model()
             email    = request.POST.get('email', '').strip()
             password = request.POST.get('password', '')
 
-            # EmailBackend принимает username=email
-            user = authenticate(request, username=email, password=password)
+            try:
+                username = User.objects.get(email=email).username
+            except User.DoesNotExist:
+                username = email
+
+            user = authenticate(request, username=username, password=password)
             if user is not None:
                 auth_login(request, user)
                 return redirect(request.GET.get('next', 'persacc'))
@@ -87,10 +93,6 @@ def join(request):
                 role=role,
             )
 
-            if hasattr(user, 'profile') and phone:
-                user.profile.phone = phone
-                user.profile.save()
-
             auth_login(request, user, backend='main.backends.EmailBackend')
             return redirect('persacc')
 
@@ -100,12 +102,32 @@ def join(request):
 @login_required(login_url='/join/')
 def persacc(request):
     role = getattr(request.user, 'role', 'student')
+
     if role == 'coach':
         return render(request, 'main/persacc_coach.html')
+
     elif role == 'admin':
         return render(request, 'main/persacc_admin.html')
+
     else:
-        return render(request, 'main/persacc_student.html')
+        # Загружаем записи ученика
+        from .models import Enrollment
+        enrollments = (
+            Enrollment.objects
+            .filter(student=request.user)
+            .select_related('session', 'session__coach')
+            .order_by('session__date', 'session__time')
+        )
+        enrollments_count = enrollments.count()
+        trainings_done    = sum(1 for e in enrollments if e.is_past)
+        active_days       = enrollments.values('session__date').distinct().count()
+
+        return render(request, 'main/persacc_student.html', {
+            'enrollments':       enrollments,
+            'enrollments_count': enrollments_count,
+            'trainings_done':    trainings_done,
+            'active_days':       active_days,
+        })
 
 
 def logout_view(request):
@@ -119,7 +141,80 @@ def services(request):
 
 
 def schedule(request):
-    return render(request, 'main/schedule.html')
+    from .models import Session, Enrollment
+    from datetime import date, timedelta
+
+    today = date.today()
+    # Показываем текущую неделю (7 дней начиная с сегодня)
+    days_data = []
+    DAYS_RU = ['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье']
+
+    for i in range(7):
+        d = today + timedelta(days=i)
+        sessions = Session.objects.filter(date=d).select_related('coach').order_by('time')
+        days_data.append({
+            'key':      d.strftime('%Y-%m-%d'),
+            'label':    f"{DAYS_RU[d.weekday()]} {d.strftime('%d.%m')}",
+            'sessions': sessions,
+        })
+
+    # id тренировок на которые записан текущий пользователь
+    enrolled_ids = set()
+    if request.user.is_authenticated:
+        enrolled_ids = set(
+            Enrollment.objects.filter(student=request.user)
+            .values_list('session_id', flat=True)
+        )
+
+    return render(request, 'main/schedule.html', {
+        'days':        days_data,
+        'enrolled_ids': enrolled_ids,
+    })
+
+
+@login_required(login_url='/join/')
+def enroll(request, session_id):
+    """Запись на тренировку."""
+    if request.method != 'POST':
+        return redirect('schedule')
+
+    from .models import Session, Enrollment
+    session = get_object_or_404(Session, id=session_id)
+
+    if session.is_full:
+        messages.error(request, 'К сожалению, мест уже нет.')
+        return redirect('schedule')
+
+    _, created = Enrollment.objects.get_or_create(
+        student=request.user,
+        session=session,
+    )
+
+    if created:
+        messages.success(request, f'Вы записаны на тренировку {session.sport_name} {session.date.strftime("%d.%m")} в {session.time.strftime("%H:%M")}.')
+    else:
+        messages.error(request, 'Вы уже записаны на эту тренировку.')
+
+    return redirect('schedule')
+
+
+@login_required(login_url='/join/')
+def cancel_enrollment_by_session(request, session_id):
+    """Отмена записи прямо из расписания."""
+    if request.method != 'POST':
+        return redirect('schedule')
+
+    from .models import Session, Enrollment
+    session    = get_object_or_404(Session, id=session_id)
+    enrollment = Enrollment.objects.filter(student=request.user, session=session).first()
+
+    if enrollment:
+        enrollment.delete()
+        messages.success(request, 'Запись отменена.')
+    else:
+        messages.error(request, 'Запись не найдена.')
+
+    return redirect('schedule')
 
 
 @login_required(login_url='/join/')
@@ -132,10 +227,6 @@ def update_profile(request):
     user.last_name  = request.POST.get('last_name', '').strip()
     user.email      = request.POST.get('email', '').strip()
     user.save()
-
-    if hasattr(user, 'profile'):
-        user.profile.phone = request.POST.get('phone', '').strip()
-        user.profile.save()
 
     messages.success(request, 'Профиль успешно обновлён.')
     return redirect('persacc')
@@ -167,13 +258,13 @@ def change_password(request):
     messages.success(request, 'Пароль успешно изменён.')
     return redirect('persacc')
 
+
 @login_required(login_url='/join/')
 def cancel_enrollment(request, enrollment_id):
-    """Отмена записи на тренировку."""
     if request.method != 'POST':
         return redirect('persacc')
-    # from .models import Enrollment
-    # enrollment = get_object_or_404(Enrollment, id=enrollment_id, user=request.user)
-    # enrollment.delete()
-    from django.http import JsonResponse
-    return JsonResponse({'statis': 'ок'})
+
+    from .models import Enrollment
+    enrollment = get_object_or_404(Enrollment, id=enrollment_id, student=request.user)
+    enrollment.delete()
+    return JsonResponse({'status': 'ok'})

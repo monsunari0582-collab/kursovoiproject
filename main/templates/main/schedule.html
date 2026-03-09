@@ -4,13 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KHTISPORT — Спорт для всех</title>
+  <title>KHTISPORT — Расписание</title>
   <link rel="stylesheet" href="{% static 'main/main.css' %}">
+  <link rel="stylesheet" href="{% static 'main/schedule.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
   <div class="wrapper">
-    <header class="headercontainer">
+
+    <header>
       <div class="inheader">
         <a href="/" class="logo">KHTISPORT</a>
         <nav id="main-nav">
@@ -20,38 +22,156 @@
             <li><a href="{% url 'schedule' %}">Расписание</a></li>
             <li><a href="{% url 'persacc' %}">Личный кабинет</a></li>
             <li><a href="{% url 'contacts' %}">Контакты</a></li>
+            {% if user.is_authenticated %}
+            <li class="btn">
+              <form method="post" action="{% url 'logout' %}" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Выйти</button>
+              </form>
+            </li>
+            {% else %}
             <li class="btn"><a href="{% url 'join' %}">Войти</a></li>
+            {% endif %}
           </ul>
         </nav>
         <button class="burger" id="burger" aria-label="Открыть меню">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </button>
       </div>
     </header>
+
+    <div class="schedule-page container">
+
+      <!-- ШАПКА -->
+      <div class="schedule-hero reveal">
+        <span class="schedule-hero__label">Тренировки</span>
+        <h1>Расписание</h1>
+        <p>Выберите удобное время и запишитесь на тренировку</p>
+      </div>
+
+      <!-- ФИЛЬТРЫ -->
+      <div class="schedule-filters reveal">
+        <div class="schedule-filters__tabs" id="dayTabs">
+          {% for day in days %}
+          <button class="sched-tab {% if forloop.first %}active{% endif %}"
+                  data-day="{{ day.key }}">
+            {{ day.label }}
+          </button>
+          {% endfor %}
+        </div>
+        <div class="schedule-filters__sport">
+          <button class="sport-filter active" data-sport="all">Все</button>
+          <button class="sport-filter" data-sport="volleyball">Волейбол</button>
+          <button class="sport-filter" data-sport="basketball">Баскетбол</button>
+          <button class="sport-filter" data-sport="football">Футбол</button>
+          <button class="sport-filter" data-sport="fitness">Фитнес</button>
+        </div>
+      </div>
+
+      <!-- СПИСОК ТРЕНИРОВОК -->
+      <div class="schedule-list" id="scheduleList">
+        {% for day in days %}
+        <div class="sched-day {% if forloop.first %}active{% endif %}"
+             id="day-{{ day.key }}">
+
+          {% for session in day.sessions %}
+          <div class="sched-card reveal" data-sport="{{ session.sport }}">
+
+            <div class="sched-card__time">
+              {{ session.time|time:"H:i" }}
+            </div>
+
+            <div class="sched-card__info">
+              <span class="sched-card__sport {{ session.sport }}">
+                {{ session.sport_name }}
+              </span>
+              <p class="sched-card__coach">
+                <i class="fa-solid fa-user"></i>
+                {% if session.coach %}
+                  {{ session.coach.get_full_name }}
+                {% else %}
+                  Тренер не назначен
+                {% endif %}
+              </p>
+            </div>
+
+            <div class="sched-card__meta">
+              <span><i class="fa-solid fa-location-dot"></i> {{ session.location }}</span>
+              <span><i class="fa-solid fa-users"></i> {{ session.enrolled_count }}/{{ session.max_places }}</span>
+              <span><i class="fa-solid fa-clock"></i> {{ session.duration }} мин</span>
+            </div>
+
+            <div class="sched-card__action">
+              {% if session.is_full %}
+                <span class="sched-card__btn sched-card__btn--full">Мест нет</span>
+
+              {% elif not user.is_authenticated %}
+                <a href="{% url 'join' %}?next={% url 'schedule' %}" class="sched-card__btn">
+                  Войти
+                </a>
+
+              {% elif session.id in enrolled_ids %}
+                <form method="post" action="{% url 'cancel_enrollment_by_session' session.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="sched-card__btn sched-card__btn--cancel">
+                    Отменить
+                  </button>
+                </form>
+
+              {% else %}
+                <form method="post" action="{% url 'enroll' session.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="sched-card__btn">
+                    Записаться
+                  </button>
+                </form>
+              {% endif %}
+            </div>
+
+          </div>
+          {% empty %}
+          <div class="sched-empty">
+            <i class="fa-regular fa-calendar-xmark"></i>
+            <p>Тренировок в этот день нет</p>
+          </div>
+          {% endfor %}
+
+        </div>
+        {% empty %}
+        <div class="sched-empty">
+          <i class="fa-regular fa-calendar-xmark"></i>
+          <p>Расписание пока не добавлено</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Сообщения Django (успех/ошибка) -->
+      {% if messages %}
+      <div class="schedule-messages">
+        {% for message in messages %}
+        <div class="schedule-msg schedule-msg--{{ message.tags }}">
+          <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+    </div>
   </div>
 
   <footer class="footer">
     <div class="footer__glow"></div>
     <div class="footer__inner container">
-
       <div class="footer__brand">
         <a href="/" class="footer__logo">KHTISPORT</a>
         <p class="footer__tagline">Спорт для каждого.<br>Победа для всех.</p>
         <div class="footer__socials">
-          <a href="#" class="footer__social" aria-label="VK">
-            <i class="fa-brands fa-vk"></i>
-          </a>
-          <a href="#" class="footer__social" aria-label="Telegram">
-            <i class="fa-brands fa-telegram"></i>
-          </a>
-          <a href="#" class="footer__social" aria-label="WhatsApp">
-            <i class="fa-brands fa-whatsapp"></i>
-          </a>
+          <a href="#" class="footer__social" aria-label="VK"><i class="fa-brands fa-vk"></i></a>
+          <a href="#" class="footer__social" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+          <a href="#" class="footer__social" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
         </div>
       </div>
-
       <div class="footer__nav-group">
         <span class="footer__heading">Навигация</span>
         <ul class="footer__list">
@@ -62,7 +182,6 @@
           <li><a href="{% url 'contacts' %}">Контакты</a></li>
         </ul>
       </div>
-
       <div class="footer__nav-group">
         <span class="footer__heading">Спорт</span>
         <ul class="footer__list">
@@ -72,27 +191,15 @@
           <li><a href="#">Фитнес</a></li>
         </ul>
       </div>
-
       <div class="footer__nav-group">
         <span class="footer__heading">Контакты</span>
         <ul class="footer__list footer__contacts">
-          <li>
-            <i class="fa-solid fa-location-dot"></i>
-            <span>ул. Спортивная, 1</span>
-          </li>
-          <li>
-            <i class="fa-solid fa-phone"></i>
-            <span>+7 (800) 555-35-35</span>
-          </li>
-          <li>
-            <i class="fa-solid fa-envelope"></i>
-            <span>info@khtisport.ru</span>
-          </li>
+          <li><i class="fa-solid fa-location-dot"></i><span>ул. Спортивная, 1</span></li>
+          <li><i class="fa-solid fa-phone"></i><span>+7 (800) 555-35-35</span></li>
+          <li><i class="fa-solid fa-envelope"></i><span>info@khtisport.ru</span></li>
         </ul>
       </div>
-
     </div>
-
     <div class="footer__bottom">
       <div class="footer__bottom-inner container">
         <p>© 2025 KHTISPORT. Все права защищены.</p>
@@ -105,5 +212,6 @@
   </footer>
 
   <script src="{% static 'main/main.js' %}"></script>
+  <script src="{% static 'main/schedule.js' %}"></script>
 </body>
 </html>
