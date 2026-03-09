@@ -9,6 +9,16 @@ from django.contrib import messages
 from django.http import JsonResponse
 
 
+# ── декоратор: только для тренеров ──────────────────────────
+def coach_required(view_func):
+    @login_required(login_url='/join/')
+    def wrapper(request, *args, **kwargs):
+        if getattr(request.user, 'role', None) != 'coach':
+            return redirect('persacc')
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+
 def home(request):
     from .models import Session
     from datetime import date, timedelta
@@ -40,7 +50,6 @@ def join(request):
     if request.method == 'POST':
         action = request.POST.get('action')
 
-        # -------- ВХОД --------
         if action == 'login':
             User     = get_user_model()
             email    = request.POST.get('email', '').strip()
@@ -61,7 +70,6 @@ def join(request):
                     'active_tab': 'login',
                 })
 
-        # -------- РЕГИСТРАЦИЯ --------
         elif action == 'register':
             User = get_user_model()
 
@@ -120,13 +128,71 @@ def persacc(request):
     role = getattr(request.user, 'role', 'student')
 
     if role == 'coach':
-        return render(request, 'main/persacc_coach.html')
+        from .models import Session, Enrollment
+        from datetime import date, timedelta
+
+        today = date.today()
+        DAYS_SHORT = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+        coach_days = []
+
+        for i in range(7):
+            d = today + timedelta(days=i)
+            sessions = (
+                Session.objects
+                .filter(coach=request.user, date=d)
+                .prefetch_related('enrollments__student')
+                .order_by('time')
+            )
+            coach_days.append({
+                'key':      d.strftime('%Y-%m-%d'),
+                'short':    f"{DAYS_SHORT[d.weekday()]} {d.strftime('%d.%m')}",
+                'date':     d,
+                'sessions': sessions,
+            })
+
+        # Все ученики тренера (записанные на любую его тренировку)
+        User = get_user_model()
+        student_ids = (
+            Enrollment.objects
+            .filter(session__coach=request.user)
+            .values_list('student_id', flat=True)
+            .distinct()
+        )
+        students_qs = User.objects.filter(id__in=student_ids)
+
+        def ru_zapisey(n):
+            if 11 <= (n % 100) <= 19:
+                return f"{n} записей"
+            r = n % 10
+            if r == 1: return f"{n} запись"
+            if 2 <= r <= 4: return f"{n} записи"
+            return f"{n} записей"
+
+        students = []
+        for s in students_qs:
+            count = Enrollment.objects.filter(student=s, session__coach=request.user).count()
+            students.append({'user': s, 'enrollments_str': ru_zapisey(count)})
+
+        total_sessions   = Session.objects.filter(coach=request.user).count()
+        total_students   = len(students)
+        weekly_sessions  = Session.objects.filter(
+            coach=request.user,
+            date__gte=today,
+            date__lt=today + timedelta(days=7)
+        ).count()
+
+        return render(request, 'main/persacc_coach.html', {
+            'coach_days':      coach_days,
+            'students':        students,
+            'total_sessions':  total_sessions,
+            'total_students':  total_students,
+            'weekly_sessions': weekly_sessions,
+        })
 
     elif role == 'admin':
         return render(request, 'main/persacc_admin.html')
 
     else:
-        # Загружаем записи ученика
         from .models import Enrollment
         enrollments = (
             Enrollment.objects
@@ -161,9 +227,8 @@ def schedule(request):
     from datetime import date, timedelta
 
     today = date.today()
-    # Показываем текущую неделю (7 дней начиная с сегодня)
     days_data = []
-    DAYS_RU = ['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье']
+    DAYS_RU = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
 
     for i in range(7):
         d = today + timedelta(days=i)
@@ -174,7 +239,6 @@ def schedule(request):
             'sessions': sessions,
         })
 
-    # id тренировок на которые записан текущий пользователь
     enrolled_ids = set()
     if request.user.is_authenticated:
         enrolled_ids = set(
@@ -183,14 +247,13 @@ def schedule(request):
         )
 
     return render(request, 'main/schedule.html', {
-        'days':        days_data,
+        'days':         days_data,
         'enrolled_ids': enrolled_ids,
     })
 
 
 @login_required(login_url='/join/')
 def enroll(request, session_id):
-    """Запись на тренировку."""
     if request.method != 'POST':
         return redirect('schedule')
 
@@ -207,7 +270,7 @@ def enroll(request, session_id):
     )
 
     if created:
-        messages.success(request, f'Вы записаны на тренировку {session.sport_name} {session.date.strftime("%d.%m")} в {session.time.strftime("%H:%M")}.')
+        messages.success(request, f'Вы записаны: {session.sport_name} {session.date.strftime("%d.%m")} в {session.time.strftime("%H:%M")}.')
     else:
         messages.error(request, 'Вы уже записаны на эту тренировку.')
 
@@ -216,7 +279,6 @@ def enroll(request, session_id):
 
 @login_required(login_url='/join/')
 def cancel_enrollment_by_session(request, session_id):
-    """Отмена записи прямо из расписания."""
     if request.method != 'POST':
         return redirect('schedule')
 
@@ -284,3 +346,144 @@ def cancel_enrollment(request, enrollment_id):
     enrollment = get_object_or_404(Enrollment, id=enrollment_id, student=request.user)
     enrollment.delete()
     return JsonResponse({'status': 'ok'})
+
+
+# ══════════════════════════════════════════════
+#  ТРЕНЕР — управление тренировками
+# ══════════════════════════════════════════════
+
+@coach_required
+def coach_session_add(request):
+    """Добавить разовую или повторяющуюся тренировку."""
+    if request.method != 'POST':
+        return redirect('persacc')
+
+    from .models import Session, RecurringSession
+    sport      = request.POST.get('sport', '').strip()
+    location   = request.POST.get('location', '').strip()
+    time_str   = request.POST.get('time', '').strip()
+    duration   = int(request.POST.get('duration', 60))
+    max_places = int(request.POST.get('max_places', 15))
+    repeat     = request.POST.get('repeat', 'once')  # 'once' или 'weekly'
+
+    if not all([sport, location, time_str]):
+        messages.error(request, 'Заполните все обязательные поля.')
+        return redirect('persacc')
+
+    if repeat == 'weekly':
+        # Повторяющаяся тренировка
+        weekday    = request.POST.get('weekday', '0')
+        date_from  = request.POST.get('date_from', '').strip()
+        date_until = request.POST.get('date_until', '').strip() or None
+
+        if not date_from:
+            messages.error(request, 'Укажите дату начала.')
+            return redirect('persacc')
+
+        rec = RecurringSession.objects.create(
+            sport=sport,
+            coach=request.user,
+            location=location,
+            weekday=int(weekday),
+            time=time_str,
+            duration=duration,
+            max_places=max_places,
+            date_from=date_from,
+            date_until=date_until,
+        )
+        count = rec.generate_sessions(weeks_ahead=8)
+        messages.success(request, f'Создано {count} тренировок по расписанию.')
+
+    else:
+        # Разовая тренировка
+        date_str = request.POST.get('date', '').strip()
+        if not date_str:
+            messages.error(request, 'Укажите дату.')
+            return redirect('persacc')
+
+        Session.objects.create(
+            sport=sport,
+            coach=request.user,
+            location=location,
+            date=date_str,
+            time=time_str,
+            duration=duration,
+            max_places=max_places,
+        )
+        messages.success(request, 'Тренировка добавлена.')
+
+    return redirect('persacc')
+
+
+@coach_required
+def coach_recurring_delete(request, recurring_id):
+    """Удалить шаблон повторения и все будущие тренировки по нему."""
+    if request.method != 'POST':
+        return redirect('persacc')
+
+    from .models import RecurringSession
+    from datetime import date
+    rec = get_object_or_404(RecurringSession, id=recurring_id, coach=request.user)
+
+    # Удаляем только будущие тренировки без записей
+    deleted = rec.sessions.filter(date__gte=date.today(), enrollments=None).delete()
+    rec.is_active = False
+    rec.save()
+
+    return JsonResponse({'status': 'ok'})
+
+
+@coach_required
+def coach_session_edit(request, session_id):
+    """Редактировать тренировку."""
+    if request.method != 'POST':
+        return redirect('persacc')
+
+    from .models import Session
+    session = get_object_or_404(Session, id=session_id, coach=request.user)
+
+    session.sport      = request.POST.get('sport', session.sport).strip()
+    session.location   = request.POST.get('location', session.location).strip()
+    session.date       = request.POST.get('date', str(session.date)).strip()
+    session.time       = request.POST.get('time', str(session.time)).strip()
+    session.duration   = int(request.POST.get('duration', session.duration))
+    session.max_places = int(request.POST.get('max_places', session.max_places))
+    session.save()
+
+    messages.success(request, 'Тренировка обновлена.')
+    return redirect('persacc')
+
+
+@coach_required
+def coach_session_delete(request, session_id):
+    """Удалить тренировку."""
+    if request.method != 'POST':
+        return redirect('persacc')
+
+    from .models import Session
+    session = get_object_or_404(Session, id=session_id, coach=request.user)
+    session.delete()
+
+    return JsonResponse({'status': 'ok'})
+
+
+# ══════════════════════════════════════════════
+#  ТРЕНЕР — управление учениками
+# ══════════════════════════════════════════════
+
+@coach_required
+def coach_student_remove(request, student_id):
+    """Исключить ученика — удалить все его записи на тренировки тренера."""
+    if request.method != 'POST':
+        return redirect('persacc')
+
+    from .models import Enrollment
+    User = get_user_model()
+    student = get_object_or_404(User, id=student_id, role='student')
+
+    deleted_count, _ = Enrollment.objects.filter(
+        student=student,
+        session__coach=request.user,
+    ).delete()
+
+    return JsonResponse({'status': 'ok', 'deleted': deleted_count})

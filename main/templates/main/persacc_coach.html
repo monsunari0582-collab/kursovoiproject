@@ -39,7 +39,7 @@
 
     <div class="persacc container">
 
-      <!-- ШАПКА ПРОФИЛЯ -->
+      <!-- ШАПКА -->
       <div class="persacc__hero reveal">
         <div class="persacc__avatar-wrap">
           <div class="persacc__avatar coach-avatar">
@@ -58,16 +58,16 @@
         </div>
         <div class="persacc__hero-stats">
           <div class="persacc__stat">
-            <span class="persacc__stat-num">34</span>
+            <span class="persacc__stat-num">{{ total_students }}</span>
             <span class="persacc__stat-label">Учеников</span>
           </div>
           <div class="persacc__stat">
-            <span class="persacc__stat-num">6</span>
-            <span class="persacc__stat-label">Групп</span>
+            <span class="persacc__stat-num">{{ total_sessions }}</span>
+            <span class="persacc__stat-label">Тренировок</span>
           </div>
           <div class="persacc__stat">
-            <span class="persacc__stat-num">12</span>
-            <span class="persacc__stat-label">Зан/нед</span>
+            <span class="persacc__stat-num">{{ weekly_sessions }}</span>
+            <span class="persacc__stat-label">На неделе</span>
           </div>
         </div>
       </div>
@@ -79,20 +79,32 @@
         </button>
         <button class="coach-tab" data-tab="students">
           <i class="fa-solid fa-users"></i> Ученики
+          {% if total_students %}<span class="coach-count">{{ total_students }}</span>{% endif %}
         </button>
         <button class="coach-tab" data-tab="profile">
           <i class="fa-solid fa-id-card"></i> Профиль
         </button>
       </div>
 
-      <!-- =================== РАСПИСАНИЕ =================== -->
-      <div class="coach-section active" id="tab-schedule">
+      <!-- Сообщения -->
+      {% if messages %}
+      <div class="coach-messages">
+        {% for message in messages %}
+        <div class="coach-msg coach-msg--{{ message.tags }}">
+          <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
 
+      <!-- ═══════════ РАСПИСАНИЕ ═══════════ -->
+      <div class="coach-section active" id="tab-schedule">
         <div class="persacc__grid">
-          <!-- Левая: список тренировок -->
+
           <section class="persacc__section reveal-left">
             <div class="persacc__section-header">
-              <h2><i class="fa-solid fa-calendar-days"></i> Тренировки</h2>
+              <h2><i class="fa-solid fa-calendar-days"></i> Мои тренировки</h2>
               <button class="persacc__section-link" onclick="openModal('modal-add-session')">
                 <i class="fa-solid fa-plus"></i> Добавить
               </button>
@@ -100,185 +112,114 @@
 
             <!-- Дни недели -->
             <div class="coach-week">
-              <div class="coach-week__nav">
-                <button class="coach-week__btn"><i class="fa-solid fa-chevron-left"></i></button>
-                <span class="coach-week__label">24 февр — 2 марта 2026</span>
-                <button class="coach-week__btn"><i class="fa-solid fa-chevron-right"></i></button>
-              </div>
               <div class="coach-week__days">
-                <button class="coach-week__day active" data-day="0"><span class="coach-week__dn">Пн</span><span class="coach-week__dd">24</span><span class="coach-week__dot"></span></button>
-                <button class="coach-week__day" data-day="1"><span class="coach-week__dn">Вт</span><span class="coach-week__dd">25</span><span class="coach-week__dot"></span></button>
-                <button class="coach-week__day" data-day="2"><span class="coach-week__dn">Ср</span><span class="coach-week__dd">26</span></button>
-                <button class="coach-week__day" data-day="3"><span class="coach-week__dn">Чт</span><span class="coach-week__dd">27</span><span class="coach-week__dot"></span></button>
-                <button class="coach-week__day" data-day="4"><span class="coach-week__dn">Пт</span><span class="coach-week__dd">28</span><span class="coach-week__dot"></span></button>
-                <button class="coach-week__day" data-day="5"><span class="coach-week__dn">Сб</span><span class="coach-week__dd">01</span><span class="coach-week__dot"></span></button>
-                <button class="coach-week__day" data-day="6"><span class="coach-week__dn">Вс</span><span class="coach-week__dd">02</span></button>
+                {% for day in coach_days %}
+                <button class="coach-week__day {% if forloop.first %}active{% endif %}"
+                        data-day="{{ day.key }}">
+                  <span class="coach-week__dn">{{ day.short|slice:":2" }}</span>
+                  <span class="coach-week__dd">{{ day.date|date:"d" }}</span>
+                  {% if day.sessions %}<span class="coach-week__dot"></span>{% endif %}
+                </button>
+                {% endfor %}
               </div>
             </div>
 
-            <!-- Слоты тренировок -->
-            <div class="coach-slots">
-              <div class="coach-slot">
+            <!-- Слоты по дням -->
+            {% for day in coach_days %}
+            <div class="coach-slots {% if forloop.first %}active{% endif %}"
+                 id="slots-{{ day.key }}">
+
+              {% for session in day.sessions %}
+              <div class="coach-slot" id="session-{{ session.id }}">
                 <div class="coach-slot__time">
-                  <span class="coach-slot__hour">09:00</span>
-                  <span class="coach-slot__dur">90 мин</span>
+                  <span class="coach-slot__hour">{{ session.time|time:"H:i" }}</span>
+                  <span class="coach-slot__dur">{{ session.duration }} мин</span>
                 </div>
                 <div class="coach-slot__body">
                   <div class="coach-slot__top">
-                    <span class="sched-card__sport volleyball">Волейбол</span>
+                    <span class="sched-card__sport {{ session.sport }}">{{ session.sport_name }}</span>
                     <div class="coach-slot__actions">
-                      <button class="coach-act-btn" title="Редактировать"><i class="fa-solid fa-pen"></i></button>
-                      <button class="coach-act-btn" title="Посещаемость" onclick="showToast('Посещаемость отмечена')"><i class="fa-solid fa-clipboard-check"></i></button>
-                      <button class="coach-act-btn coach-act-btn--del" title="Удалить" onclick="deleteSession(this)"><i class="fa-solid fa-trash"></i></button>
+                      <button class="coach-act-btn" title="Редактировать"
+                              onclick="openEditModal({{ session.id }}, '{{ session.sport }}', '{{ session.location }}', '{{ session.date|date:'Y-m-d' }}', '{{ session.time|time:'H:i' }}', {{ session.duration }}, {{ session.max_places }})">
+                        <i class="fa-solid fa-pen"></i>
+                      </button>
+                      <button class="coach-act-btn coach-act-btn--del" title="Удалить"
+                              onclick="deleteSession({{ session.id }}, this)">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
                     </div>
                   </div>
-                  <div class="coach-slot__title">Начальная группа</div>
+                  <div class="coach-slot__title">{{ session.location }}</div>
                   <div class="coach-slot__meta">
-                    <span><i class="fa-solid fa-location-dot"></i> Зал №2</span>
-                    <span><i class="fa-solid fa-users"></i> 12 учеников</span>
+                    <span><i class="fa-solid fa-users"></i> {{ session.enrolled_count }}/{{ session.max_places }}</span>
                   </div>
                   <div class="coach-slot__fill">
-                    <span>12/15</span>
-                    <div class="coach-slot__bar"><div class="coach-slot__bar-inner" style="width:80%"></div></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="coach-slot coach-slot--free" onclick="openModal('modal-add-session')">
-                <div class="coach-slot__time">
-                  <span class="coach-slot__hour">11:00</span>
-                  <span class="coach-slot__dur">60 мин</span>
-                </div>
-                <div class="coach-slot__body coach-slot__body--free">
-                  <i class="fa-solid fa-plus"></i> Добавить тренировку в этот слот
-                </div>
-              </div>
-
-              <div class="coach-slot">
-                <div class="coach-slot__time">
-                  <span class="coach-slot__hour">14:00</span>
-                  <span class="coach-slot__dur">90 мин</span>
-                </div>
-                <div class="coach-slot__body">
-                  <div class="coach-slot__top">
-                    <span class="sched-card__sport basketball">Баскетбол</span>
-                    <div class="coach-slot__actions">
-                      <button class="coach-act-btn" title="Редактировать"><i class="fa-solid fa-pen"></i></button>
-                      <button class="coach-act-btn" title="Посещаемость" onclick="showToast('Посещаемость отмечена')"><i class="fa-solid fa-clipboard-check"></i></button>
-                      <button class="coach-act-btn coach-act-btn--del" title="Удалить" onclick="deleteSession(this)"><i class="fa-solid fa-trash"></i></button>
+                    {% if session.max_places %}
+                    <span>{{ session.enrolled_count }}/{{ session.max_places }}</span>
+                    <div class="coach-slot__bar">
+                      <div class="coach-slot__bar-inner"
+                           style="width:{% widthratio session.enrolled_count session.max_places 100 %}%"></div>
                     </div>
-                  </div>
-                  <div class="coach-slot__title">Продвинутая группа</div>
-                  <div class="coach-slot__meta">
-                    <span><i class="fa-solid fa-location-dot"></i> Спортзал</span>
-                    <span><i class="fa-solid fa-users"></i> 10 учеников</span>
-                  </div>
-                  <div class="coach-slot__fill">
-                    <span>10/12</span>
-                    <div class="coach-slot__bar"><div class="coach-slot__bar-inner" style="width:83%"></div></div>
+                    {% endif %}
                   </div>
                 </div>
               </div>
+              {% empty %}
+              <div class="coach-slot--empty">
+                <i class="fa-regular fa-calendar-xmark"></i>
+                <p>Тренировок нет</p>
+                <button class="persacc__section-link" onclick="openModal('modal-add-session')">
+                  <i class="fa-solid fa-plus"></i> Добавить
+                </button>
+              </div>
+              {% endfor %}
 
-              <div class="coach-slot">
-                <div class="coach-slot__time">
-                  <span class="coach-slot__hour">18:00</span>
-                  <span class="coach-slot__dur">90 мин</span>
-                </div>
-                <div class="coach-slot__body">
-                  <div class="coach-slot__top">
-                    <span class="sched-card__sport volleyball">Волейбол</span>
-                    <div class="coach-slot__actions">
-                      <button class="coach-act-btn" title="Редактировать"><i class="fa-solid fa-pen"></i></button>
-                      <button class="coach-act-btn" title="Посещаемость" onclick="showToast('Посещаемость отмечена')"><i class="fa-solid fa-clipboard-check"></i></button>
-                      <button class="coach-act-btn coach-act-btn--del" title="Удалить" onclick="deleteSession(this)"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                  </div>
-                  <div class="coach-slot__title">Средняя группа</div>
-                  <div class="coach-slot__meta">
-                    <span><i class="fa-solid fa-location-dot"></i> Зал №2</span>
-                    <span><i class="fa-solid fa-users"></i> 6 учеников</span>
-                  </div>
-                  <div class="coach-slot__fill">
-                    <span>6/12</span>
-                    <div class="coach-slot__bar"><div class="coach-slot__bar-inner" style="width:50%"></div></div>
-                  </div>
-                </div>
-              </div>
             </div>
+            {% endfor %}
           </section>
 
-          <!-- Правая: быстрая статистика -->
+          <!-- Правая: сегодня -->
           <aside class="persacc__aside">
             <section class="persacc__section reveal-right">
               <div class="persacc__section-header">
-                <h2><i class="fa-solid fa-chart-simple"></i> Сегодня</h2>
+                <h2><i class="fa-solid fa-chart-simple"></i> Эта неделя</h2>
               </div>
               <div class="coach-today">
                 <div class="coach-today__item">
-                  <i class="fa-solid fa-clock"></i>
+                  <i class="fa-solid fa-calendar-check"></i>
                   <div>
-                    <span class="coach-today__val">3</span>
-                    <span class="coach-today__lbl">тренировки</span>
+                    <span class="coach-today__val">{{ weekly_sessions }}</span>
+                    <span class="coach-today__lbl">тренировок</span>
                   </div>
                 </div>
                 <div class="coach-today__item">
                   <i class="fa-solid fa-user-check"></i>
                   <div>
-                    <span class="coach-today__val">28</span>
-                    <span class="coach-today__lbl">учеников придут</span>
+                    <span class="coach-today__val">{{ total_students }}</span>
+                    <span class="coach-today__lbl">учеников</span>
                   </div>
                 </div>
                 <div class="coach-today__item">
-                  <i class="fa-solid fa-hourglass-half"></i>
+                  <i class="fa-solid fa-dumbbell"></i>
                   <div>
-                    <span class="coach-today__val">4.5 ч</span>
-                    <span class="coach-today__lbl">общее время</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section class="persacc__section reveal-right">
-              <div class="persacc__section-header">
-                <h2><i class="fa-solid fa-bell"></i> Уведомления</h2>
-              </div>
-              <div class="coach-notifs">
-                <div class="coach-notif">
-                  <i class="fa-solid fa-user-plus coach-notif__icon"></i>
-                  <div>
-                    <p class="coach-notif__text">Новый ученик записался на Волейбол</p>
-                    <span class="coach-notif__time">2 часа назад</span>
-                  </div>
-                </div>
-                <div class="coach-notif">
-                  <i class="fa-solid fa-xmark coach-notif__icon coach-notif__icon--cancel"></i>
-                  <div>
-                    <p class="coach-notif__text">Козлов А. отменил запись на 14:00</p>
-                    <span class="coach-notif__time">5 часов назад</span>
-                  </div>
-                </div>
-                <div class="coach-notif">
-                  <i class="fa-solid fa-calendar-check coach-notif__icon"></i>
-                  <div>
-                    <p class="coach-notif__text">Подтверждена группа на субботу</p>
-                    <span class="coach-notif__time">вчера</span>
+                    <span class="coach-today__val">{{ total_sessions }}</span>
+                    <span class="coach-today__lbl">всего тренировок</span>
                   </div>
                 </div>
               </div>
             </section>
           </aside>
+
         </div>
       </div>
 
-      <!-- =================== УЧЕНИКИ =================== -->
+      <!-- ═══════════ УЧЕНИКИ ═══════════ -->
       <div class="coach-section" id="tab-students">
         <section class="persacc__section reveal">
           <div class="persacc__section-header">
-            <h2><i class="fa-solid fa-users"></i> Мои ученики <span class="coach-count">34</span></h2>
-            <button class="persacc__section-link" onclick="openModal('modal-add-student')">
-              <i class="fa-solid fa-user-plus"></i> Добавить
-            </button>
+            <h2><i class="fa-solid fa-users"></i> Мои ученики
+              {% if total_students %}<span class="coach-count">{{ total_students }}</span>{% endif %}
+            </h2>
           </div>
 
           <div class="coach-toolbar">
@@ -286,133 +227,47 @@
               <i class="fa-solid fa-magnifying-glass"></i>
               <input type="text" placeholder="Поиск по имени..." id="student-search">
             </div>
-            <select class="coach-filter" id="student-filter">
-              <option value="all">Все секции</option>
-              <option value="volleyball">Волейбол</option>
-              <option value="basketball">Баскетбол</option>
-              <option value="football">Футбол</option>
-            </select>
           </div>
 
+          {% if students %}
           <div class="coach-students" id="students-grid">
-
-            <div class="coach-student" data-section="volleyball">
+            {% for student in students %}
+            <div class="coach-student" data-name="{{ student.user.get_full_name|lower }}">
               <div class="coach-student__head">
-                <div class="coach-student__ava">АК</div>
+                <div class="coach-student__ava">
+                  {{ student.user.first_name|slice:":1" }}{{ student.user.last_name|slice:":1" }}
+                </div>
                 <div class="coach-student__info">
-                  <span class="coach-student__name">Алексей Козлов</span>
-                  <span class="coach-student__since">с сентября 2024</span>
+                  <span class="coach-student__name">{{ student.user.get_full_name }}</span>
+                  <span class="coach-student__since">{{ student.user.email }}</span>
                 </div>
                 <div class="coach-student__btns">
-                  <button class="coach-act-btn" title="Написать"><i class="fa-solid fa-envelope"></i></button>
-                  <button class="coach-act-btn coach-act-btn--del" title="Удалить" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button>
+                  <button class="coach-act-btn coach-act-btn--del" title="Исключить"
+                          onclick="removeStudent({{ student.user.id }}, this)">
+                    <i class="fa-solid fa-user-minus"></i>
+                  </button>
                 </div>
               </div>
               <div class="coach-student__stats">
-                <span><i class="fa-solid fa-dumbbell"></i> 47 тренировок</span>
-                <span><i class="fa-solid fa-phone"></i> +7 (912) 345-67-89</span>
-              </div>
-              <div class="coach-student__attend">
-                <div class="coach-student__attend-row">
-                  <span>Посещаемость</span><span>80%</span>
-                </div>
-                <div class="coach-student__bar"><div class="coach-student__bar-fill" style="width:80%"></div></div>
+                <span><i class="fa-solid fa-dumbbell"></i> {{ student.enrollments_str }}</span>
               </div>
               <div class="coach-student__footer">
                 <span class="coach-status coach-status--active"><span></span>Активен</span>
-                <span class="persacc__badge persacc__badge--upcoming">Волейбол</span>
               </div>
             </div>
-
-            <div class="coach-student" data-section="basketball">
-              <div class="coach-student__head">
-                <div class="coach-student__ava">МП</div>
-                <div class="coach-student__info">
-                  <span class="coach-student__name">Мария Петрова</span>
-                  <span class="coach-student__since">с января 2025</span>
-                </div>
-                <div class="coach-student__btns">
-                  <button class="coach-act-btn" title="Написать"><i class="fa-solid fa-envelope"></i></button>
-                  <button class="coach-act-btn coach-act-btn--del" title="Удалить" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button>
-                </div>
-              </div>
-              <div class="coach-student__stats">
-                <span><i class="fa-solid fa-dumbbell"></i> 31 тренировка</span>
-                <span><i class="fa-solid fa-phone"></i> +7 (901) 234-56-78</span>
-              </div>
-              <div class="coach-student__attend">
-                <div class="coach-student__attend-row">
-                  <span>Посещаемость</span><span>95%</span>
-                </div>
-                <div class="coach-student__bar"><div class="coach-student__bar-fill" style="width:95%"></div></div>
-              </div>
-              <div class="coach-student__footer">
-                <span class="coach-status coach-status--active"><span></span>Активен</span>
-                <span class="persacc__badge persacc__badge--upcoming">Баскетбол</span>
-              </div>
-            </div>
-
-            <div class="coach-student" data-section="volleyball">
-              <div class="coach-student__head">
-                <div class="coach-student__ava">ДС</div>
-                <div class="coach-student__info">
-                  <span class="coach-student__name">Дмитрий Смирнов</span>
-                  <span class="coach-student__since">пробное занятие</span>
-                </div>
-                <div class="coach-student__btns">
-                  <button class="coach-act-btn" title="Написать"><i class="fa-solid fa-envelope"></i></button>
-                  <button class="coach-act-btn coach-act-btn--del" title="Удалить" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button>
-                </div>
-              </div>
-              <div class="coach-student__stats">
-                <span><i class="fa-solid fa-dumbbell"></i> 2 тренировки</span>
-                <span><i class="fa-solid fa-phone"></i> +7 (965) 876-54-32</span>
-              </div>
-              <div class="coach-student__attend">
-                <div class="coach-student__attend-row">
-                  <span>Посещаемость</span><span>33%</span>
-                </div>
-                <div class="coach-student__bar"><div class="coach-student__bar-fill" style="width:33%"></div></div>
-              </div>
-              <div class="coach-student__footer">
-                <span class="coach-status coach-status--trial"><span></span>Пробный</span>
-                <span class="persacc__badge persacc__badge--upcoming">Волейбол</span>
-              </div>
-            </div>
-
-            <div class="coach-student" data-section="basketball">
-              <div class="coach-student__head">
-                <div class="coach-student__ava">НВ</div>
-                <div class="coach-student__info">
-                  <span class="coach-student__name">Наталья Волкова</span>
-                  <span class="coach-student__since">с октября 2024</span>
-                </div>
-                <div class="coach-student__btns">
-                  <button class="coach-act-btn" title="Написать"><i class="fa-solid fa-envelope"></i></button>
-                  <button class="coach-act-btn coach-act-btn--del" title="Удалить" onclick="deleteStudent(this)"><i class="fa-solid fa-trash"></i></button>
-                </div>
-              </div>
-              <div class="coach-student__stats">
-                <span><i class="fa-solid fa-dumbbell"></i> 18 тренировок</span>
-                <span><i class="fa-solid fa-phone"></i> +7 (999) 111-22-33</span>
-              </div>
-              <div class="coach-student__attend">
-                <div class="coach-student__attend-row">
-                  <span>Посещаемость</span><span>45%</span>
-                </div>
-                <div class="coach-student__bar"><div class="coach-student__bar-fill" style="width:45%"></div></div>
-              </div>
-              <div class="coach-student__footer">
-                <span class="coach-status coach-status--inactive"><span></span>Неактивен</span>
-                <span class="persacc__badge persacc__badge--upcoming">Баскетбол</span>
-              </div>
-            </div>
-
+            {% endfor %}
           </div>
+          {% else %}
+          <div class="coach-slot--empty">
+            <i class="fa-solid fa-users-slash"></i>
+            <p>Нет учеников. Они появятся когда запишутся на ваши тренировки.</p>
+          </div>
+          {% endif %}
+
         </section>
       </div>
 
-      <!-- =================== ПРОФИЛЬ =================== -->
+      <!-- ═══════════ ПРОФИЛЬ ═══════════ -->
       <div class="coach-section" id="tab-profile">
         <div class="persacc__grid">
 
@@ -423,7 +278,8 @@
                 Изменить <i class="fa-solid fa-pen"></i>
               </button>
             </div>
-            <form class="persacc__profile-form" id="profileForm" method="post" action="{% url 'update_profile' %}">
+            <form class="persacc__profile-form" id="profileForm"
+                  method="post" action="{% url 'update_profile' %}">
               {% csrf_token %}
               <div class="persacc__field">
                 <label>Имя</label>
@@ -436,14 +292,6 @@
               <div class="persacc__field">
                 <label>Email</label>
                 <input type="email" name="email" value="{{ user.email }}" disabled>
-              </div>
-              <div class="persacc__field">
-                <label>Телефон</label>
-                <input type="tel" name="phone" value="{{ user.profile.phone|default:'' }}" placeholder="+7 (___) ___-__-__" disabled>
-              </div>
-              <div class="persacc__field">
-                <label>Специализация</label>
-                <input type="text" name="specialization" value="Волейбол, Баскетбол" disabled>
               </div>
               <div class="persacc__form-actions" id="profileFormActions" style="display:none;">
                 <button type="submit" class="persacc__save-btn">Сохранить</button>
@@ -468,7 +316,7 @@
                   <input type="password" name="new_password1" placeholder="••••••••">
                 </div>
                 <div class="persacc__field">
-                  <label>Повторите пароль</label>
+                  <label>Повторите</label>
                   <input type="password" name="new_password2" placeholder="••••••••">
                 </div>
                 <div class="persacc__form-actions" style="display:flex;">
@@ -477,67 +325,168 @@
               </form>
             </section>
           </aside>
+
         </div>
       </div>
 
     </div><!-- /persacc container -->
-
   </div><!-- /wrapper -->
 
-  <!-- МОДАЛКА: ДОБАВИТЬ ТРЕНИРОВКУ -->
-  <div class="coach-modal-overlay" id="modal-add-session" onclick="closeModalOnOverlay(event,'modal-add-session')">
+  <!-- ═══════ МОДАЛКА: ДОБАВИТЬ ТРЕНИРОВКУ ═══════ -->
+  <div class="coach-modal-overlay" id="modal-add-session"
+       onclick="closeModalOnOverlay(event,'modal-add-session')">
     <div class="coach-modal">
       <div class="coach-modal__head">
         <span class="coach-modal__title">Новая тренировка</span>
-        <button class="coach-modal__close" onclick="closeModal('modal-add-session')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="persacc__profile-form">
-        <div class="persacc__field"><label>Название</label><input type="text" placeholder="Волейбол — Начальная группа"></div>
-        <div class="coach-modal__row">
-          <div class="persacc__field"><label>Дата</label><input type="date"></div>
-          <div class="persacc__field"><label>Время</label><input type="time" value="10:00"></div>
-        </div>
-        <div class="coach-modal__row">
-          <div class="persacc__field"><label>Длительность</label>
-            <select class="persacc__field-select"><option>60 минут</option><option selected>90 минут</option><option>120 минут</option></select>
-          </div>
-          <div class="persacc__field"><label>Зал</label><input type="text" placeholder="Зал №2"></div>
-        </div>
-        <div class="persacc__field"><label>Макс. учеников</label><input type="number" placeholder="15"></div>
-      </div>
-      <div class="coach-modal__actions">
-        <button class="persacc__cancel-edit-btn" onclick="closeModal('modal-add-session')">Отмена</button>
-        <button class="persacc__save-btn" onclick="closeModal('modal-add-session');showToast('Тренировка добавлена')">
-          <i class="fa-solid fa-plus"></i> Добавить
+        <button class="coach-modal__close" onclick="closeModal('modal-add-session')">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
+      <form method="post" action="{% url 'coach_session_add' %}" class="persacc__profile-form">
+        {% csrf_token %}
+
+        <!-- Вид спорта + место -->
+        <div class="persacc__field">
+          <label>Вид спорта</label>
+          <select name="sport" class="persacc__field-select" required>
+            <option value="volleyball">Волейбол</option>
+            <option value="basketball">Баскетбол</option>
+            <option value="football">Футбол</option>
+            <option value="fitness">Фитнес</option>
+          </select>
+        </div>
+        <div class="persacc__field">
+          <label>Зал / место</label>
+          <input type="text" name="location" placeholder="Зал №2" required>
+        </div>
+
+        <!-- Переключатель: разово / еженедельно -->
+        <div class="coach-repeat-toggle">
+          <button type="button" class="coach-repeat-btn active" data-mode="once"
+                  onclick="setRepeatMode('once')">
+            <i class="fa-solid fa-calendar-day"></i> Один раз
+          </button>
+          <button type="button" class="coach-repeat-btn" data-mode="weekly"
+                  onclick="setRepeatMode('weekly')">
+            <i class="fa-solid fa-rotate"></i> Еженедельно
+          </button>
+        </div>
+        <input type="hidden" name="repeat" id="repeat_mode" value="once">
+
+        <!-- Разовая: дата -->
+        <div id="block-once">
+          <div class="persacc__field">
+            <label>Дата</label>
+            <input type="date" name="date">
+          </div>
+        </div>
+
+        <!-- Еженедельно: день недели + период -->
+        <div id="block-weekly" style="display:none;">
+          <div class="persacc__field">
+            <label>День недели</label>
+            <select name="weekday" class="persacc__field-select">
+              <option value="0">Понедельник</option>
+              <option value="1">Вторник</option>
+              <option value="2">Среда</option>
+              <option value="3">Четверг</option>
+              <option value="4">Пятница</option>
+              <option value="5">Суббота</option>
+              <option value="6">Воскресенье</option>
+            </select>
+          </div>
+          <div class="coach-modal__row">
+            <div class="persacc__field">
+              <label>Начиная с</label>
+              <input type="date" name="date_from">
+            </div>
+            <div class="persacc__field">
+              <label>До (необязательно)</label>
+              <input type="date" name="date_until">
+            </div>
+          </div>
+        </div>
+
+        <!-- Время + длительность + места -->
+        <div class="coach-modal__row">
+          <div class="persacc__field">
+            <label>Время</label>
+            <input type="time" name="time" required>
+          </div>
+          <div class="persacc__field">
+            <label>Длит. (мин)</label>
+            <input type="number" name="duration" value="60" min="15" max="240">
+          </div>
+        </div>
+        <div class="persacc__field">
+          <label>Макс. мест</label>
+          <input type="number" name="max_places" value="15" min="1" max="100">
+        </div>
+
+        <div class="coach-modal__actions">
+          <button type="button" class="persacc__cancel-edit-btn"
+                  onclick="closeModal('modal-add-session')">Отмена</button>
+          <button type="submit" class="persacc__save-btn">
+            <i class="fa-solid fa-plus"></i> Добавить
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
-  <!-- МОДАЛКА: ДОБАВИТЬ УЧЕНИКА -->
-  <div class="coach-modal-overlay" id="modal-add-student" onclick="closeModalOnOverlay(event,'modal-add-student')">
+  <!-- ═══════ МОДАЛКА: РЕДАКТИРОВАТЬ ТРЕНИРОВКУ ═══════ -->
+  <div class="coach-modal-overlay" id="modal-edit-session"
+       onclick="closeModalOnOverlay(event,'modal-edit-session')">
     <div class="coach-modal">
       <div class="coach-modal__head">
-        <span class="coach-modal__title">Добавить ученика</span>
-        <button class="coach-modal__close" onclick="closeModal('modal-add-student')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="persacc__profile-form">
-        <div class="coach-modal__row">
-          <div class="persacc__field"><label>Имя</label><input type="text" placeholder="Иван"></div>
-          <div class="persacc__field"><label>Фамилия</label><input type="text" placeholder="Иванов"></div>
-        </div>
-        <div class="persacc__field"><label>Телефон</label><input type="tel" placeholder="+7 (___) ___-__-__"></div>
-        <div class="persacc__field"><label>Email</label><input type="email" placeholder="email@mail.ru"></div>
-        <div class="persacc__field"><label>Секция</label>
-          <select class="persacc__field-select"><option>Волейбол</option><option>Баскетбол</option><option>Футбол</option><option>Фитнес</option></select>
-        </div>
-      </div>
-      <div class="coach-modal__actions">
-        <button class="persacc__cancel-edit-btn" onclick="closeModal('modal-add-student')">Отмена</button>
-        <button class="persacc__save-btn" onclick="closeModal('modal-add-student');showToast('Ученик добавлен')">
-          <i class="fa-solid fa-user-plus"></i> Добавить
+        <span class="coach-modal__title">Редактировать тренировку</span>
+        <button class="coach-modal__close" onclick="closeModal('modal-edit-session')">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
+      <form method="post" id="editSessionForm" class="persacc__profile-form">
+        {% csrf_token %}
+        <div class="persacc__field">
+          <label>Вид спорта</label>
+          <select name="sport" id="edit_sport" class="persacc__field-select" required>
+            <option value="volleyball">Волейбол</option>
+            <option value="basketball">Баскетбол</option>
+            <option value="football">Футбол</option>
+            <option value="fitness">Фитнес</option>
+          </select>
+        </div>
+        <div class="persacc__field">
+          <label>Зал / место</label>
+          <input type="text" name="location" id="edit_location" required>
+        </div>
+        <div class="coach-modal__row">
+          <div class="persacc__field">
+            <label>Дата</label>
+            <input type="date" name="date" id="edit_date" required>
+          </div>
+          <div class="persacc__field">
+            <label>Время</label>
+            <input type="time" name="time" id="edit_time" required>
+          </div>
+        </div>
+        <div class="coach-modal__row">
+          <div class="persacc__field">
+            <label>Длительность (мин)</label>
+            <input type="number" name="duration" id="edit_duration" min="15" max="240">
+          </div>
+          <div class="persacc__field">
+            <label>Макс. мест</label>
+            <input type="number" name="max_places" id="edit_max_places" min="1" max="100">
+          </div>
+        </div>
+        <div class="coach-modal__actions">
+          <button type="button" class="persacc__cancel-edit-btn"
+                  onclick="closeModal('modal-edit-session')">Отмена</button>
+          <button type="submit" class="persacc__save-btn">
+            <i class="fa-solid fa-floppy-disk"></i> Сохранить
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
