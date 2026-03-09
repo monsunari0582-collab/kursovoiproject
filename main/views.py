@@ -10,7 +10,23 @@ from django.http import JsonResponse
 
 
 def home(request):
-    return render(request, 'main/index.html')
+    from .models import Session
+    from datetime import date, timedelta
+
+    today = date.today()
+    DAYS_SHORT = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+    home_days = []
+
+    for i in range(7):
+        d = today + timedelta(days=i)
+        sessions = Session.objects.filter(date=d).select_related('coach').order_by('time')
+        home_days.append({
+            'key':      d.strftime('%Y-%m-%d'),
+            'short':    f"{DAYS_SHORT[d.weekday()]} {d.strftime('%d.%m')}",
+            'sessions': sessions,
+        })
+
+    return render(request, 'main/index.html', {'home_days': home_days})
 
 
 def contacts(request):
