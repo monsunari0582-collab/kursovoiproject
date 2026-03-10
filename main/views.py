@@ -190,7 +190,8 @@ def persacc(request):
         })
 
     elif role == 'admin':
-        return render(request, 'main/persacc_admin.html')
+        ctx = _admin_context(request)
+        return render(request, 'main/persacc_admin.html', ctx)
 
     else:
         from .models import Enrollment
@@ -487,3 +488,201 @@ def coach_student_remove(request, student_id):
     ).delete()
 
     return JsonResponse({'status': 'ok', 'deleted': deleted_count})
+
+
+# ══════════════════════════════════════════════
+#  Декоратор: только для администраторов
+# ══════════════════════════════════════════════
+
+def admin_required(view_func):
+    @login_required(login_url='/join/')
+    def wrapper(request, *args, **kwargs):
+        if getattr(request.user, 'role', None) != 'admin':
+            return redirect('persacc')
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+
+# ══════════════════════════════════════════════
+#  ADMIN — persacc view (обновлённый)
+# ══════════════════════════════════════════════
+
+def _admin_context(request):
+    """Собирает весь контекст для кабинета администратора."""
+    from .models import Session, Enrollment, Location
+
+    User = get_user_model()
+    all_users  = User.objects.all().order_by('role', 'last_name', 'first_name')
+    all_sessions = Session.objects.select_related('coach').order_by('-date', 'time')
+    locations  = Location.objects.all()
+
+    total_users       = all_users.count()
+    total_students    = all_users.filter(role='student').count()
+    total_coaches     = all_users.filter(role='coach').count()
+    total_sessions    = all_sessions.count()
+    total_enrollments = Enrollment.objects.count()
+    total_locations   = locations.count()
+
+    # Статистика по видам спорта
+    SPORT_LABELS = {
+        'volleyball': 'Волейбол',
+        'basketball': 'Баскетбол',
+        'football':   'Футбол',
+        'fitness':    'Фитнес',
+    }
+    sport_counts = {}
+    for s in Session.objects.values_list('sport', flat=True):
+        sport_counts[s] = sport_counts.get(s, 0) + 1
+    max_count = max(sport_counts.values(), default=1)
+
+    by_sport = [
+        {
+            'sport':   sport,
+            'label':   SPORT_LABELS.get(sport, sport),
+            'count':   count,
+            'percent': int(count / max_count * 100),
+        }
+        for sport, count in sorted(sport_counts.items(), key=lambda x: -x[1])
+    ]
+
+    return {
+        'all_users':    all_users,
+        'all_sessions': all_sessions,
+        'locations':    locations,
+        'stats': {
+            'total_users':       total_users,
+            'total_students':    total_students,
+            'total_coaches':     total_coaches,
+            'total_sessions':    total_sessions,
+            'total_enrollments': total_enrollments,
+            'total_locations':   total_locations,
+            'by_sport':          by_sport,
+        },
+    }
+
+
+# ══════════════════════════════════════════════
+#  ADMIN — управление пользователями
+# ══════════════════════════════════════════════
+
+@admin_required
+def admin_user_role(request, user_id):
+    """Изменить роль пользователя."""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'method'}, status=405)
+
+    import json
+    User = get_user_model()
+    u    = get_object_or_404(User, id=user_id)
+
+    if u == request.user:
+        return JsonResponse({'error': 'Нельзя изменить свою роль'}, status=400)
+
+    data = json.loads(request.body)
+    role = data.get('role', '')
+    if role not in ('student', 'coach', 'admin'):
+        return JsonResponse({'error': 'Неверная роль'}, status=400)
+
+    u.role = role
+    u.save()
+    return JsonResponse({'status': 'ok'})
+
+
+@admin_required
+def admin_user_block(request, user_id):
+    """Заблокировать / разблокировать пользователя."""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'method'}, status=405)
+
+    import json
+    User = get_user_model()
+    u    = get_object_or_404(User, id=user_id)
+
+    if u == request.user:
+        return JsonResponse({'error': 'Нельзя заблокировать себя'}, status=400)
+
+    data = json.loads(request.body)
+    u.is_active = bool(data.get('is_active', True))
+    u.save()
+    return JsonResponse({'status': 'ok'})
+
+
+@admin_required
+def admin_user_delete(request, user_id):
+    """Удалить пользователя."""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'method'}, status=405)
+
+    User = get_user_model()
+    u    = get_object_or_404(User, id=user_id)
+
+    if u == request.user:
+        return JsonResponse({'error': 'Нельзя удалить себя'}, status=400)
+
+    u.delete()
+    return JsonResponse({'status': 'ok'})
+
+
+# ══════════════════════════════════════════════
+#  ADMIN — управление тренировками
+# ══════════════════════════════════════════════
+
+@admin_required
+def admin_session_delete(request, session_id):
+    """Удалить любую тренировку."""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'method'}, status=405)
+
+    from .models import Session
+    session = get_object_or_404(Session, id=session_id)
+    session.delete()
+    return JsonResponse({'status': 'ok'})
+
+
+# ══════════════════════════════════════════════
+#  ADMIN — управление залами
+# ══════════════════════════════════════════════
+
+@admin_required
+def admin_location_add(request):
+    if request.method != 'POST':
+        return redirect('persacc')
+
+    from .models import Location
+    name     = request.POST.get('name', '').strip()
+    capacity = int(request.POST.get('capacity', 20))
+
+    if not name:
+        messages.error(request, 'Введите название зала.')
+        return redirect('persacc')
+
+    Location.objects.get_or_create(name=name, defaults={'capacity': capacity})
+    messages.success(request, f'Зал «{name}» добавлен.')
+    return redirect('persacc')
+
+
+@admin_required
+def admin_location_edit(request, location_id):
+    if request.method != 'POST':
+        return redirect('persacc')
+
+    from .models import Location
+    loc          = get_object_or_404(Location, id=location_id)
+    loc.name     = request.POST.get('name', loc.name).strip()
+    loc.capacity = int(request.POST.get('capacity', loc.capacity))
+    loc.is_active = request.POST.get('is_active', '1') == '1'
+    loc.save()
+
+    messages.success(request, 'Зал обновлён.')
+    return redirect('persacc')
+
+
+@admin_required
+def admin_location_delete(request, location_id):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'method'}, status=405)
+
+    from .models import Location
+    loc = get_object_or_404(Location, id=location_id)
+    loc.delete()
+    return JsonResponse({'status': 'ok'})

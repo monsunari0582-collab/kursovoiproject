@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Session, Enrollment, RecurringSession
+from .models import User, Session, Enrollment, RecurringSession, Location
 
 
 @admin.register(User)
@@ -41,3 +41,10 @@ class EnrollmentAdmin(admin.ModelAdmin):
     search_fields = ('student__first_name', 'student__last_name', 'student__email')
     raw_id_fields = ('student', 'session')
     ordering      = ('-created_at',)
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    list_display  = ('name', 'capacity', 'is_active')
+    list_filter   = ('is_active',)
+    search_fields = ('name',)

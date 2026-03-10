@@ -13,6 +13,22 @@ class User(AbstractUser):
     role = models.CharField(max_length=20, choices=ROLES, default='student')
 
 
+
+class Location(models.Model):
+    """Зал / место проведения тренировок."""
+    name     = models.CharField(max_length=100, unique=True, verbose_name='Название')
+    capacity = models.PositiveIntegerField(default=20, verbose_name='Вместимость')
+    is_active = models.BooleanField(default=True, verbose_name='Активен')
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Локация'
+        verbose_name_plural = 'Локации'
+
+    def __str__(self):
+        return self.name
+
+
 class RecurringSession(models.Model):
     """Шаблон повторяющейся тренировки (каждый пн, вт и т.д.)."""
 

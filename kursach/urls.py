@@ -27,4 +27,17 @@ urlpatterns = [
 
     # Тренер — ученики
     path('coach/student/<int:student_id>/remove/',        views.coach_student_remove,         name='coach_student_remove'),
+
+    # Администратор — пользователи
+    path('admin-panel/user/<int:user_id>/role/',          views.admin_user_role,              name='admin_user_role'),
+    path('admin-panel/user/<int:user_id>/block/',         views.admin_user_block,             name='admin_user_block'),
+    path('admin-panel/user/<int:user_id>/delete/',        views.admin_user_delete,            name='admin_user_delete'),
+
+    # Администратор — тренировки
+    path('admin-panel/session/<int:session_id>/delete/',  views.admin_session_delete,         name='admin_session_delete'),
+
+    # Администратор — залы
+    path('admin-panel/location/add/',                     views.admin_location_add,           name='admin_location_add'),
+    path('admin-panel/location/<int:location_id>/edit/',  views.admin_location_edit,          name='admin_location_edit'),
+    path('admin-panel/location/<int:location_id>/delete/',views.admin_location_delete,        name='admin_location_delete'),
 ]
