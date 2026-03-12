@@ -135,14 +135,16 @@ def persacc(request):
         DAYS_SHORT = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
         coach_days = []
 
+        from datetime import datetime as dt
+        now_time = dt.now().time()
+
         for i in range(7):
             d = today + timedelta(days=i)
-            sessions = (
-                Session.objects
-                .filter(coach=request.user, date=d)
-                .prefetch_related('enrollments__student')
-                .order_by('time')
-            )
+            qs = Session.objects.filter(coach=request.user, date=d).prefetch_related('enrollments__student').order_by('time')
+            # Сегодня — скрывать тренировки которые уже закончились
+            if d == today:
+                qs = qs.filter(time__gte=now_time)
+            sessions = qs
             coach_days.append({
                 'key':      d.strftime('%Y-%m-%d'),
                 'short':    f"{DAYS_SHORT[d.weekday()]} {d.strftime('%d.%m')}",
@@ -173,7 +175,11 @@ def persacc(request):
             count = Enrollment.objects.filter(student=s, session__coach=request.user).count()
             students.append({'user': s, 'enrollments_str': ru_zapisey(count)})
 
-        total_sessions   = Session.objects.filter(coach=request.user).count()
+        from .models import RecurringSession
+        # Считаем шаблоны + разовые тренировки (не привязанные к шаблону)
+        recurring_count  = RecurringSession.objects.filter(coach=request.user, is_active=True).count()
+        onetime_count    = Session.objects.filter(coach=request.user, recurring__isnull=True, date__gte=today).count()
+        total_sessions   = recurring_count + onetime_count
         total_students   = len(students)
         weekly_sessions  = Session.objects.filter(
             coach=request.user,
@@ -181,12 +187,16 @@ def persacc(request):
             date__lt=today + timedelta(days=7)
         ).count()
 
+        from .models import Location
+        locations = Location.objects.filter(is_active=True).order_by('name')
+
         return render(request, 'main/persacc_coach.html', {
             'coach_days':      coach_days,
             'students':        students,
             'total_sessions':  total_sessions,
             'total_students':  total_students,
             'weekly_sessions': weekly_sessions,
+            'locations':       locations,
         })
 
     elif role == 'admin':
@@ -233,11 +243,11 @@ def schedule(request):
 
     for i in range(7):
         d = today + timedelta(days=i)
-        sessions = Session.objects.filter(date=d).select_related('coach').order_by('time')
+        qs = Session.objects.filter(date=d).select_related('coach').order_by('time')
         days_data.append({
             'key':      d.strftime('%Y-%m-%d'),
             'label':    f"{DAYS_RU[d.weekday()]} {d.strftime('%d.%m')}",
-            'sessions': sessions,
+            'sessions': qs,
         })
 
     enrolled_ids = set()
@@ -381,11 +391,13 @@ def coach_session_add(request):
             messages.error(request, 'Укажите дату начала.')
             return redirect('persacc')
 
+        repeat_mode = request.POST.get('repeat_mode', 'weekly')
         rec = RecurringSession.objects.create(
             sport=sport,
             coach=request.user,
             location=location,
-            weekday=int(weekday),
+            weekday=int(weekday) if repeat_mode == 'weekly' else None,
+            repeat_mode=repeat_mode,
             time=time_str,
             duration=duration,
             max_places=max_places,

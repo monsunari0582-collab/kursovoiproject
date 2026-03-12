@@ -49,6 +49,11 @@ class RecurringSession(models.Model):
         (6, 'Воскресенье'),
     ]
 
+    REPEAT_MODES = [
+        ('weekly', 'Еженедельно'),
+        ('daily',  'Ежедневно'),
+    ]
+
     sport      = models.CharField(max_length=20, choices=SPORT_CHOICES)
     coach      = models.ForeignKey(
         User, on_delete=models.CASCADE,
@@ -56,7 +61,8 @@ class RecurringSession(models.Model):
         limit_choices_to={'role': 'coach'}
     )
     location   = models.CharField(max_length=100)
-    weekday    = models.IntegerField(choices=WEEKDAYS)   # 0=пн … 6=вс
+    weekday    = models.IntegerField(choices=WEEKDAYS, null=True, blank=True)  # null при daily
+    repeat_mode = models.CharField(max_length=10, choices=REPEAT_MODES, default='weekly')
     time       = models.TimeField()
     duration   = models.PositiveIntegerField(default=60)
     max_places = models.PositiveIntegerField(default=15)
@@ -75,7 +81,7 @@ class RecurringSession(models.Model):
         return f"{self.get_sport_display()} {self.get_weekday_display()} {self.time} — {self.coach}"
 
     def generate_sessions(self, weeks_ahead=8):
-        """Создать Session-объекты на weeks_ahead недель вперёд."""
+        """Создать Session-объекты вперёд."""
         from datetime import date as date_type
         today = date.today()
 
@@ -90,9 +96,14 @@ class RecurringSession(models.Model):
         end_date = date_until or (today + timedelta(weeks=weeks_ahead))
         start    = max(date_from, today)
 
-        # Найти первую дату с нужным днём недели начиная с start
-        days_ahead = (self.weekday - start.weekday()) % 7
-        current    = start + timedelta(days=days_ahead)
+        if self.repeat_mode == 'daily':
+            current = start
+            step    = timedelta(days=1)
+        else:
+            # Найти первую дату с нужным днём недели начиная с start
+            days_ahead = (self.weekday - start.weekday()) % 7
+            current    = start + timedelta(days=days_ahead)
+            step       = timedelta(weeks=1)
 
         created = 0
         while current <= end_date:
@@ -110,7 +121,7 @@ class RecurringSession(models.Model):
             )
             if is_new:
                 created += 1
-            current += timedelta(weeks=1)
+            current += step
 
         return created
 

@@ -805,3 +805,32 @@
 }
 
 .coach-repeat-btn i { font-size: 12px; }
+
+/* ---- Подсказка под полем ---- */
+.persacc__field-hint {
+  display: block;
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  margin-top: 5px;
+}
+
+/* ---- Переопределяем водяной знак из persacc_student.css ---- */
+.persacc__hero::after {
+  content: 'COACH';
+}
+
+/* ---- Кнопка "Все" в днях недели ---- */
+.coach-week__day--all {
+  min-width: 52px;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  margin-right: 4px;
+}
+
+.coach-week__day--all .coach-week__dd {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+}
+
+.coach-week__day--all.active .coach-week__dd {
+  color: white;
+}
