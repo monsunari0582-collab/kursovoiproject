@@ -1,6 +1,5 @@
 /* ============================================================
-   РАСПИСАНИЕ — schedule.css
-   Подключать после main.css
+   РАСПИСАНИЕ — schedule.css  (абсолютное позиционирование)
 ============================================================ */
 
 .schedule-page {
@@ -9,9 +8,7 @@
 }
 
 /* ---- ШАПКА ---- */
-.schedule-hero {
-  margin-bottom: 40px;
-}
+.schedule-hero { margin-bottom: 40px; }
 
 .schedule-hero__label {
   display: inline-flex;
@@ -48,7 +45,7 @@
   color: rgba(255,255,255,0.45);
 }
 
-/* ---- ФИЛЬТРЫ ---- */
+/* ---- ФИЛЬТР ---- */
 .schedule-filters {
   display: flex;
   flex-direction: column;
@@ -56,44 +53,6 @@
   margin-bottom: 32px;
 }
 
-/* Дни недели */
-.schedule-filters__tabs {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  scrollbar-width: none;
-}
-
-.schedule-filters__tabs::-webkit-scrollbar { display: none; }
-
-.sched-tab {
-  flex-shrink: 0;
-  padding: 10px 20px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.45);
-  font-size: 13px;
-  font-weight: 500;
-  font-family: "Roboto", sans-serif;
-  cursor: pointer;
-  transition: background 200ms, color 200ms, border-color 200ms;
-  white-space: nowrap;
-}
-
-.sched-tab:hover {
-  background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.75);
-}
-
-.sched-tab.active {
-  background: rgba(137,28,28,0.2);
-  border-color: rgba(137,28,28,0.4);
-  color: white;
-}
-
-/* Фильтр по виду спорта */
 .schedule-filters__sport {
   display: flex;
   gap: 8px;
@@ -124,188 +83,459 @@
   color: white;
 }
 
-/* ---- ДНИ ---- */
-.sched-day { display: none; }
-.sched-day.active { display: flex; flex-direction: column; gap: 14px; }
-
-/* ---- КАРТОЧКА ТРЕНИРОВКИ ---- */
-.sched-card {
-  display: grid;
-  grid-template-columns: 72px 1fr auto auto;
-  align-items: center;
-  gap: 20px;
-  padding: 20px 24px;
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.055);
-  border-radius: 14px;
-  transition: background 250ms, border-color 250ms, transform 200ms;
-}
-
-.sched-card:hover {
-  background: rgba(137,28,28,0.06);
-  border-color: rgba(137,28,28,0.2);
-  transform: translateY(-2px);
-}
-
-/* Время */
-.sched-card__time {
-  font-size: 26px;
-  font-weight: 800;
-  color: white;
-  letter-spacing: -0.5px;
-  line-height: 1;
-}
-
-/* Вид спорта + тренер */
-.sched-card__info {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.schedule-page .sched-card__sport {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 50px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  width: fit-content;
-}
-
-.schedule-page .sched-card__sport.volleyball {
-  background: rgba(59,130,246,0.12);
-  border: 1px solid rgba(59,130,246,0.25);
-  color: #93c5fd;
-}
-
-.schedule-page .sched-card__sport.basketball {
-  background: rgba(249,115,22,0.12);
-  border: 1px solid rgba(249,115,22,0.25);
-  color: #fdba74;
-}
-
-.schedule-page .sched-card__sport.football {
-  background: rgba(34,197,94,0.12);
-  border: 1px solid rgba(34,197,94,0.25);
-  color: #86efac;
-}
-
-.schedule-page .sched-card__sport.fitness {
-  background: rgba(168,85,247,0.12);
-  border: 1px solid rgba(168,85,247,0.25);
-  color: #d8b4fe;
-}
-
-.sched-card__coach {
-  font-size: 13px;
-  color: rgba(255,255,255,0.45);
+/* ---- НАВИГАЦИЯ ПО НЕДЕЛЕ ---- */
+.week-nav {
   display: flex;
   align-items: center;
-  gap: 7px;
-  margin: 0;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
 }
 
-.sched-card__coach i {
-  font-size: 11px;
-  color: rgba(137,28,28,0.7);
-}
-
-/* Мета: место, кол-во, длительность */
-.sched-card__meta {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.sched-card__meta span {
-  font-size: 12px;
-  color: rgba(255,255,255,0.35);
-  display: flex;
-  align-items: center;
-  gap: 7px;
+.week-nav__label {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
   white-space: nowrap;
 }
 
-.sched-card__meta i {
-  font-size: 11px;
-  color: rgba(137,28,28,0.65);
-  width: 11px;
-  text-align: center;
+.week-nav__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.5);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 200ms, color 200ms, border-color 200ms;
+  font-family: inherit;
+  flex-shrink: 0;
 }
 
-/* Кнопка записи */
-.sched-card__action { flex-shrink: 0; }
+.week-nav__btn:hover {
+  background: rgba(137,28,28,0.18);
+  border-color: rgba(137,28,28,0.35);
+  color: white;
+}
 
-.sched-card__btn {
+.week-nav__btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.week-nav__today {
+  padding: 7px 16px;
+  border-radius: 9px;
+  background: rgba(137,28,28,0.12);
+  border: 1px solid rgba(137,28,28,0.25);
+  color: rgba(255,255,255,0.75);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 200ms, color 200ms;
+  letter-spacing: 0.3px;
+}
+
+.week-nav__today:hover {
+  background: rgba(137,28,28,0.25);
+  color: white;
+}
+
+/* ---- ОБЁРТКА ТАБЛИЦЫ ---- */
+.schedule-grid-wrap {
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(137,28,28,0.4) transparent;
+}
+
+.schedule-grid-wrap::-webkit-scrollbar { height: 6px; }
+.schedule-grid-wrap::-webkit-scrollbar-track { background: transparent; }
+.schedule-grid-wrap::-webkit-scrollbar-thumb {
+  background: rgba(137,28,28,0.35);
+  border-radius: 10px;
+}
+
+/* ---- ШАПКА (липкая) ---- */
+.sg-header {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(8,0,0,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  min-width: 760px;
+}
+
+.sg-header__time-col {
+  width: 64px;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.sg-header__day {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 8px 10px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.04);
+}
+
+.sg-header__day:last-child { border-right: none; }
+
+.sg-col-header__weekday {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 6px;
+}
+
+.sg-col-header__date {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 22px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.55);
+}
+
+.sg-col-header__month {
+  display: block;
+  font-size: 10px;
+  color: rgba(255,255,255,0.2);
+  margin-top: 4px;
+}
+
+.sg-header__day--today .sg-col-header__weekday {
+  color: var(--color-accent-light);
+  opacity: 1;
+}
+
+.sg-header__day--today .sg-col-header__date {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 14px rgba(137,28,28,0.45);
+}
+
+/* ---- ТЕЛО ТАБЛИЦЫ ---- */
+.sg-body {
+  display: flex;
+  min-width: 760px;
+  background: rgba(0,0,0,0.3);
+}
+
+/* Колонка меток времени */
+.sg-time-col {
+  width: 64px;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.sg-time-label {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 8px;
+  padding-right: 10px;
+  justify-content: flex-end;
+  color: rgba(255,255,255,0.2);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Колонка одного дня */
+.sg-day-col {
+  flex: 1;
+  min-width: 120px;
+  position: relative;
+  border-right: 1px solid rgba(255,255,255,0.03);
+}
+
+.sg-day-col:last-child { border-right: none; }
+
+.sg-day-col--today {
+  background: rgba(137,28,28,0.025);
+}
+
+/* Линии часов */
+.sg-hour-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.05);
+  pointer-events: none;
+}
+
+/* Линия получаса */
+.sg-half-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.025);
+  border-top: 1px dashed rgba(255,255,255,0.03);
+  pointer-events: none;
+}
+
+/* ---- КАРТОЧКА СОБЫТИЯ ---- */
+.sg-event {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  border-radius: 7px;
+  border-left: 3px solid;
+  padding: 5px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: filter 180ms, box-shadow 180ms, z-index 0ms;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.sg-event:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+  z-index: 10;
+}
+
+/* Цвета */
+.sg-event--volleyball { background: rgba(59,130,246,0.15);  border-color: rgba(59,130,246,0.6); }
+.sg-event--basketball { background: rgba(249,115,22,0.15);  border-color: rgba(249,115,22,0.6); }
+.sg-event--football   { background: rgba(34,197,94,0.15);   border-color: rgba(34,197,94,0.6);  }
+.sg-event--fitness    { background: rgba(168,85,247,0.15);  border-color: rgba(168,85,247,0.6); }
+
+.sg-event__time {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sg-event__sport {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sg-event--volleyball .sg-event__sport { color: #93c5fd; }
+.sg-event--basketball .sg-event__sport { color: #fdba74; }
+.sg-event--football   .sg-event__sport { color: #86efac; }
+.sg-event--fitness    .sg-event__sport { color: #d8b4fe; }
+
+.sg-event__coach {
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sg-event__coach i { font-size: 9px; opacity: 0.6; flex-shrink: 0; }
+
+.sg-event__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 1px;
+}
+
+.sg-event__badge {
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.sg-event__badge i { font-size: 9px; }
+
+.sg-event__full-badge {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgba(255,80,80,0.7);
+  background: rgba(255,80,80,0.1);
+  border: 1px solid rgba(255,80,80,0.2);
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+/* ---- ТУЛТИП ---- */
+.sg-tooltip {
+  position: fixed;
+  z-index: 9000;
+  width: 270px;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(137,28,28,0.15);
+  animation: tooltipIn 180ms cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes tooltipIn {
+  from { opacity: 0; transform: scale(0.92) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.sg-tooltip__close {
+  position: absolute;
+  top: 12px; right: 14px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.3);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 5px;
+  transition: color 150ms, background 150ms;
+}
+
+.sg-tooltip__close:hover { color: white; background: rgba(255,255,255,0.06); }
+
+.sg-tooltip__sport {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px;
+  border-radius: 50px;
+}
+
+.sg-tooltip__sport--volleyball { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #93c5fd; }
+.sg-tooltip__sport--basketball { background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25); color: #fdba74; }
+.sg-tooltip__sport--football   { background: rgba(34,197,94,0.12);  border: 1px solid rgba(34,197,94,0.25);  color: #86efac; }
+.sg-tooltip__sport--fitness    { background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25); color: #d8b4fe; }
+
+.sg-tooltip__title {
+  font-size: 17px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.sg-tooltip__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.sg-tooltip__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+}
+
+.sg-tooltip__row i {
+  width: 14px;
+  text-align: center;
+  color: rgba(137,28,28,0.8);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.sg-tooltip__row strong { color: rgba(255,255,255,0.85); font-weight: 500; }
+
+.sg-tooltip__action {
+  display: block;
+  width: 100%;
+  padding: 11px 0;
   border-radius: 10px;
   font-size: 13px;
   font-weight: 600;
   font-family: "Roboto", sans-serif;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  transition: background 220ms, box-shadow 220ms, transform 180ms;
+  text-decoration: none;
+}
+
+.sg-tooltip__action--enroll {
   background: var(--color-primary);
   color: white;
   border: 1px solid rgba(232,119,119,0.2);
-  cursor: pointer;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 250ms, box-shadow 250ms, transform 200ms;
 }
 
-.sched-card__btn:hover {
+.sg-tooltip__action--enroll:hover {
   background: var(--color-primary-dark);
   box-shadow: 0 6px 20px rgba(137,28,28,0.4);
   transform: translateY(-1px);
 }
 
-.sched-card__btn--full {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.3);
-  cursor: default;
-}
-
-.sched-card__btn--full:hover {
-  background: rgba(255,255,255,0.05);
-  box-shadow: none;
-  transform: none;
-}
-
-.sched-card__btn--cancel {
+.sg-tooltip__action--cancel {
   background: rgba(239,68,68,0.1);
-  border-color: rgba(239,68,68,0.25);
+  border: 1px solid rgba(239,68,68,0.25);
   color: #f87171;
 }
 
-.sched-card__btn--cancel:hover {
+.sg-tooltip__action--cancel:hover {
   background: rgba(239,68,68,0.2);
   box-shadow: 0 4px 14px rgba(239,68,68,0.2);
+  transform: translateY(-1px);
 }
 
-/* ---- ПУСТО ---- */
-.sched-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 60px 20px;
-  color: rgba(255,255,255,0.2);
-  text-align: center;
+.sg-tooltip__action--full {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.25);
+  cursor: default;
 }
 
-.sched-empty i { font-size: 40px; }
-.sched-empty p { font-size: 15px; margin: 0; }
+.sg-tooltip__action--login {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.7);
+}
+
+.sg-tooltip__action--login:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
 
 /* ---- СООБЩЕНИЯ ---- */
 .schedule-messages {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 28px; right: 28px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -330,60 +560,25 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.schedule-msg--success {
-  border: 1px solid rgba(34,197,94,0.3);
-}
-
+.schedule-msg--success { border: 1px solid rgba(34,197,94,0.3); }
 .schedule-msg--success i { color: #4ade80; font-size: 16px; }
-
-.schedule-msg--error {
-  border: 1px solid rgba(239,68,68,0.3);
-}
-
+.schedule-msg--error { border: 1px solid rgba(239,68,68,0.3); }
 .schedule-msg--error i { color: #f87171; font-size: 16px; }
 
 /* ---- АДАПТИВ ---- */
 @media (max-width: 900px) {
-  .sched-card {
-    grid-template-columns: 56px 1fr auto;
-    grid-template-rows: auto auto;
-  }
-
-  .sched-card__meta {
-    grid-column: 2 / 3;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .sched-card__action {
-    grid-row: 1 / 3;
-    grid-column: 3 / 4;
-  }
+  .schedule-hero h1 { font-size: 32px; }
+  .sg-header__time-col,
+  .sg-time-col { width: 48px; }
+  .sg-header__day { min-width: 100px; }
+  .sg-day-col { min-width: 100px; }
 }
 
 @media (max-width: 600px) {
-  .schedule-hero h1 { font-size: 30px; }
-
-  .sched-card {
-    grid-template-columns: 50px 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 10px 14px;
-    padding: 16px;
-  }
-
-  .sched-card__time { font-size: 20px; }
-
-  .sched-card__meta {
-    grid-column: 1 / 3;
-    flex-direction: row;
-    gap: 10px;
-  }
-
-  .sched-card__action {
-    grid-column: 1 / 3;
-    grid-row: auto;
-  }
-
-  .sched-card__btn { width: 100%; }
+  .schedule-hero h1 { font-size: 26px; }
+  .sg-header__time-col,
+  .sg-time-col { width: 40px; }
+  .sg-header__day { min-width: 80px; }
+  .sg-day-col { min-width: 80px; }
+  .sg-col-header__date { width: 26px; height: 26px; font-size: 13px; }
 }

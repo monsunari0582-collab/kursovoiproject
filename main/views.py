@@ -236,19 +236,17 @@ def services(request):
 def schedule(request):
     from .models import Session, Enrollment
     from datetime import date, timedelta
+    import json
 
     today = date.today()
-    days_data = []
-    DAYS_RU = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
-
-    for i in range(7):
-        d = today + timedelta(days=i)
-        qs = Session.objects.filter(date=d).select_related('coach').order_by('time')
-        days_data.append({
-            'key':      d.strftime('%Y-%m-%d'),
-            'label':    f"{DAYS_RU[d.weekday()]} {d.strftime('%d.%m')}",
-            'sessions': qs,
-        })
+    # Загружаем тренировки на 30 дней вперёд — JS сам разобьёт по неделям
+    date_until = today + timedelta(days=30)
+    sessions_qs = (
+        Session.objects
+        .filter(date__gte=today, date__lt=date_until)
+        .select_related('coach')
+        .order_by('date', 'time')
+    )
 
     enrolled_ids = set()
     if request.user.is_authenticated:
@@ -257,9 +255,28 @@ def schedule(request):
             .values_list('session_id', flat=True)
         )
 
+    # Сериализуем в список словарей для JSON в шаблоне
+    sessions_json = []
+    for s in sessions_qs:
+        sessions_json.append({
+            'id':            s.id,
+            'date':          s.date.strftime('%Y-%m-%d'),
+            'time':          s.time.strftime('%H:%M'),
+            'sport':         s.sport,
+            'sport_name':    s.sport_name,
+            'coach_name':    s.coach.get_full_name() if s.coach else '',
+            'coach_id':      s.coach_id or '',
+            'location':      s.location or '',
+            'enrolled_count': s.enrolled_count,
+            'max_places':    s.max_places,
+            'duration':      s.duration,
+            'is_full':       s.is_full,
+            'enrolled_me':   s.id in enrolled_ids,
+        })
+
     return render(request, 'main/schedule.html', {
-        'days':         days_data,
-        'enrolled_ids': enrolled_ids,
+        'sessions_json': json.dumps(sessions_json, ensure_ascii=False),
+        'enrolled_ids':  enrolled_ids,
     })
 
 
@@ -270,6 +287,10 @@ def enroll(request, session_id):
 
     from .models import Session, Enrollment
     session = get_object_or_404(Session, id=session_id)
+
+    if session.coach == request.user:
+        messages.error(request, 'Вы не можете записаться на свою собственную тренировку.')
+        return redirect('schedule')
 
     if session.is_full:
         messages.error(request, 'К сожалению, мест уже нет.')
