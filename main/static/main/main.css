@@ -23,20 +23,20 @@
 
   /* Фоны */
   --bg-page:            #000000;
-  --bg-page-gradient:   linear-gradient(180deg, rgb(54, 0, 0) 0%, rgb(30, 11, 11) 93%, rgb(56, 0, 0) 100%);
+  --bg-page-gradient:   linear-gradient(180deg, rgb(40, 0, 0) 0%, rgb(14, 5, 5) 93%, rgb(37, 0, 0) 100%);
   --bg-header:          linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 100%);
   --bg-header-scrolled: rgba(5, 0, 0, 0.96);
   --bg-footer:          #000000;
-  --bg-card:            rgba(255, 255, 255, 0.03);
-  --bg-card-hover:      rgba(137, 28, 28, 0.07);
+  --bg-card:            rgba(255, 255, 255, 0.099);
+  --bg-card-hover:      rgba(137, 28, 28, 0.307);
   --bg-input:           rgba(255, 255, 255, 0.04);
   --bg-input-focus:     rgba(137, 28, 28, 0.06);
-  --bg-tag:             rgba(255, 255, 255, 0.04);
+  --bg-tag:             rgba(255, 0, 0, 0.195);
   --bg-overlay:         rgba(8, 0, 0, 0.97);
-  --bg-surface:         rgba(255, 255, 255, 0.02);
-  --bg-surface-2:       rgba(255, 255, 255, 0.025);
+  --bg-surface:         rgba(255, 255, 255, 0.099);
+  --bg-surface-2:       rgba(255, 255, 255, 0.099);
   --bg-elevated:        #0a0a0a;
-  --bg-elevated-2:      #0e0e0e;
+  --bg-elevated-2:      #353535;
   --bg-select:          #1a1a1a;
   --bg-modal:           #0a0a0a;
   --bg-nav-mobile:      rgba(0, 0, 0, 0.97);
@@ -45,8 +45,8 @@
 
   /* Текст */
   --text-primary:       #ffffff;
-  --text-secondary:     rgba(255, 255, 255, 0.6);
-  --text-muted:         rgba(255, 255, 255, 0.4);
+  --text-secondary:     rgb(255, 255, 255);
+  --text-muted:         rgb(255, 255, 255);
   --text-faint:         rgba(255, 255, 255, 0.25);
   --text-nav:           rgba(255, 255, 255, 0.75);
   --text-placeholder:   rgba(255, 255, 255, 0.2);

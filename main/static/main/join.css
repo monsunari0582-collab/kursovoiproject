@@ -495,3 +495,178 @@
   background: rgba(255,255,255,0.06);
   color: rgba(255,255,255,0.75);
 }
+/* ============================================================
+   СВЕТЛАЯ ТЕМА — страница входа
+   ============================================================ */
+
+.theme-light .stranica-vhoda {
+  background: linear-gradient(160deg,
+    #ffffff 0%,
+    #ffe4e4 40%,
+    #ffd0e8 75%,
+    #f0e0ff 100%);
+}
+
+.theme-light .stranica-vhoda::before {
+  background: radial-gradient(circle, rgba(137,28,28,0.10) 0%, transparent 65%);
+}
+
+.theme-light .stranica-vhoda::after {
+  color: var(--watermark-color);
+}
+
+/* Карточка формы */
+.theme-light .vhod-kartochka {
+  background: var(--bg-elevated);
+  border-color: var(--border-brand);
+  box-shadow:
+    0 32px 80px rgba(137,28,28,0.12),
+    0 0 0 1px rgba(255,255,255,0.9) inset,
+    0 0 60px rgba(137,28,28,0.05);
+}
+
+/* Логотип */
+.theme-light .vhod-logo__nazvanie {
+  background: linear-gradient(135deg, var(--text-primary) 40%, var(--brand-primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.theme-light .vhod-logo__podpis {
+  color: var(--text-muted);
+}
+
+/* Переключатели вкладок */
+.theme-light .pereklyuchateli {
+  background: var(--bg-tag);
+  border-color: var(--border-light);
+}
+
+.theme-light .pereklyuchatel {
+  color: var(--text-muted);
+}
+
+.theme-light .pereklyuchatel:not(.aktivny):hover {
+  color: var(--text-primary);
+  background: var(--bg-card-hover);
+}
+
+/* Лейблы полей */
+.theme-light .pole-gruppa label {
+  color: var(--text-muted);
+}
+
+/* Поля ввода */
+.theme-light .pole-obertka > i:first-child {
+  color: var(--text-faint);
+}
+
+.theme-light .pole-obertka input {
+  background: var(--bg-input);
+  border-color: var(--border-input);
+  color: var(--text-input);
+}
+
+.theme-light .pole-obertka input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.theme-light .pole-obertka input:focus {
+  border-color: var(--border-brand-focus);
+  background: var(--bg-input-focus);
+  box-shadow: 0 0 0 3px rgba(137,28,28,0.10);
+}
+
+.theme-light .pole-obertka:focus-within > i:first-child {
+  color: var(--brand-primary);
+}
+
+/* Кнопка глаза */
+.theme-light .knopka-glaz {
+  color: var(--text-faint);
+}
+
+.theme-light .knopka-glaz:hover {
+  color: var(--text-secondary);
+}
+
+/* Запомнить / забыл пароль */
+.theme-light .zapomni-menya {
+  color: var(--text-muted);
+}
+
+.theme-light .zapomni-menya input[type="checkbox"] {
+  background: var(--bg-input);
+  border-color: var(--border-brand);
+}
+
+.theme-light .zabyl-parol {
+  color: var(--brand-accent);
+}
+
+/* Разделитель "или" */
+.theme-light .razdelitel {
+  color: var(--text-faint);
+}
+
+.theme-light .razdelitel::before,
+.theme-light .razdelitel::after {
+  background: var(--border-medium);
+}
+
+/* Кнопки соцсетей */
+.theme-light .socialnaya-knopka {
+  background: var(--bg-card);
+  border-color: var(--border-light);
+  color: var(--text-muted);
+}
+
+.theme-light .socialnaya-knopka:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-brand-hover);
+  color: var(--text-primary);
+}
+
+/* Чекбокс согласия */
+.theme-light .soglasie {
+  color: var(--text-muted);
+}
+
+.theme-light .soglasie input[type="checkbox"] {
+  background: var(--bg-input);
+  border-color: var(--border-brand);
+}
+
+.theme-light .soglasie a {
+  color: var(--brand-accent);
+}
+
+/* Экран успеха */
+.theme-light .uspeh p {
+  color: var(--text-muted);
+}
+
+/* Кнопки роли */
+.theme-light .rol-btn {
+  background: var(--bg-card);
+  border-color: var(--border-light);
+  color: var(--text-muted);
+}
+
+.theme-light .rol-btn.aktivny {
+  background: var(--bg-tag);
+  border-color: var(--border-brand-hover);
+  color: var(--text-primary);
+}
+
+.theme-light .rol-btn:not(.aktivny):hover {
+  background: var(--bg-card-hover);
+  color: var(--text-secondary);
+}
+
+/* Глобальная ошибка формы */
+.theme-light .forma-oshibka-global {
+  background: var(--bg-tag);
+  border-color: var(--border-brand);
+  color: var(--brand-primary);
+}
