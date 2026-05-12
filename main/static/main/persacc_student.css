@@ -16,8 +16,8 @@
   gap: 36px;
   padding: 40px 44px;
   margin-bottom: 40px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(137, 28, 28, 0.2);
+  background: var(--bg-card);
+  border: 1px solid var(--border-brand);
   border-radius: 20px;
   position: relative;
   overflow: hidden;
@@ -128,7 +128,7 @@
 
 .persacc__meta span {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 7px;
@@ -168,14 +168,14 @@
   display: block;
   font-size: 28px;
   font-weight: 800;
-  color: white;
+  color: var(--text-primary);
   line-height: 1;
   margin-bottom: 6px;
 }
 
 .persacc__stat-label {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-muted);
   letter-spacing: 0.4px;
   text-transform: uppercase;
 }
@@ -192,8 +192,8 @@
 /* ---- СЕКЦИИ ---- */
 
 .persacc__section {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
   border-radius: 18px;
   padding: 30px 32px;
   transition: border-color 300ms ease;
@@ -226,7 +226,7 @@
 }
 
 .persacc__section-link {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-muted);
   font-size: 12px;
   display: inline-flex;
   align-items: center;
@@ -242,7 +242,7 @@
 }
 
 .persacc__section-link:hover {
-  color: white;
+  color: var(--text-primary);
   background: rgba(137, 28, 28, 0.25);
   border-color: rgba(137, 28, 28, 0.5);
 }
@@ -261,8 +261,8 @@
   align-items: center;
   gap: 16px;
   padding: 16px 18px;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
   border-radius: 12px;
   transition: background 250ms ease, border-color 250ms ease, transform 200ms ease;
 }
@@ -274,7 +274,7 @@
 }
 
 .persacc__enroll-card--past {
-  opacity: 0.45;
+  /* opacity: 0.7; */
 }
 
 .persacc__enroll-card--past:hover {
@@ -294,12 +294,12 @@
   font-size: 20px;
   font-weight: 700;
   line-height: 1;
-  color: white;
+  color: var(--text-primary);
 }
 
 .persacc__enroll-date {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--text-faint);
   letter-spacing: 0.3px;
 }
 
@@ -312,7 +312,7 @@
 .persacc__enroll-coach,
 .persacc__enroll-place {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -361,9 +361,9 @@
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border-medium);
+  background: var(--bg-tag);
+  color: var(--text-faint);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -449,15 +449,15 @@
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--text-muted);
 }
 
 .persacc__field input {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: 10px;
   padding: 11px 14px;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-input);
   font-size: 14px;
   font-family: inherit;
   outline: none;
@@ -465,18 +465,18 @@
 }
 
 .persacc__field input:disabled {
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--text-secondary);
   cursor: default;
 }
 
 .persacc__field input:not(:disabled):focus {
-  border-color: rgba(137, 28, 28, 0.55);
-  background: rgba(137, 28, 28, 0.06);
-  color: white;
+  border-color: var(--border-brand-focus);
+  background: var(--bg-input-focus);
+  color: var(--text-primary);
 }
 
 .persacc__field input::placeholder {
-  color: rgba(255, 255, 255, 0.2);
+  color: var(--text-placeholder);
 }
 
 /* Кнопки формы */
@@ -512,9 +512,9 @@
 }
 
 .persacc__cancel-edit-btn {
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-tag);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-medium);
   border-radius: 10px;
   padding: 11px 18px;
   font-size: 13px;
@@ -524,8 +524,8 @@
 }
 
 .persacc__cancel-edit-btn:hover {
-  background: rgba(255, 255, 255, 0.09);
-  color: white;
+  background: var(--bg-surface);
+  color: var(--text-primary);
 }
 
 /* ---- КНОПКА ВЫХОДА В ХЕДЕРЕ ---- */

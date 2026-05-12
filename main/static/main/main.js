@@ -97,3 +97,40 @@ async function init() {
 }
 
 init();
+
+// ---- Тема (светлая / тёмная) ----
+function initTheme() {
+  const STORAGE_KEY = 'khtisport_theme';
+  const root = document.documentElement;
+
+  // Восстанавливаем сохранённую тему
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved === 'light') root.classList.add('theme-light');
+
+  // Создаём кнопку переключения
+  const btn = document.createElement('button');
+  btn.className = 'theme-toggle';
+  btn.setAttribute('aria-label', 'Переключить тему');
+  btn.innerHTML = `
+    <i class="fa-solid fa-sun icon-sun"></i>
+    <i class="fa-solid fa-moon icon-moon"></i>
+  `;
+
+  // Вставляем в шапку рядом с бургером
+  const inheader = document.querySelector('.inheader');
+  if (inheader) {
+    const burger = document.getElementById('burger');
+    if (burger) {
+      inheader.insertBefore(btn, burger);
+    } else {
+      inheader.appendChild(btn);
+    }
+  }
+
+  btn.addEventListener('click', () => {
+    const isLight = root.classList.toggle('theme-light');
+    localStorage.setItem(STORAGE_KEY, isLight ? 'light' : 'dark');
+  });
+}
+
+initTheme();

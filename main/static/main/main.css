@@ -1,10 +1,156 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-  --color-primary:      #891c1c;
-  --color-primary-dark: #550101;
-  --color-accent:       #af5252;
-  --color-accent-light: #e87777;
+  /* --- Бренд-цвета (неизменны) --- */
+  --brand-primary:      #891c1c;
+  --brand-primary-dark: #550101;
+  --brand-accent:       #af5252;
+  --brand-accent-light: #e87777;
+
+  /* --- Алиасы для обратной совместимости --- */
+  --color-primary:      var(--brand-primary);
+  --color-primary-dark: var(--brand-primary-dark);
+  --color-accent:       var(--brand-accent);
+  --color-accent-light: var(--brand-accent-light);
+
+  /* ===== ТЁМНАЯ ТЕМА (по умолчанию) ===== */
+
+  /* Фоны */
+  --bg-page:            #000000;
+  --bg-page-gradient:   linear-gradient(180deg, rgb(68, 0, 0) 0%, rgb(30, 11, 11) 93%, rgb(138, 0, 0) 100%);
+  --bg-header:          linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 100%);
+  --bg-header-scrolled: rgba(5, 0, 0, 0.96);
+  --bg-footer:          #000000;
+  --bg-card:            rgba(255, 255, 255, 0.03);
+  --bg-card-hover:      rgba(137, 28, 28, 0.07);
+  --bg-input:           rgba(255, 255, 255, 0.04);
+  --bg-input-focus:     rgba(137, 28, 28, 0.06);
+  --bg-tag:             rgba(255, 255, 255, 0.04);
+  --bg-overlay:         rgba(8, 0, 0, 0.97);
+  --bg-surface:         rgba(255, 255, 255, 0.02);
+  --bg-surface-2:       rgba(255, 255, 255, 0.025);
+  --bg-elevated:        #0a0a0a;
+  --bg-elevated-2:      #0e0e0e;
+  --bg-select:          #1a1a1a;
+  --bg-modal:           #0a0a0a;
+  --bg-nav-mobile:      rgba(0, 0, 0, 0.97);
+  --bg-schedule-body:   rgba(30, 29, 29, 0.751);
+  --bg-logo:            linear-gradient(135deg, #ffffff 40%, #e87777 100%);
+
+  /* Текст */
+  --text-primary:       #ffffff;
+  --text-secondary:     rgba(255, 255, 255, 0.875);
+  --text-muted:         rgba(255, 255, 255, 0.956);
+  --text-faint:         rgba(255, 255, 255, 0.25);
+  --text-nav:           rgba(255, 255, 255, 0.75);
+  --text-placeholder:   rgba(255, 255, 255, 0.2);
+  --text-input:         rgba(255, 255, 255, 0.85);
+  --text-footer:        rgba(255, 255, 255, 0.45);
+  --text-footer-muted:  rgba(255, 255, 255, 0.2);
+  --text-on-negative:   rgba(255, 255, 255, 0.9);
+
+  /* Границы */
+  --border-subtle:      rgba(255, 255, 255, 0.04);
+  --border-light:       rgba(255, 255, 255, 0.06);
+  --border-medium:      rgba(255, 255, 255, 0.08);
+  --border-strong:      rgba(255, 255, 255, 0.12);
+  --border-brand:       rgba(137, 28, 28, 0.2);
+  --border-brand-hover: rgba(137, 28, 28, 0.4);
+  --border-brand-focus: rgba(137, 28, 28, 0.55);
+  --border-header-scroll: rgba(137, 28, 28, 0.2);
+  --border-input:       rgba(255, 255, 255, 0.07);
+  --border-footer:      rgba(137, 28, 28, 0.4);
+  --border-footer-bottom: rgba(255, 255, 255, 0.05);
+
+  /* Бургер */
+  --burger-color:       #ffffff;
+
+  /* Водяной знак */
+  --watermark-color:    rgba(137, 28, 28, 0.04);
+
+  /* Тени */
+  --shadow-header:      0 4px 32px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(137, 28, 28, 0.1);
+  --shadow-brand:       0 4px 16px rgba(137, 28, 28, 0.45);
+  --shadow-card:        0 4px 20px rgba(137, 28, 28, 0.15);
+
+  /* Схема переключателя тем */
+  --theme-toggle-bg:        rgba(255,255,255,0.06);
+  --theme-toggle-border:    rgba(255,255,255,0.10);
+  --theme-toggle-icon:      rgba(255,255,255,0.55);
+  --theme-toggle-icon-hover: white;
+
+  /* sg-header фон */
+  --sg-header-bg:       rgba(8,0,0,0.97);
+}
+
+/* ===== СВЕТЛАЯ ТЕМА ===== */
+.theme-light {
+  /* Фоны */
+  --bg-page:            #f5f0ef;
+  --bg-page-gradient:   linear-gradient(180deg, #f5e8e8 0%, #efe8e8 60%, #f0dada 100%);
+  --bg-header:          linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.85) 100%);
+  --bg-header-scrolled: rgba(255, 252, 252, 0.98);
+  --bg-footer:          #1a0505;
+  --bg-card:            rgba(255, 255, 255, 0.7);
+  --bg-card-hover:      rgba(137, 28, 28, 0.05);
+  --bg-input:           rgba(255, 255, 255, 0.9);
+  --bg-input-focus:     #ffffff;
+  --bg-tag:             rgba(137, 28, 28, 0.06);
+  --bg-overlay:         rgba(250, 245, 245, 0.98);
+  --bg-surface:         rgba(255, 255, 255, 0.6);
+  --bg-surface-2:       rgba(255, 255, 255, 0.8);
+  --bg-elevated:        #ffffff;
+  --bg-elevated-2:      #faf6f6;
+  --bg-select:          #ffffff;
+  --bg-modal:           #ffffff;
+  --bg-nav-mobile:      rgba(255, 252, 252, 0.98);
+  --bg-schedule-body:   rgba(255, 255, 255, 0.8);
+  --bg-logo:            linear-gradient(135deg, #000000 40%, #e87777 100%);
+
+  /* Текст */
+  --text-primary:       #1a0505;
+  --text-secondary:     rgb(30, 10, 10);
+  --text-muted:         rgb(30, 10, 10);
+  --text-faint:         rgba(30, 10, 10, 0.28);
+  --text-nav:           rgba(30, 10, 10, 0.75);
+  --text-placeholder:   rgba(30, 10, 10, 0.3);
+  --text-input:         #1a0505;
+  --text-footer:        rgba(255, 255, 255, 0.6);
+  --text-footer-muted:  rgba(255, 255, 255, 0.35);
+  --text-on-negative:   rgba(255, 255, 255, 0.9); 
+
+  /* Границы */
+  --border-subtle:      rgba(137, 28, 28, 0.06);
+  --border-light:       rgba(137, 28, 28, 0.10);
+  --border-medium:      rgba(137, 28, 28, 0.14);
+  --border-strong:      rgba(137, 28, 28, 0.20);
+  --border-brand:       rgba(137, 28, 28, 0.25);
+  --border-brand-hover: rgba(137, 28, 28, 0.5);
+  --border-brand-focus: rgba(137, 28, 28, 0.6);
+  --border-header-scroll: rgba(137, 28, 28, 0.15);
+  --border-input:       rgba(137, 28, 28, 0.18);
+  --border-footer:      rgba(137, 28, 28, 0.5);
+  --border-footer-bottom: rgba(255, 255, 255, 0.08);
+
+  /* Бургер */
+  --burger-color:       #1a0505;
+
+  /* Водяной знак */
+  --watermark-color:    rgba(137, 28, 28, 0.05);
+
+  /* Тени */
+  --shadow-header:      0 4px 24px rgba(137, 28, 28, 0.12), 0 1px 0 rgba(137, 28, 28, 0.08);
+  --shadow-brand:       0 4px 16px rgba(137, 28, 28, 0.35);
+  --shadow-card:        0 4px 20px rgba(137, 28, 28, 0.10);
+
+  /* Схема переключателя тем */
+  --theme-toggle-bg:        rgba(137,28,28,0.08);
+  --theme-toggle-border:    rgba(137,28,28,0.18);
+  --theme-toggle-icon:      rgba(137,28,28,0.6);
+  --theme-toggle-icon-hover: var(--brand-primary);
+
+  /* sg-header фон */
+  --sg-header-bg:       rgba(250,245,245,0.98);
 }
 
 html {
@@ -21,9 +167,10 @@ html {
 body {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  color: white;
+  color: var(--text-primary);
   font-size: 16px;
   overflow-x: hidden;
+  transition: color 300ms ease, background 300ms ease;
 }
 
 a {
@@ -33,7 +180,6 @@ a {
 }
 
 a:visited {
-  color: inherit;
 }
 
 img {
@@ -41,8 +187,8 @@ img {
 }
 
 .wrapper {
-  background: #000000;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(51, 0, 0, 1) 93%, rgba(71, 0, 62, 1) 100%);
+  background: var(--bg-page);
+  background: var(--bg-page-gradient);
   width: 100%;
 }
 
@@ -70,17 +216,17 @@ header {
   left: 0;
   right: 0;
   backdrop-filter: blur(12px) saturate(1.4);
-  background: linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 100%);
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border-subtle);
   transition: padding 350ms ease, background 350ms ease, box-shadow 350ms ease, border-color 350ms ease;
 }
 
 header.scrolled {
   padding: 16px 0;
-  background: rgba(5, 0, 0, 0.96);
+  background: var(--bg-header-scrolled);
   backdrop-filter: blur(20px) saturate(1.6);
-  border-bottom-color: rgba(137, 28, 28, 0.2);
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(137, 28, 28, 0.1);
+  border-bottom-color: var(--border-header-scroll);
+  box-shadow: var(--shadow-header);
 }
 
 header .logo {
@@ -89,7 +235,7 @@ header .logo {
   font-weight: 900;
   flex-shrink: 0;
   letter-spacing: 1.5px;
-  background: linear-gradient(135deg, #ffffff 40%, var(--color-accent-light) 100%);
+  background: var(--bg-logo);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -110,8 +256,8 @@ header nav ul {
   position: relative;
 }
 
-header nav ul li a {
-  color: rgba(255,255,255,0.75);
+header nav ul li {
+  color: var(--text-nav);
   font-size: 15px;
   padding: 7px 12px;
   border-radius: 6px;
@@ -121,12 +267,12 @@ header nav ul li a {
 }
 
 header nav ul li:not(.btn) a:hover {
-  color: white;
-  background: rgba(255,255,255,0.06);
+  color: var(--text-primary);
+  background: rgba(137,28,28,0.07);
 }
 
 header nav ul li.active a {
-  color: white;
+  color: var(--text-primary);
 }
 
 header nav ul li.active::after {
@@ -170,7 +316,7 @@ header nav ul li.btn button.logout-btn::before {
 header nav ul li.btn a:hover,
 header nav ul li.btn button.logout-btn:hover {
   background: var(--color-primary-dark);
-  box-shadow: 0 4px 16px rgba(137, 28, 28, 0.45);
+  box-shadow: var(--shadow-brand);
   transform: translateY(-1px);
   border-color: rgba(232, 119, 119, 0.25);
 }
@@ -256,7 +402,7 @@ header nav ul li.btn button.logout-btn:active {
   font-size: 15px;
   line-height: 180%;
   margin: 28px 0 36px;
-  color: rgba(255,255,255,0.6);
+  color: var(--text-secondary);
   max-width: 440px;
 }
 
@@ -366,7 +512,7 @@ header nav ul li.btn button.logout-btn:active {
 .services h4 {
   font-size: 15px;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.671);
+  color: var(--text-muted);
   letter-spacing: 0.3px;
   margin-top: 6px;
   text-transform: none;
@@ -374,9 +520,9 @@ header nav ul li.btn button.logout-btn:active {
 
 .services .see-all,
 .schedule-preview .see-all {
-  color: rgba(255,255,255,0.7);
-  background: rgba(137, 28, 28, 0.18);
-  border: 1px solid rgba(137, 28, 28, 0.35);
+  color: var(--text-secondary);
+  background: rgba(137, 28, 28, 0.12);
+  border: 1px solid rgba(137, 28, 28, 0.28);
   border-radius: 50px;
   padding: 7px 16px;
   font-size: 13px;
@@ -399,11 +545,11 @@ header nav ul li.btn button.logout-btn:active {
 
 .services .see-all:hover,
 .schedule-preview .see-all:hover {
-  background: rgba(137, 28, 28, 0.35);
+  background: rgba(137, 28, 28, 0.28);
   border-color: var(--color-accent);
-  color: white;
+  color: var(--text-primary);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(137, 28, 28, 0.3);
+  box-shadow: 0 4px 14px rgba(137, 28, 28, 0.25);
 }
 
 .services .see-all:hover::after,
@@ -417,7 +563,7 @@ header nav ul li.btn button.logout-btn:active {
   gap: 20px;
   width: 100%;
   padding: 40px 0 0;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid var(--border-medium);
   margin-top: 24px;
 }
 
@@ -439,7 +585,7 @@ header nav ul li.btn button.logout-btn:active {
   font-size: 16px;
   font-weight: 500;
   margin-top: 16px;
-  color: rgba(255,255,255,0.85);
+  color: var(--text-secondary);
   letter-spacing: 0.2px;
 }
 
@@ -455,8 +601,8 @@ header nav ul li.btn button.logout-btn:active {
   overflow: hidden;
   margin: 0 auto;
   border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-medium);
+  background: var(--bg-card);
   transition: border-color 300ms ease, box-shadow 300ms ease;
   position: relative;
 }
@@ -580,7 +726,7 @@ header nav ul li.btn button.logout-btn:active {
   display: block;
   width: 26px;
   height: 2px;
-  background: white;
+  background: var(--burger-color);
   border-radius: 2px;
   transition: all 300ms ease;
 }
@@ -602,7 +748,7 @@ header nav ul li.btn button.logout-btn:active {
   display: block;
   width: 26px;
   height: 2px;
-  background: white;
+  background: var(--burger-color);
   border-radius: 2px;
   transition: all 300ms ease;
 }
@@ -687,7 +833,7 @@ header nav ul li.btn button.logout-btn:active {
     top: 100%;
     left: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.97);
+    background: var(--bg-nav-mobile);
     padding: 20px 0;
     z-index: 999;
   }
@@ -839,7 +985,7 @@ header nav ul li.btn button.logout-btn:active {
 .schedule-preview__header h4 {
   font-size: 15px;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.671);
+  color: var(--text-muted);
   letter-spacing: 0.3px;
   margin-top: 6px;
 }
@@ -853,9 +999,9 @@ header nav ul li.btn button.logout-btn:active {
 }
 
 .sched-tab {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.5);
+  background: var(--bg-tag);
+  border: 1px solid var(--border-medium);
+  color: var(--text-muted);
   padding: 8px 20px;
   border-radius: 50px;
   font-size: 14px;
@@ -867,9 +1013,9 @@ header nav ul li.btn button.logout-btn:active {
 }
 
 .sched-tab:hover {
-  background: rgba(137, 28, 28, 0.2);
-  border-color: rgba(137, 28, 28, 0.4);
-  color: rgba(255,255,255,0.8);
+  background: rgba(137, 28, 28, 0.15);
+  border-color: rgba(137, 28, 28, 0.35);
+  color: var(--text-secondary);
   transform: translateY(-1px);
 }
 
@@ -897,8 +1043,8 @@ header nav ul li.btn button.logout-btn:active {
   grid-template-columns: 80px 1fr 160px auto;
   align-items: center;
   gap: 20px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
   border-radius: 14px;
   padding: 18px 24px;
   transition: background 300ms ease, border-color 300ms ease, transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 300ms ease;
@@ -920,10 +1066,10 @@ header nav ul li.btn button.logout-btn:active {
 }
 
 .sched-card:hover {
-  background: rgba(137, 28, 28, 0.07);
-  border-color: rgba(137, 28, 28, 0.3);
+  background: var(--bg-card-hover);
+  border-color: var(--border-brand-hover);
   transform: translateX(4px);
-  box-shadow: 0 4px 20px rgba(137, 28, 28, 0.15);
+  box-shadow: var(--shadow-card);
 }
 
 .sched-card:hover::before {
@@ -935,7 +1081,7 @@ header nav ul li.btn button.logout-btn:active {
   font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: white;
+  color: var(--text-primary);
 }
 
 /* Инфо */
@@ -977,7 +1123,7 @@ header nav ul li.btn button.logout-btn:active {
 
 .sched-card__coach {
   font-size: 13px;
-  color: rgba(255,255,255,0.4);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -985,7 +1131,7 @@ header nav ul li.btn button.logout-btn:active {
 
 .sched-card__coach i {
   font-size: 11px;
-  color: rgba(255,255,255,0.25);
+  color: var(--text-faint);
 }
 
 /* Мета-инфо */
@@ -997,7 +1143,7 @@ header nav ul li.btn button.logout-btn:active {
 
 .sched-card__meta span {
   font-size: 13px;
-  color: rgba(255,255,255,0.4);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 7px;
@@ -1016,7 +1162,7 @@ header nav ul li.btn button.logout-btn:active {
   align-items: center;
   justify-content: center;
   background: var(--color-primary);
-  color: white;
+  color: var(--text-on-negative); 
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 13px;
@@ -1034,9 +1180,9 @@ header nav ul li.btn button.logout-btn:active {
 }
 
 .sched-card__btn--full {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.3);
+  background: var(--bg-tag);
+  border-color: var(--border-medium);
+  color: var(--text-faint);
   cursor: default;
   pointer-events: none;
 }
@@ -1117,8 +1263,8 @@ header nav ul li.btn button.logout-btn:active {
 
 
 .footer {
-  background: #000;
-  border-top: 1px solid rgba(137, 28, 28, 0.4);
+  background: var(--bg-footer);
+  border-top: 1px solid var(--border-footer);
   position: relative;
   overflow: hidden;
 }
@@ -1141,7 +1287,7 @@ header nav ul li.btn button.logout-btn:active {
   right: -10px;
   font-size: 140px;
   font-weight: 900;
-  color: rgba(137, 28, 28, 0.04);
+  color: var(--watermark-color);
   letter-spacing: -4px;
   pointer-events: none;
   user-select: none;
@@ -1174,7 +1320,7 @@ header nav ul li.btn button.logout-btn:active {
 
 .footer__tagline {
   font-size: 13px;
-  color: rgba(255,255,255,0.35);
+  color: var(--text-footer);
   line-height: 1.8;
   margin-bottom: 28px;
   font-weight: 300;
@@ -1259,14 +1405,14 @@ header nav ul li.btn button.logout-btn:active {
 .footer__list li a,
 .footer__list li a:visited {
   font-size: 14px;
-  color: rgba(255,255,255,0.45);
+  color: var(--text-footer);
   transition: color 200ms ease, padding-left 200ms ease, letter-spacing 200ms ease;
   display: inline-block;
   line-height: 1.5;
 }
 
 .footer__list li a:hover {
-  color: white;
+  color: var(--text-primary);
   padding-left: 8px;
   letter-spacing: 0.3px;
 }
@@ -1276,7 +1422,7 @@ header nav ul li.btn button.logout-btn:active {
   align-items: flex-start;
   gap: 10px;
   font-size: 13px;
-  color: rgba(255,255,255,0.4);
+  color: var(--text-footer);
   line-height: 1.6;
 }
 
@@ -1289,7 +1435,7 @@ header nav ul li.btn button.logout-btn:active {
 }
 
 .footer__bottom {
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid var(--border-footer-bottom);
 }
 
 .footer__bottom-inner {
@@ -1304,7 +1450,7 @@ header nav ul li.btn button.logout-btn:active {
 
 .footer__bottom p {
   font-size: 12px;
-  color: rgba(255,255,255,0.2);
+  color: var(--text-footer-muted);
   letter-spacing: 0.3px;
 }
 
@@ -1315,7 +1461,7 @@ header nav ul li.btn button.logout-btn:active {
 
 .footer__bottom-links a {
   font-size: 12px;
-  color: rgba(255,255,255,0.2);
+  color: var(--text-footer-muted);
   transition: color 200ms ease;
   letter-spacing: 0.2px;
   position: relative;
@@ -1333,7 +1479,7 @@ header nav ul li.btn button.logout-btn:active {
 }
 
 .footer__bottom-links a:hover {
-  color: rgba(255,255,255,0.5);
+  color: var(--text-footer);
 }
 
 .footer__bottom-links a:hover::after {
@@ -1366,3 +1512,57 @@ header nav ul li.btn button.logout-btn:active {
   .footer::after { font-size: 60px; }
 }
 
+
+
+/* ============================================================
+   ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ
+   ============================================================ */
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: var(--theme-toggle-bg);
+  border: 1px solid var(--theme-toggle-border);
+  color: var(--theme-toggle-icon);
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 250ms ease, border-color 250ms ease, color 250ms ease, transform 200ms ease;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.theme-toggle:hover {
+  color: var(--theme-toggle-icon-hover);
+  background: rgba(137, 28, 28, 0.12);
+  border-color: rgba(137, 28, 28, 0.3);
+  transform: translateY(-1px);
+}
+
+.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { display: block; }
+
+.theme-light .theme-toggle .icon-sun  { display: block; }
+.theme-light .theme-toggle .icon-moon { display: none; }
+
+/* ---- Плавный переход всего сайта при смене темы ---- */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 250ms;
+  transition-timing-function: ease;
+}
+
+/* Исключаем анимации, которые не должны замедляться */
+.reveal,
+.reveal-left,
+.reveal-right,
+.hero--image img,
+.hero::before,
+.persacc__avatar-ring {
+  transition: opacity 600ms ease, transform 600ms ease;
+}

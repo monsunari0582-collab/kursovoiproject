@@ -37,12 +37,12 @@
   font-weight: 800;
   letter-spacing: -0.5px;
   margin-bottom: 10px;
-  color: white;
+  color: var(--text-primary);
 }
 
 .schedule-hero p {
   font-size: 15px;
-  color: rgba(255,255,255,0.45);
+  color: var(--text-secondary);
 }
 
 /* ---- ФИЛЬТР ---- */
@@ -62,9 +62,9 @@
 .sport-filter {
   padding: 7px 16px;
   border-radius: 50px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.4);
+  background: rgba(137, 28, 28, 0.15);
+  border: 1px solid var(--border-brand);
+  color: var(--text-secondary);
   font-size: 12px;
   font-weight: 600;
   font-family: "Roboto", sans-serif;
@@ -73,14 +73,14 @@
 }
 
 .sport-filter:hover {
-  background: rgba(255,255,255,0.05);
-  color: rgba(255,255,255,0.7);
+  background: rgba(137,28,28,0.22);
+  color: var(--text-primary);
 }
 
 .sport-filter.active {
-  background: rgba(137,28,28,0.18);
+  background: rgba(137, 28, 28, 0.66);
   border-color: rgba(137,28,28,0.35);
-  color: white;
+  color: var(--text-primary);
 }
 
 /* ---- НАВИГАЦИЯ ПО НЕДЕЛЕ ---- */
@@ -94,7 +94,7 @@
 
 .week-nav__label {
   font-size: 14px;
-  color: rgba(255,255,255,0.5);
+  color: var(--text-primary);
   font-weight: 500;
   white-space: nowrap;
 }
@@ -106,9 +106,9 @@
   width: 36px;
   height: 36px;
   border-radius: 9px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
-  color: rgba(255,255,255,0.5);
+  background: var(--bg-tag);
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
   font-size: 16px;
   cursor: pointer;
   transition: background 200ms, color 200ms, border-color 200ms;
@@ -119,11 +119,11 @@
 .week-nav__btn:hover {
   background: rgba(137,28,28,0.18);
   border-color: rgba(137,28,28,0.35);
-  color: white;
+  color: var(--text-primary);
 }
 
 .week-nav__btn:disabled {
-  opacity: 0.3;
+  opacity: 0.5;
   cursor: default;
 }
 
@@ -132,7 +132,7 @@
   border-radius: 9px;
   background: rgba(137,28,28,0.12);
   border: 1px solid rgba(137,28,28,0.25);
-  color: rgba(255,255,255,0.75);
+  color: var(--text-secondary);
   font-size: 12px;
   font-weight: 600;
   font-family: inherit;
@@ -143,7 +143,7 @@
 
 .week-nav__today:hover {
   background: rgba(137,28,28,0.25);
-  color: white;
+  color: var(--text-primary);
 }
 
 /* ---- ОБЁРТКА ТАБЛИЦЫ ---- */
@@ -169,16 +169,16 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(8,0,0,0.97);
+  background: var(--sg-header-bg);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid var(--border-medium);
   min-width: 760px;
 }
 
 .sg-header__time-col {
   width: 64px;
   flex-shrink: 0;
-  border-right: 1px solid rgba(255,255,255,0.05);
+  border-right: 1px solid var(--border-subtle);
 }
 
 .sg-header__day {
@@ -186,7 +186,7 @@
   min-width: 120px;
   padding: 12px 8px 10px;
   text-align: center;
-  border-right: 1px solid rgba(255,255,255,0.04);
+  border-right: 1px solid var(--border-subtle);
 }
 
 .sg-header__day:last-child { border-right: none; }
@@ -197,7 +197,7 @@
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
+  color: var(--text-muted);
   margin-bottom: 6px;
 }
 
@@ -210,13 +210,13 @@
   border-radius: 50%;
   font-size: 15px;
   font-weight: 700;
-  color: rgba(255,255,255,0.55);
+  color: var(--text-primary);
 }
 
 .sg-col-header__month {
   display: block;
   font-size: 10px;
-  color: rgba(255,255,255,0.2);
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
@@ -227,7 +227,7 @@
 
 .sg-header__day--today .sg-col-header__date {
   background: var(--color-primary);
-  color: white;
+  color: var(--text-on-negative);
   box-shadow: 0 4px 14px rgba(137,28,28,0.45);
 }
 
@@ -235,14 +235,14 @@
 .sg-body {
   display: flex;
   min-width: 760px;
-  background: rgba(0,0,0,0.3);
+  background: var(--bg-schedule-body);
 }
 
 /* Колонка меток времени */
 .sg-time-col {
   width: 64px;
   flex-shrink: 0;
-  border-right: 1px solid rgba(255,255,255,0.05);
+  border-right: 1px solid var(--border-subtle);
 }
 
 .sg-time-label {
@@ -251,12 +251,12 @@
   padding-top: 8px;
   padding-right: 10px;
   justify-content: flex-end;
-  color: rgba(255,255,255,0.2);
+  color: var(--text-muted);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.3px;
   box-sizing: border-box;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 /* Колонка одного дня */
@@ -264,7 +264,7 @@
   flex: 1;
   min-width: 120px;
   position: relative;
-  border-right: 1px solid rgba(255,255,255,0.03);
+  border-right: 1px solid var(--border-strong);
 }
 
 .sg-day-col:last-child { border-right: none; }
@@ -279,7 +279,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: rgba(255,255,255,0.05);
+  background: var(--border-strong);
   pointer-events: none;
 }
 
@@ -290,7 +290,7 @@
   right: 0;
   height: 1px;
   background: rgba(255,255,255,0.025);
-  border-top: 1px dashed rgba(255,255,255,0.03);
+  border-top: 1px dashed var(--border-light);
   pointer-events: none;
 }
 
@@ -327,7 +327,7 @@
 .sg-event__time {
   font-size: 11px;
   font-weight: 700;
-  color: rgba(255,255,255,0.9);
+  color: var(--text-primary);
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
@@ -351,7 +351,7 @@
 
 .sg-event__coach {
   font-size: 10px;
-  color: rgba(255,255,255,0.4);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -372,7 +372,7 @@
 
 .sg-event__badge {
   font-size: 10px;
-  color: rgba(255,255,255,0.3);
+  color: var(--text-faint);
   display: flex;
   align-items: center;
   gap: 3px;
@@ -384,9 +384,9 @@
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
-  color: rgba(255,80,80,0.7);
-  background: rgba(255,80,80,0.1);
-  border: 1px solid rgba(255,80,80,0.2);
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
   border-radius: 4px;
   padding: 1px 4px;
 }
@@ -396,8 +396,8 @@
   position: fixed;
   z-index: 9000;
   width: 270px;
-  background: #111;
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-medium);
   border-radius: 14px;
   padding: 18px 20px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(137,28,28,0.15);
@@ -414,7 +414,7 @@
   top: 12px; right: 14px;
   background: none;
   border: none;
-  color: rgba(255,255,255,0.3);
+  color: var(--text-faint);
   font-size: 16px;
   cursor: pointer;
   padding: 2px 6px;
@@ -422,7 +422,7 @@
   transition: color 150ms, background 150ms;
 }
 
-.sg-tooltip__close:hover { color: white; background: rgba(255,255,255,0.06); }
+.sg-tooltip__close:hover { color: var(--text-primary); background: var(--bg-surface); }
 
 .sg-tooltip__sport {
   font-size: 10px;
@@ -445,7 +445,7 @@
 .sg-tooltip__title {
   font-size: 17px;
   font-weight: 800;
-  color: white;
+  color: var(--text-primary);
   margin-bottom: 14px;
   line-height: 1.2;
 }
@@ -462,18 +462,18 @@
   align-items: center;
   gap: 10px;
   font-size: 13px;
-  color: rgba(255,255,255,0.55);
+  color: var(--text-secondary);
 }
 
 .sg-tooltip__row i {
   width: 14px;
   text-align: center;
-  color: rgba(137,28,28,0.8);
+  color: var(--text-muted);
   font-size: 12px;
   flex-shrink: 0;
 }
 
-.sg-tooltip__row strong { color: rgba(255,255,255,0.85); font-weight: 500; }
+.sg-tooltip__row strong { color: var(--text-primary); font-weight: 500; }
 
 .sg-tooltip__action {
   display: block;
@@ -550,8 +550,8 @@
   border-radius: 12px;
   font-size: 13px;
   font-family: "Roboto", sans-serif;
-  background: #0e0e0e;
-  color: white;
+  background: var(--bg-elevated-2);
+  color: var(--text-primary);
   animation: msgIn 300ms ease;
 }
 
