@@ -1,11 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* ============================================================
-   СИСТЕМА ТЕМ — KHTISPORT
-   Переменные: brand-цвета + семантические токены UI
-   Темная тема — по умолчанию, светлая — по классу .theme-light
-   ============================================================ */
-
 :root {
   /* --- Бренд-цвета (неизменны) --- */
   --brand-primary:      #891c1c;
@@ -23,7 +17,7 @@
 
   /* Фоны */
   --bg-page:            #000000;
-  --bg-page-gradient:   linear-gradient(180deg, rgb(54, 0, 0) 0%, rgb(30, 11, 11) 93%, rgb(56, 0, 0) 100%);
+  --bg-page-gradient:   linear-gradient(180deg, rgb(68, 0, 0) 0%, rgb(30, 11, 11) 93%, rgb(138, 0, 0) 100%);
   --bg-header:          linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 100%);
   --bg-header-scrolled: rgba(5, 0, 0, 0.96);
   --bg-footer:          #000000;
@@ -41,19 +35,19 @@
   --bg-modal:           #0a0a0a;
   --bg-nav-mobile:      rgba(0, 0, 0, 0.97);
   --bg-schedule-body:   rgba(30, 29, 29, 0.751);
-  --bg-logo:            #ffffff;
+  --bg-logo:            linear-gradient(135deg, #ffffff 40%, #e87777 100%);
 
   /* Текст */
   --text-primary:       #ffffff;
-  --text-secondary:     rgba(255, 255, 255, 0.6);
-  --text-muted:         rgba(255, 255, 255, 0.4);
+  --text-secondary:     rgba(255, 255, 255, 0.875);
+  --text-muted:         rgba(255, 255, 255, 0.956);
   --text-faint:         rgba(255, 255, 255, 0.25);
   --text-nav:           rgba(255, 255, 255, 0.75);
   --text-placeholder:   rgba(255, 255, 255, 0.2);
   --text-input:         rgba(255, 255, 255, 0.85);
   --text-footer:        rgba(255, 255, 255, 0.45);
   --text-footer-muted:  rgba(255, 255, 255, 0.2);
-  --text-on-red:        rgba(255, 255, 255, 0.95);
+  --text-on-negative:   rgba(255, 255, 255, 0.9);
 
   /* Границы */
   --border-subtle:      rgba(255, 255, 255, 0.04);
@@ -92,70 +86,71 @@
 /* ===== СВЕТЛАЯ ТЕМА ===== */
 .theme-light {
   /* Фоны */
-  --bg-page:            #ede4e4;
-  --bg-page-gradient:   linear-gradient(180deg, #ffffff 0%, #ffcece 60%, #ffb3b3 100%);
-  --bg-header:          linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,248,248,0.95) 100%);
-  --bg-header-scrolled: rgba(255, 234, 234, 0.99);
+  --bg-page:            #f5f0ef;
+  --bg-page-gradient:   linear-gradient(180deg, #f5e8e8 0%, #efe8e8 60%, #f0dada 100%);
+  --bg-header:          linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.85) 100%);
+  --bg-header-scrolled: rgba(255, 252, 252, 0.98);
   --bg-footer:          #1a0505;
-  --bg-card:            #ffffff;
-  --bg-card-hover:      #fff5f5;
-  --bg-input:           #ffffff;
-  --bg-input-focus:     #fff8f8;
-  --bg-tag:             rgba(137, 28, 28, 0.08);
-  --bg-overlay:         rgba(248, 242, 242, 0.99);
-  --bg-surface:         #f7eded;
-  --bg-surface-2:       #fdf8f8;
+  --bg-card:            rgba(255, 255, 255, 0.7);
+  --bg-card-hover:      rgba(137, 28, 28, 0.05);
+  --bg-input:           rgba(255, 255, 255, 0.9);
+  --bg-input-focus:     #ffffff;
+  --bg-tag:             rgba(137, 28, 28, 0.06);
+  --bg-overlay:         rgba(250, 245, 245, 0.98);
+  --bg-surface:         rgba(255, 255, 255, 0.6);
+  --bg-surface-2:       rgba(255, 255, 255, 0.8);
   --bg-elevated:        #ffffff;
-  --bg-elevated-2:      #f9f3f3;
+  --bg-elevated-2:      #faf6f6;
   --bg-select:          #ffffff;
   --bg-modal:           #ffffff;
-  --bg-nav-mobile:      rgba(255, 250, 250, 0.99);
-  --bg-schedule-body:   #f9f4f4;
-  --bg-logo:            #000000;
+  --bg-nav-mobile:      rgba(255, 252, 252, 0.98);
+  --bg-schedule-body:   rgba(255, 255, 255, 0.8);
+  --bg-logo:            linear-gradient(135deg, #000000 40%, #e87777 100%);
 
   /* Текст */
   --text-primary:       #1a0505;
-  --text-secondary:     #4a2020;
-  --text-muted:         #7a4040;
-  --text-faint:         #a06060;
-  --text-nav:           #2d1010;
-  --text-placeholder:   #b07070;
+  --text-secondary:     rgb(30, 10, 10);
+  --text-muted:         rgb(30, 10, 10);
+  --text-faint:         rgba(30, 10, 10, 0.28);
+  --text-nav:           rgba(30, 10, 10, 0.75);
+  --text-placeholder:   rgba(30, 10, 10, 0.3);
   --text-input:         #1a0505;
-  --text-footer:        rgba(255, 255, 255, 0.65);
-  --text-footer-muted:  rgba(255, 255, 255, 0.38);
-  --text-on-red:        rgba(255, 255, 255, 0.95);
+  --text-footer:        rgba(255, 255, 255, 0.6);
+  --text-footer-muted:  rgba(255, 255, 255, 0.35);
+  --text-on-negative:   rgba(255, 255, 255, 0.9); 
+
   /* Границы */
-  --border-subtle:      rgba(137, 28, 28, 0.12);
-  --border-light:       rgba(137, 28, 28, 0.18);
-  --border-medium:      rgba(137, 28, 28, 0.25);
-  --border-strong:      rgba(137, 28, 28, 0.35);
-  --border-brand:       rgba(137, 28, 28, 0.35);
-  --border-brand-hover: rgba(137, 28, 28, 0.6);
-  --border-brand-focus: rgba(137, 28, 28, 0.7);
-  --border-header-scroll: rgba(137, 28, 28, 0.18);
-  --border-input:       rgba(137, 28, 28, 0.28);
-  --border-footer:      rgba(137, 28, 28, 0.55);
-  --border-footer-bottom: rgba(255, 255, 255, 0.10);
+  --border-subtle:      rgba(137, 28, 28, 0.06);
+  --border-light:       rgba(137, 28, 28, 0.10);
+  --border-medium:      rgba(137, 28, 28, 0.14);
+  --border-strong:      rgba(137, 28, 28, 0.20);
+  --border-brand:       rgba(137, 28, 28, 0.25);
+  --border-brand-hover: rgba(137, 28, 28, 0.5);
+  --border-brand-focus: rgba(137, 28, 28, 0.6);
+  --border-header-scroll: rgba(137, 28, 28, 0.15);
+  --border-input:       rgba(137, 28, 28, 0.18);
+  --border-footer:      rgba(137, 28, 28, 0.5);
+  --border-footer-bottom: rgba(255, 255, 255, 0.08);
 
   /* Бургер */
   --burger-color:       #1a0505;
 
   /* Водяной знак */
-  --watermark-color:    rgba(137, 28, 28, 0.06);
+  --watermark-color:    rgba(137, 28, 28, 0.05);
 
   /* Тени */
-  --shadow-header:      0 4px 24px rgba(137, 28, 28, 0.15), 0 1px 0 rgba(137, 28, 28, 0.10);
-  --shadow-brand:       0 4px 16px rgba(137, 28, 28, 0.40);
-  --shadow-card:        0 2px 12px rgba(137, 28, 28, 0.12), 0 1px 3px rgba(137, 28, 28, 0.08);
+  --shadow-header:      0 4px 24px rgba(137, 28, 28, 0.12), 0 1px 0 rgba(137, 28, 28, 0.08);
+  --shadow-brand:       0 4px 16px rgba(137, 28, 28, 0.35);
+  --shadow-card:        0 4px 20px rgba(137, 28, 28, 0.10);
 
   /* Схема переключателя тем */
-  --theme-toggle-bg:        rgba(137,28,28,0.10);
-  --theme-toggle-border:    rgba(137,28,28,0.28);
-  --theme-toggle-icon:      #891c1c;
-  --theme-toggle-icon-hover: var(--brand-primary-dark);
+  --theme-toggle-bg:        rgba(137,28,28,0.08);
+  --theme-toggle-border:    rgba(137,28,28,0.18);
+  --theme-toggle-icon:      rgba(137,28,28,0.6);
+  --theme-toggle-icon-hover: var(--brand-primary);
 
   /* sg-header фон */
-  --sg-header-bg:       rgba(248, 242, 242, 0.99);
+  --sg-header-bg:       rgba(250,245,245,0.98);
 }
 
 html {
@@ -182,6 +177,9 @@ a {
   text-decoration: none;
   font-size: 18px;
   color: inherit;
+}
+
+a:visited {
 }
 
 img {
@@ -237,7 +235,7 @@ header .logo {
   font-weight: 900;
   flex-shrink: 0;
   letter-spacing: 1.5px;
-  background: linear-gradient(135deg, var(--bg-logo) 40%, var(--color-accent-light) 100%);
+  background: var(--bg-logo);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -258,7 +256,7 @@ header nav ul {
   position: relative;
 }
 
-header nav ul li a {
+header nav ul li {
   color: var(--text-nav);
   font-size: 15px;
   padding: 7px 12px;
@@ -289,7 +287,7 @@ header nav ul li.active::after {
 header nav ul li.btn a,
 header nav ul li.btn button.logout-btn {
   background: var(--color-primary);
-  color: var(--text-on-red);
+  color: white;
   padding: 9px 22px;
   border-radius: 7px;
   font-size: 15px;
@@ -374,7 +372,7 @@ header nav ul li.btn button.logout-btn:active {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: linear-gradient(90deg, var(--bg-logo) 100%, var(--color-accent-light) 100%);
+  color: var(--color-accent-light);
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 3.5px;
@@ -413,7 +411,7 @@ header nav ul li.btn button.logout-btn:active {
   align-items: center;
   gap: 10px;
   background: var(--color-primary);
-  color: var(--text-on-red);
+  color: white;
   padding: 15px 32px;
   border-radius: 50px;
   font-size: 15px;
@@ -514,7 +512,7 @@ header nav ul li.btn button.logout-btn:active {
 .services h4 {
   font-size: 15px;
   font-weight: 400;
-  color: var(--text-primary);
+  color: var(--text-muted);
   letter-spacing: 0.3px;
   margin-top: 6px;
   text-transform: none;
@@ -987,7 +985,7 @@ header nav ul li.btn button.logout-btn:active {
 .schedule-preview__header h4 {
   font-size: 15px;
   font-weight: 400;
-  color: var(--text-primary);
+  color: var(--text-muted);
   letter-spacing: 0.3px;
   margin-top: 6px;
 }
@@ -1024,7 +1022,7 @@ header nav ul li.btn button.logout-btn:active {
 .sched-tab.active {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: var(--text-on-red);
+  color: white;
   box-shadow: 0 4px 16px rgba(137, 28, 28, 0.4);
 }
 
@@ -1164,7 +1162,7 @@ header nav ul li.btn button.logout-btn:active {
   align-items: center;
   justify-content: center;
   background: var(--color-primary);
-  color: var(--text-on-red);
+  color: var(--text-on-negative); 
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 13px;
@@ -1567,295 +1565,4 @@ header nav ul li.btn button.logout-btn:active {
 .hero::before,
 .persacc__avatar-ring {
   transition: opacity 600ms ease, transform 600ms ease;
-}
-
-
-/* ============================================================
-   СВЕТЛАЯ ТЕМА — точечные оверрайды для компонентов,
-   которые используют rgba() напрямую (не через переменные)
-   ============================================================ */
-
-/* Карточки статистики в hero */
-.theme-light .persacc__stat {
-  background: #fff0f0;
-  border-color: rgba(137, 28, 28, 0.3);
-  box-shadow: 0 1px 4px rgba(137, 28, 28, 0.10);
-}
-
-.theme-light .persacc__stat:hover {
-  background: #ffe6e6;
-  border-color: rgba(137, 28, 28, 0.5);
-}
-
-.theme-light .persacc__stat-num {
-  color: #1a0505;
-}
-
-/* Hero секция */
-.theme-light .persacc__hero {
-  background: #ffffff;
-  border-color: rgba(137, 28, 28, 0.25);
-  box-shadow: 0 2px 16px rgba(137, 28, 28, 0.10);
-}
-
-/* Секции (правые/левые колонки) */
-.theme-light .persacc__section {
-  background: #ffffff;
-  border-color: rgba(137, 28, 28, 0.18);
-  box-shadow: 0 1px 6px rgba(137, 28, 28, 0.08);
-}
-
-.theme-light .persacc__section:hover {
-  border-color: rgba(137, 28, 28, 0.35);
-}
-
-/* Карточки записей */
-.theme-light .persacc__enroll-card {
-  background: #fdf6f6;
-  border-color: rgba(137, 28, 28, 0.15);
-}
-
-.theme-light .persacc__enroll-card:hover {
-  background: #fff0f0;
-  border-color: rgba(137, 28, 28, 0.35);
-}
-
-/* Табы кабинета */
-.theme-light .coach-tabs {
-  background: #f9f0f0;
-  border-color: rgba(137, 28, 28, 0.18);
-}
-
-.theme-light .coach-tab {
-  color: #7a4040;
-}
-
-.theme-light .coach-tab:hover {
-  background: #fff0f0;
-  color: #1a0505;
-}
-
-.theme-light .coach-tab.active {
-  background: #fff0f0;
-  border-color: rgba(137, 28, 28, 0.4);
-  color: #1a0505;
-}
-
-/* Дни недели */
-.theme-light .coach-week__day {
-  background: #fdf6f6;
-  border-color: rgba(137, 28, 28, 0.18);
-}
-
-.theme-light .coach-week__day:hover {
-  background: #fff0f0;
-  border-color: rgba(137, 28, 28, 0.35);
-}
-
-.theme-light .coach-week__day.active {
-  background: #ffe4e4;
-  border-color: rgba(137, 28, 28, 0.5);
-}
-
-.theme-light .coach-week__dn {
-  color: #a06060;
-}
-
-.theme-light .coach-week__dd {
-  color: #4a2020;
-}
-
-/* Слоты тренировок */
-.theme-light .coach-slot {
-  background: #fdf6f6;
-  border-color: rgba(137, 28, 28, 0.18);
-}
-
-.theme-light .coach-slot:hover {
-  background: #fff0f0;
-  border-color: rgba(137, 28, 28, 0.4);
-}
-
-.theme-light .coach-slot--free {
-  border-color: rgba(137, 28, 28, 0.22);
-}
-
-/* Карточки учеников */
-.theme-light .coach-student {
-  background: #fdf6f6;
-  border-color: rgba(137, 28, 28, 0.18);
-}
-
-.theme-light .coach-student:hover {
-  border-color: rgba(137, 28, 28, 0.35);
-}
-
-.theme-light .coach-student__footer {
-  border-color: rgba(137, 28, 28, 0.15);
-}
-
-/* Карточки "сегодня" */
-.theme-light .coach-today__item {
-  background: #fff0f0;
-  border-color: rgba(137, 28, 28, 0.25);
-}
-
-/* Кнопки действий */
-.theme-light .coach-act-btn {
-  background: #f5eded;
-  border-color: rgba(137, 28, 28, 0.22);
-  color: #7a4040;
-}
-
-.theme-light .coach-act-btn:hover {
-  background: #ffe4e4;
-  color: #1a0505;
-}
-
-/* sched-card на главной */
-.theme-light .sched-card {
-  box-shadow: 0 1px 4px rgba(137, 28, 28, 0.08);
-}
-
-/* Поля ввода */
-.theme-light .persacc__field input,
-.theme-light .persacc__field-select {
-  border-color: rgba(137, 28, 28, 0.28);
-  background: #ffffff;
-  color: #1a0505;
-}
-
-.theme-light .persacc__field input:focus {
-  border-color: rgba(137, 28, 28, 0.6);
-  box-shadow: 0 0 0 3px rgba(137, 28, 28, 0.10);
-}
-
-/* Бейдж записи */
-.theme-light .persacc__badge--upcoming {
-  background: #fff0f0;
-  color: #891c1c;
-  border-color: rgba(137, 28, 28, 0.35);
-}
-
-.theme-light .persacc__badge--done {
-  background: #f0eded;
-  color: #7a4040;
-  border-color: rgba(137, 28, 28, 0.18);
-}
-
-/* Кнопка отмены */
-.theme-light .persacc__cancel-btn {
-  background: #f5eded;
-  border-color: rgba(137, 28, 28, 0.22);
-  color: #7a4040;
-}
-
-.theme-light .persacc__cancel-btn:hover {
-  background: #ffe4e4;
-  border-color: rgba(137, 28, 28, 0.5);
-  color: #891c1c;
-}
-
-/* Кнопка section-link */
-.theme-light .persacc__section-link {
-  background: #fff0f0;
-  border-color: rgba(137, 28, 28, 0.30);
-  color: #7a4040;
-}
-
-.theme-light .persacc__section-link:hover {
-  background: #ffe4e4;
-  border-color: rgba(137, 28, 28, 0.55);
-  color: #891c1c;
-}
-
-/* "Добавить" кнопки */
-.theme-light .week-nav__btn {
-  background: #f5eded;
-  border-color: rgba(137, 28, 28, 0.28);
-}
-
-.theme-light .week-nav__today {
-  color: #4a2020;
-}
-
-/* Поиск */
-.theme-light .coach-search {
-  background: #ffffff;
-  border-color: rgba(137, 28, 28, 0.28);
-}
-
-.theme-light .coach-search input {
-  color: #1a0505;
-}
-
-/* Модалка */
-.theme-light .coach-modal {
-  box-shadow: 0 20px 60px rgba(137, 28, 28, 0.20);
-}
-
-/* Таблица расписания */
-.theme-light .sg-day-col {
-  border-right-color: rgba(137, 28, 28, 0.18);
-}
-
-.theme-light .sg-hour-line {
-  background: rgba(137, 28, 28, 0.12);
-}
-
-.theme-light .sg-half-line {
-  border-top-color: rgba(137, 28, 28, 0.08);
-}
-
-/* Карточки событий в расписании — в светлой теме градиенты сохраняются,
-   только усиливаем тень для контраста с бледным фоном */
-.theme-light .sg-event--volleyball {
-  box-shadow: 0 3px 14px rgba(29,78,216,0.50), 0 1px 4px rgba(29,78,216,0.30);
-}
-.theme-light .sg-event--basketball {
-  box-shadow: 0 3px 14px rgba(194,65,12,0.50), 0 1px 4px rgba(194,65,12,0.30);
-}
-.theme-light .sg-event--football {
-  box-shadow: 0 3px 14px rgba(21,128,61,0.45), 0 1px 4px rgba(21,128,61,0.25);
-}
-.theme-light .sg-event--fitness {
-  box-shadow: 0 3px 14px rgba(126,34,206,0.50), 0 1px 4px rgba(126,34,206,0.30);
-}
-/* Текст внутри карточек всегда белый — он на цветном градиентном фоне */
-
-
-
-/* Тултип расписания */
-.theme-light .sg-tooltip {
-  background: #ffffff;
-  border-color: rgba(137, 28, 28, 0.20);
-  box-shadow: 0 20px 60px rgba(137, 28, 28, 0.18);
-}
-
-/* Тост */
-.theme-light .coach-toast {
-  background: #ffffff;
-  color: #1a0505;
-  box-shadow: 0 8px 28px rgba(137, 28, 28, 0.20);
-}
-
-/* Статистика администратора */
-.theme-light .admin-stat-card {
-  background: #ffffff;
-  border-color: rgba(137, 28, 28, 0.18);
-  box-shadow: 0 1px 4px rgba(137, 28, 28, 0.08);
-}
-
-.theme-light .admin-table-row:hover {
-  background: #fff5f5;
-}
-
-.theme-light .admin-location-card {
-  background: #ffffff;
-  border-color: rgba(137, 28, 28, 0.18);
-}
-
-/* Спорт-бар */
-.theme-light .admin-sport-bar__track {
-  background: rgba(137, 28, 28, 0.10);
 }

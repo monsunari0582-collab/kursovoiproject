@@ -105,9 +105,9 @@
 .coach-week__btn {
   width: 32px; height: 32px;
   border-radius: 8px;
-  background: var(--bg-tag);
-  border: 1px solid var(--border-medium);
-  color: var(--text-muted);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.5);
   font-size: 12px;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -118,13 +118,13 @@
 .coach-week__btn:hover {
   background: rgba(137,28,28,0.2);
   border-color: rgba(137,28,28,0.35);
-  color: var(--text-primary);
+  color: white;
 }
 
 .coach-week__label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: white;
   flex: 1;
 }
 
@@ -210,7 +210,7 @@
 .coach-slot--free {
   cursor: pointer;
   border-style: dashed;
-  border-color: var(--border-medium);
+  border-color: rgba(255,255,255,0.07);
 }
 
 .coach-slot--free:hover {
@@ -358,12 +358,12 @@
   font-size: 20px;
   font-weight: 800;
   line-height: 1;
-  color: var(--text-primary);
+  color: var(--text-muted);
 }
 
 .coach-today__lbl {
   font-size: 11px;
-  color: var(--text-faint);
+  color: var(--text-muted);
   margin-top: 2px;
   display: block;
 }
@@ -376,8 +376,8 @@
   align-items: flex-start;
   gap: 12px;
   padding: 12px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
   border-radius: 10px;
 }
 
@@ -395,14 +395,14 @@
 
 .coach-notif__text {
   font-size: 13px;
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.65);
   margin: 0 0 3px;
   line-height: 1.4;
 }
 
 .coach-notif__time {
   font-size: 11px;
-  color: var(--text-faint);
+  color: rgba(255,255,255,0.25);
 }
 
 /* ---- УЧЕНИКИ ---- */
@@ -419,32 +419,32 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-input);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
   border-radius: 10px;
   padding: 10px 14px;
 }
 
-.coach-search i { color: var(--text-faint); font-size: 13px; }
+.coach-search i { color: rgba(255,255,255,0.25); font-size: 13px; }
 
 .coach-search input {
   background: none;
   border: none;
   outline: none;
-  color: var(--text-primary);
+  color: white;
   font-size: 14px;
   font-family: inherit;
   width: 100%;
 }
 
-.coach-search input::placeholder { color: var(--text-placeholder); }
+.coach-search input::placeholder { color: rgba(255,255,255,0.2); }
 
 .coach-filter {
-  background: var(--bg-input);
-  border: 1px solid var(--border-input);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
   border-radius: 10px;
   padding: 10px 14px;
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.6);
   font-size: 13px;
   font-family: inherit;
   outline: none;
@@ -458,8 +458,8 @@
 }
 
 .coach-student {
-  background: var(--bg-surface-2);
-  border: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.05);
   border-radius: 14px;
   padding: 18px;
   display: flex;
@@ -486,7 +486,7 @@
   background: linear-gradient(135deg, var(--color-primary-dark), var(--color-accent));
   display: flex; align-items: center; justify-content: center;
   font-size: 13px; font-weight: 800;
-  color: var(--text-primary);
+  color: rgba(255,255,255,0.9);
   flex-shrink: 0;
 }
 
@@ -501,7 +501,7 @@
 .coach-student__name {
   font-size: 14px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: white;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -509,7 +509,7 @@
 
 .coach-student__since {
   font-size: 11px;
-  color: var(--text-faint);
+  color: rgba(255,255,255,0.3);
 }
 
 .coach-student__btns { display: flex; gap: 5px; flex-shrink: 0; }
@@ -522,7 +522,7 @@
 
 .coach-student__stats span {
   font-size: 12px;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.4);
   display: flex;
   align-items: center;
   gap: 7px;
@@ -536,12 +536,12 @@
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  color: var(--text-faint);
+  color: rgba(255,255,255,0.3);
 }
 
 .coach-student__bar {
   height: 4px;
-  background: var(--border-medium);
+  background: rgba(255,255,255,0.06);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -557,7 +557,7 @@
   align-items: center;
   justify-content: space-between;
   padding-top: 10px;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid rgba(255,255,255,0.05);
 }
 
 .coach-status {

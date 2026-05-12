@@ -227,7 +227,7 @@
 
 .sg-header__day--today .sg-col-header__date {
   background: var(--color-primary);
-  color: var(--text-on-negative);
+  color: var(--text-on-red);
   box-shadow: 0 4px 14px rgba(137,28,28,0.45);
 }
 
@@ -289,7 +289,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: rgba(255,255,255,0.025);
+  background: transparent;
   border-top: 1px dashed var(--border-light);
   pointer-events: none;
 }
@@ -299,7 +299,7 @@
   position: absolute;
   left: 3px;
   right: 3px;
-  border-radius: 7px;
+  border-radius: 8px;
   border-left: 3px solid;
   padding: 5px 8px;
   display: flex;
@@ -307,31 +307,64 @@
   gap: 3px;
   cursor: pointer;
   overflow: hidden;
-  transition: filter 180ms, box-shadow 180ms, z-index 0ms;
+  transition: filter 180ms, box-shadow 180ms, transform 150ms, z-index 0ms;
   z-index: 2;
   box-sizing: border-box;
 }
 
+.sg-event::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
 .sg-event:hover {
-  filter: brightness(1.15);
-  box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+  filter: brightness(1.10) saturate(1.15);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.35);
+  transform: translateY(-1px) scale(1.01);
   z-index: 10;
 }
 
-/* Цвета */
-.sg-event--volleyball { background: rgba(59,130,246,0.15);  border-color: rgba(59,130,246,0.6); }
-.sg-event--basketball { background: rgba(249,115,22,0.15);  border-color: rgba(249,115,22,0.6); }
-.sg-event--football   { background: rgba(34,197,94,0.15);   border-color: rgba(34,197,94,0.6);  }
-.sg-event--fitness    { background: rgba(168,85,247,0.15);  border-color: rgba(168,85,247,0.6); }
+/* ── Волейбол — синий ── */
+.sg-event--volleyball {
+  background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+  border-color: #93c5fd;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.4);
+}
+
+/* ── Баскетбол — оранжевый ── */
+.sg-event--basketball {
+  background: linear-gradient(135deg, #c2410c 0%, #f97316 100%);
+  border-color: #fed7aa;
+  box-shadow: 0 2px 8px rgba(249,115,22,0.4);
+}
+
+/* ── Футбол — зелёный ── */
+.sg-event--football {
+  background: linear-gradient(135deg, #15803d 0%, #22c55e 100%);
+  border-color: #86efac;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.35);
+}
+
+/* ── Фитнес — фиолетовый ── */
+.sg-event--fitness {
+  background: linear-gradient(135deg, #7e22ce 0%, #a855f7 100%);
+  border-color: #e9d5ff;
+  box-shadow: 0 2px 8px rgba(168,85,247,0.4);
+}
 
 .sg-event__time {
   font-size: 11px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: rgba(255,255,255,0.95);
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.25);
 }
 
 .sg-event__sport {
@@ -344,14 +377,14 @@
   text-overflow: ellipsis;
 }
 
-.sg-event--volleyball .sg-event__sport { color: #93c5fd; }
-.sg-event--basketball .sg-event__sport { color: #fdba74; }
-.sg-event--football   .sg-event__sport { color: #86efac; }
-.sg-event--fitness    .sg-event__sport { color: #d8b4fe; }
+.sg-event--volleyball .sg-event__sport { color: #bfdbfe; }
+.sg-event--basketball .sg-event__sport { color: #ffedd5; }
+.sg-event--football   .sg-event__sport { color: #dcfce7; }
+.sg-event--fitness    .sg-event__sport { color: #f3e8ff; }
 
 .sg-event__coach {
   font-size: 10px;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.75);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -360,7 +393,7 @@
   text-overflow: ellipsis;
 }
 
-.sg-event__coach i { font-size: 9px; opacity: 0.6; flex-shrink: 0; }
+.sg-event__coach i { font-size: 9px; opacity: 0.7; flex-shrink: 0; }
 
 .sg-event__meta {
   display: flex;
@@ -372,7 +405,7 @@
 
 .sg-event__badge {
   font-size: 10px;
-  color: var(--text-faint);
+  color: rgba(255,255,255,0.7);
   display: flex;
   align-items: center;
   gap: 3px;
@@ -384,12 +417,18 @@
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--text-primary);
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  color: rgba(255,255,255,0.9);
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.25);
   border-radius: 4px;
   padding: 1px 4px;
 }
+
+/* ── Светлая тема — чуть прозрачнее, тень сильнее ── */
+.theme-light .sg-event--volleyball { box-shadow: 0 3px 12px rgba(59,130,246,0.45); }
+.theme-light .sg-event--basketball { box-shadow: 0 3px 12px rgba(249,115,22,0.45); }
+.theme-light .sg-event--football   { box-shadow: 0 3px 12px rgba(34,197,94,0.40);  }
+.theme-light .sg-event--fitness    { box-shadow: 0 3px 12px rgba(168,85,247,0.45); }
 
 /* ---- ТУЛТИП ---- */
 .sg-tooltip {
@@ -437,10 +476,16 @@
   border-radius: 50px;
 }
 
-.sg-tooltip__sport--volleyball { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #93c5fd; }
-.sg-tooltip__sport--basketball { background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25); color: #fdba74; }
-.sg-tooltip__sport--football   { background: rgba(34,197,94,0.12);  border: 1px solid rgba(34,197,94,0.25);  color: #86efac; }
-.sg-tooltip__sport--fitness    { background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25); color: #d8b4fe; }
+.sg-tooltip__sport--volleyball { background: rgba(29,78,216,0.15);  border: 1px solid rgba(59,130,246,0.5);  color: #3b82f6; }
+.sg-tooltip__sport--basketball { background: rgba(194,65,12,0.12);  border: 1px solid rgba(249,115,22,0.45); color: #f97316; }
+.sg-tooltip__sport--football   { background: rgba(21,128,61,0.12);  border: 1px solid rgba(34,197,94,0.45);  color: #22c55e; }
+.sg-tooltip__sport--fitness    { background: rgba(126,34,206,0.12); border: 1px solid rgba(168,85,247,0.45); color: #a855f7; }
+
+/* В светлой теме иконки чуть темнее */
+.theme-light .sg-tooltip__sport--volleyball { color: #1d4ed8; }
+.theme-light .sg-tooltip__sport--basketball { color: #c2410c; }
+.theme-light .sg-tooltip__sport--football   { color: #15803d; }
+.theme-light .sg-tooltip__sport--fitness    { color: #7e22ce; }
 
 .sg-tooltip__title {
   font-size: 17px;
@@ -515,21 +560,21 @@
 }
 
 .sg-tooltip__action--full {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.25);
+  background: var(--bg-tag);
+  border: 1px solid var(--border-medium);
+  color: var(--text-faint);
   cursor: default;
 }
 
 .sg-tooltip__action--login {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.7);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
 }
 
 .sg-tooltip__action--login:hover {
-  background: rgba(255,255,255,0.1);
-  color: white;
+  background: var(--bg-surface);
+  color: var(--text-primary);
 }
 
 /* ---- СООБЩЕНИЯ ---- */
