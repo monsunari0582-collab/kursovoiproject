@@ -288,6 +288,7 @@
           <div class="admin-sessions-list" id="sessions-list">
             {% for session in all_sessions %}
             <div class="coach-slot" id="admin-session-{{ session.id }}"
+                 data-recurring="{{ session.recurring_id|default:'' }}"
                  data-sport="{{ session.sport }}"
                  data-text="{{ session.coach.get_full_name|lower|default:'' }} {{ session.location|lower }}">
               <div class="coach-slot__time">
@@ -299,7 +300,7 @@
                   <span class="sched-card__sport {{ session.sport }}">{{ session.sport_name }}</span>
                   <div class="coach-slot__actions">
                     <button class="coach-act-btn coach-act-btn--del" title="Удалить"
-                            onclick="adminDeleteSession({{ session.id }}, this)">
+                            onclick="adminDeleteSession({{ session.id }}, {{ session.recurring_id|default:'null' }}, this)">
                       <i class="fa-solid fa-trash"></i>
                     </button>
                   </div>
@@ -504,6 +505,47 @@
 
   <script src="{% static 'main/main.js' %}"></script>
   <script src="{% static 'main/persacc_student.js' %}"></script>
+  <!-- ═══════ МОДАЛКА: УДАЛИТЬ ТРЕНИРОВКУ ═══════ -->
+  <div class="coach-modal-overlay" id="modal-admin-delete-session"
+       onclick="closeModalOnOverlay(event,'modal-admin-delete-session')">
+    <div class="coach-modal coach-modal--delete">
+      <div class="coach-modal__head">
+        <span class="coach-modal__title"><i class="fa-solid fa-trash"></i> Удалить тренировку</span>
+        <button class="coach-modal__close" onclick="closeModal('modal-admin-delete-session')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="delete-modal__body">
+        <p class="delete-modal__question" id="admin-delete-modal-question"></p>
+        <div class="delete-modal__options" id="admin-delete-modal-options">
+          <button class="delete-modal__opt" id="admin-delete-opt-one">
+            <i class="fa-solid fa-calendar-day"></i>
+            <span>Только эту</span>
+            <small>Удалить только выбранную тренировку</small>
+          </button>
+          <button class="delete-modal__opt" id="admin-delete-opt-following">
+            <i class="fa-solid fa-calendar-week"></i>
+            <span>Эту и все следующие</span>
+            <small>Удалить эту и все будущие повторения</small>
+          </button>
+          <button class="delete-modal__opt delete-modal__opt--danger" id="admin-delete-opt-all">
+            <i class="fa-solid fa-calendar-xmark"></i>
+            <span>Все тренировки серии</span>
+            <small>Удалить весь шаблон и все тренировки</small>
+          </button>
+        </div>
+        <div class="delete-modal__options" id="admin-delete-modal-options-simple" style="display:none;">
+          <button class="delete-modal__opt delete-modal__opt--danger" id="admin-delete-opt-simple">
+            <i class="fa-solid fa-trash"></i>
+            <span>Удалить тренировку</span>
+            <small>Все записи на неё тоже будут удалены</small>
+          </button>
+        </div>
+        <button class="delete-modal__cancel" onclick="closeModal('modal-admin-delete-session')">Отмена</button>
+      </div>
+    </div>
+  </div>
+
   <script src="{% static 'main/persacc_admin.js' %}"></script>
 </body>
 </html>

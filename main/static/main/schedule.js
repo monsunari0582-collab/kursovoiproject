@@ -32,6 +32,7 @@
   });
 
   let currentSport    = 'all';
+  let currentLocation = document.querySelector('.location-filter.active')?.dataset.location ?? 'all';
   let weekOffset      = 0;
   let activeTooltipEl = null;
 
@@ -56,8 +57,11 @@
     return Array.from({ length: 7 }, (_, i) => addDays(today, weekOffset * 7 + i));
   }
   function filteredSessions() {
-    if (currentSport === 'all') return allSessions;
-    return allSessions.filter(s => s.sport === currentSport);
+    return allSessions.filter(s => {
+      const sportOk    = currentSport    === 'all' || s.sport    === currentSport;
+      const locationOk = currentLocation === 'all' || s.location === currentLocation;
+      return sportOk && locationOk;
+    });
   }
 
   // Вычисляет конечное время тренировки
@@ -269,6 +273,16 @@
     const m = document.cookie.match(/csrftoken=([^;]+)/);
     return m ? m[1] : '';
   }
+
+  document.querySelectorAll('.location-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentLocation = btn.dataset.location;
+      document.querySelectorAll('.location-filter').forEach(f => f.classList.remove('active'));
+      btn.classList.add('active');
+      closeTooltip();
+      render();
+    });
+  });
 
   document.querySelectorAll('.sport-filter').forEach(btn => {
     btn.addEventListener('click', () => {

@@ -57,7 +57,7 @@
 .vhod-kartochka {
   width: 100%;
   max-width: 440px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.164);
   border: 1px solid rgba(137,28,28,0.25);
   border-radius: 20px;
   padding: 44px 44px 40px;
@@ -544,6 +544,10 @@
 
 .theme-light .pereklyuchatel {
   color: var(--text-muted);
+}
+
+.theme-light .pereklyuchatel.aktivny {
+  color: #ffffff;
 }
 
 .theme-light .pereklyuchatel:not(.aktivny):hover {

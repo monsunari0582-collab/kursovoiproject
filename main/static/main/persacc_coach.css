@@ -834,3 +834,109 @@
 .coach-week__day--all.active .coach-week__dd {
   color: var(--text-primary);
 }
+/* ---- МОДАЛКА УДАЛЕНИЯ ---- */
+.coach-modal--delete {
+  max-width: 400px;
+}
+
+.delete-modal__body {
+  padding: 8px 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.delete-modal__question {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.delete-modal__options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.delete-modal__opt {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 0 10px;
+  padding: 14px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: background 200ms, border-color 200ms;
+}
+
+.delete-modal__opt i {
+  grid-row: 1 / 3;
+  font-size: 16px;
+  color: var(--text-muted);
+  justify-self: center;
+  transition: color 200ms;
+}
+
+.delete-modal__opt span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.delete-modal__opt small {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.delete-modal__opt:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-brand);
+}
+
+.delete-modal__opt:hover i {
+  color: var(--brand-primary);
+}
+
+.delete-modal__opt--danger {
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.delete-modal__opt--danger span {
+  color: #f87171;
+}
+
+.delete-modal__opt--danger i {
+  color: #f87171;
+}
+
+.delete-modal__opt--danger:hover {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.delete-modal__opt--danger:hover i {
+  color: #f87171;
+}
+
+.delete-modal__cancel {
+  align-self: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 200ms;
+}
+
+.delete-modal__cancel:hover {
+  color: var(--text-primary);
+}

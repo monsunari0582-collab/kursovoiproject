@@ -132,7 +132,7 @@
               <div class="coach-slots" id="slots-all">
                 {% for day in coach_days %}
                   {% for session in day.sessions %}
-                  <div class="coach-slot" id="session-{{ session.id }}">
+              <div class="coach-slot" id="session-{{ session.id }}" data-recurring="{{ session.recurring_id|default:'' }}">
                     <div class="coach-slot__time">
                       <span class="coach-slot__hour">{{ session.time|time:"H:i" }}</span>
                       <span class="coach-slot__dur">{{ day.short }}</span>
@@ -146,7 +146,7 @@
                             <i class="fa-solid fa-pen"></i>
                           </button>
                           <button class="coach-act-btn coach-act-btn--del" title="Удалить"
-                                  onclick="deleteSession({{ session.id }}, this)">
+                                  onclick="deleteSession({{ session.id }}, {{ session.recurring_id|default:'null' }}, this)">
                             <i class="fa-solid fa-trash"></i>
                           </button>
                         </div>
@@ -182,7 +182,7 @@
                  id="slots-{{ day.key }}">
 
               {% for session in day.sessions %}
-              <div class="coach-slot" id="session-{{ session.id }}">
+              <div class="coach-slot" id="session-{{ session.id }}" data-recurring="{{ session.recurring_id|default:'' }}">
                 <div class="coach-slot__time">
                   <span class="coach-slot__hour">{{ session.time|time:"H:i" }}</span>
                   <span class="coach-slot__dur">{{ session.duration }} мин</span>
@@ -196,7 +196,7 @@
                         <i class="fa-solid fa-pen"></i>
                       </button>
                       <button class="coach-act-btn coach-act-btn--del" title="Удалить"
-                              onclick="deleteSession({{ session.id }}, this)">
+                              onclick="deleteSession({{ session.id }}, {{ session.recurring_id|default:'null' }}, this)">
                         <i class="fa-solid fa-trash"></i>
                       </button>
                     </div>
@@ -622,6 +622,49 @@
       </div>
     </div>
   </footer>
+
+  <!-- ═══════ МОДАЛКА: УДАЛИТЬ ТРЕНИРОВКУ ═══════ -->
+  <div class="coach-modal-overlay" id="modal-delete-session"
+       onclick="closeModalOnOverlay(event,'modal-delete-session')">
+    <div class="coach-modal coach-modal--delete">
+      <div class="coach-modal__head">
+        <span class="coach-modal__title"><i class="fa-solid fa-trash"></i> Удалить тренировку</span>
+        <button class="coach-modal__close" onclick="closeModal('modal-delete-session')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="delete-modal__body">
+        <p class="delete-modal__question" id="delete-modal-question">
+          Это повторяющаяся тренировка. Что именно удалить?
+        </p>
+        <div class="delete-modal__options" id="delete-modal-options">
+          <button class="delete-modal__opt" id="delete-opt-one">
+            <i class="fa-solid fa-calendar-day"></i>
+            <span>Только эту</span>
+            <small>Удалить только выбранную тренировку</small>
+          </button>
+          <button class="delete-modal__opt" id="delete-opt-following">
+            <i class="fa-solid fa-calendar-week"></i>
+            <span>Эту и все следующие</span>
+            <small>Удалить эту и все будущие повторения</small>
+          </button>
+          <button class="delete-modal__opt delete-modal__opt--danger" id="delete-opt-all">
+            <i class="fa-solid fa-calendar-xmark"></i>
+            <span>Все тренировки серии</span>
+            <small>Удалить весь шаблон и все тренировки</small>
+          </button>
+        </div>
+        <div class="delete-modal__options" id="delete-modal-options-simple" style="display:none;">
+          <button class="delete-modal__opt delete-modal__opt--danger" id="delete-opt-simple">
+            <i class="fa-solid fa-trash"></i>
+            <span>Удалить тренировку</span>
+            <small>Все записи на неё тоже будут удалены</small>
+          </button>
+        </div>
+        <button class="delete-modal__cancel" onclick="closeModal('modal-delete-session')">Отмена</button>
+      </div>
+    </div>
+  </div>
 
   <script src="{% static 'main/main.js' %}"></script>
   <script src="{% static 'main/persacc_student.js' %}"></script>

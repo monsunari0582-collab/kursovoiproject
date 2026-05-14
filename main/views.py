@@ -181,6 +181,16 @@ def persacc(request):
         onetime_count    = Session.objects.filter(coach=request.user, recurring__isnull=True, date__gte=today).count()
         total_sessions   = recurring_count + onetime_count
         total_students   = len(students)
+
+        def ru_uchenikov(n):
+            if 11 <= (n % 100) <= 19: return 'учеников'
+            r = n % 10
+            if r == 1: return 'ученик'
+            if 2 <= r <= 4: return 'ученика'
+            return 'учеников'
+
+        students_label = ru_uchenikov(total_students)
+
         weekly_sessions  = Session.objects.filter(
             coach=request.user,
             date__gte=today,
@@ -195,6 +205,7 @@ def persacc(request):
             'students':        students,
             'total_sessions':  total_sessions,
             'total_students':  total_students,
+            'students_label':  students_label,
             'weekly_sessions': weekly_sessions,
             'locations':       locations,
         })
@@ -215,11 +226,35 @@ def persacc(request):
         trainings_done    = sum(1 for e in enrollments if e.is_past)
         active_days       = enrollments.values('session__date').distinct().count()
 
+        def ru_zapisey(n):
+            if 11 <= (n % 100) <= 19: return 'записей'
+            r = n % 10
+            if r == 1: return 'запись'
+            if 2 <= r <= 4: return 'записи'
+            return 'записей'
+
+        def ru_trenirovok(n):
+            if 11 <= (n % 100) <= 19: return 'тренировок'
+            r = n % 10
+            if r == 1: return 'тренировка'
+            if 2 <= r <= 4: return 'тренировки'
+            return 'тренировок'
+
+        def ru_dney(n):
+            if 11 <= (n % 100) <= 19: return 'активных дней'
+            r = n % 10
+            if r == 1: return 'активный день'
+            if 2 <= r <= 4: return 'активных дня'
+            return 'активных дней'
+
         return render(request, 'main/persacc_student.html', {
-            'enrollments':       enrollments,
-            'enrollments_count': enrollments_count,
-            'trainings_done':    trainings_done,
-            'active_days':       active_days,
+            'enrollments':          enrollments,
+            'enrollments_count':    enrollments_count,
+            'trainings_done':       trainings_done,
+            'active_days':          active_days,
+            'enrollments_label':    ru_zapisey(enrollments_count),
+            'trainings_done_label': ru_trenirovok(trainings_done),
+            'active_days_label':    ru_dney(active_days),
         })
 
 
@@ -274,9 +309,13 @@ def schedule(request):
             'enrolled_me':   s.id in enrolled_ids,
         })
 
+    from .models import Location
+    locations = Location.objects.filter(is_active=True).order_by('name')
+
     return render(request, 'main/schedule.html', {
         'sessions_json': json.dumps(sessions_json, ensure_ascii=False),
         'enrolled_ids':  enrolled_ids,
+        'locations':     locations,
     })
 
 
@@ -490,13 +529,44 @@ def coach_session_edit(request, session_id):
 
 @coach_required
 def coach_session_delete(request, session_id):
-    """Удалить тренировку."""
+    """Удалить тренировку. mode: one | following | all"""
     if request.method != 'POST':
         return redirect('persacc')
 
+    import json as _json
     from .models import Session
+    from datetime import date
+
     session = get_object_or_404(Session, id=session_id, coach=request.user)
-    session.delete()
+
+    try:
+        body = _json.loads(request.body)
+        mode = body.get('mode', 'one')
+    except Exception:
+        mode = 'one'
+
+    if mode == 'one':
+        session.delete()
+
+    elif mode == 'following':
+        # Удалить эту и все будущие сессии той же серии
+        rec = session.recurring
+        if rec:
+            rec.sessions.filter(date__gte=session.date).delete()
+            # Деактивируем шаблон если больше нет будущих дат
+            rec.is_active = False
+            rec.save()
+        else:
+            session.delete()
+
+    elif mode == 'all':
+        # Удалить все сессии серии + шаблон
+        rec = session.recurring
+        if rec:
+            rec.sessions.all().delete()
+            rec.delete()
+        else:
+            session.delete()
 
     return JsonResponse({'status': 'ok'})
 
@@ -578,6 +648,13 @@ def _admin_context(request):
         for sport, count in sorted(sport_counts.items(), key=lambda x: -x[1])
     ]
 
+    def ru_uchenikov(n):
+        if 11 <= (n % 100) <= 19: return 'учеников'
+        r = n % 10
+        if r == 1: return 'ученик'
+        if 2 <= r <= 4: return 'ученика'
+        return 'учеников'
+
     return {
         'all_users':    all_users,
         'all_sessions': all_sessions,
@@ -585,6 +662,7 @@ def _admin_context(request):
         'stats': {
             'total_users':       total_users,
             'total_students':    total_students,
+            'students_label':    ru_uchenikov(total_students),
             'total_coaches':     total_coaches,
             'total_sessions':    total_sessions,
             'total_enrollments': total_enrollments,
@@ -662,13 +740,42 @@ def admin_user_delete(request, user_id):
 
 @admin_required
 def admin_session_delete(request, session_id):
-    """Удалить любую тренировку."""
+    """Удалить любую тренировку. mode: one | following | all"""
     if request.method != 'POST':
         return JsonResponse({'error': 'method'}, status=405)
 
+    import json as _json
     from .models import Session
+    from datetime import date
+
     session = get_object_or_404(Session, id=session_id)
-    session.delete()
+
+    try:
+        body = _json.loads(request.body)
+        mode = body.get('mode', 'one')
+    except Exception:
+        mode = 'one'
+
+    if mode == 'one':
+        session.delete()
+
+    elif mode == 'following':
+        rec = session.recurring
+        if rec:
+            rec.sessions.filter(date__gte=session.date).delete()
+            rec.is_active = False
+            rec.save()
+        else:
+            session.delete()
+
+    elif mode == 'all':
+        rec = session.recurring
+        if rec:
+            rec.sessions.all().delete()
+            rec.delete()
+        else:
+            session.delete()
+
     return JsonResponse({'status': 'ok'})
 
 

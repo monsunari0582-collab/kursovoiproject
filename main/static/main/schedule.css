@@ -627,3 +627,51 @@
   .sg-day-col { min-width: 80px; }
   .sg-col-header__date { width: 26px; height: 26px; font-size: 13px; }
 }
+
+/* ---- ФИЛЬТР ПО ЗАЛУ ---- */
+.schedule-filters__location {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 4px;
+}
+
+.location-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 50px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: "Roboto", sans-serif;
+  cursor: pointer;
+  transition: background 200ms, color 200ms, border-color 200ms;
+}
+
+.location-filter i {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.location-filter:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border-color: var(--border-brand);
+}
+
+.location-filter.active {
+  background: var(--bg-tag);
+  border-color: var(--border-brand-hover);
+  color: var(--text-primary);
+}
+
+.location-filter.active i {
+  color: var(--brand-primary);
+  opacity: 1;
+}

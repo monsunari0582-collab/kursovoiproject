@@ -58,15 +58,15 @@
         <div class="persacc__hero-stats">
           <div class="persacc__stat">
             <span class="persacc__stat-num">{{ enrollments_count|default:"0" }}</span>
-            <span class="persacc__stat-label">Записей</span>
+            <span class="persacc__stat-label">{{ enrollments_label }}</span>
           </div>
           <div class="persacc__stat">
             <span class="persacc__stat-num">{{ trainings_done|default:"0" }}</span>
-            <span class="persacc__stat-label">Тренировок</span>
+            <span class="persacc__stat-label">{{ trainings_done_label }}</span>
           </div>
           <div class="persacc__stat">
             <span class="persacc__stat-num">{{ active_days|default:"0" }}</span>
-            <span class="persacc__stat-label">Активных дней</span>
+            <span class="persacc__stat-label">{{ active_days_label }}</span>
           </div>
         </div>
       </div>

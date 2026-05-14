@@ -111,29 +111,77 @@ function showToast(msg, isError = false) {
 }
 
 // ---- Удалить тренировку (AJAX) ----
-function deleteSession(sessionId, btn) {
-  if (!confirm('Удалить тренировку? Все записи на неё тоже будут удалены.')) return;
+function deleteSession(sessionId, recurringId, btn) {
+  const modal    = document.getElementById('modal-delete-session');
+  const optRecur = document.getElementById('delete-modal-options');
+  const optSimpl = document.getElementById('delete-modal-options-simple');
+  const question = document.getElementById('delete-modal-question');
 
-  getCsrfToken().then(csrf => {
-    fetch(`/coach/session/${sessionId}/delete/`, {
-      method: 'POST',
-      headers: { 'X-CSRFToken': csrf },
-    })
-    .then(r => r.json())
-    .then(data => {
-      if (data.status === 'ok') {
-        const slot = document.getElementById('session-' + sessionId);
-        if (slot) {
-          slot.style.transition = 'opacity 300ms, transform 300ms';
-          slot.style.opacity = '0';
-          slot.style.transform = 'translateX(14px)';
-          setTimeout(() => slot.remove(), 300);
+  if (recurringId) {
+    question.textContent = 'Это повторяющаяся тренировка. Что именно удалить?';
+    optRecur.style.display = '';
+    optSimpl.style.display = 'none';
+  } else {
+    question.textContent = 'Удалить эту тренировку? Все записи на неё тоже будут удалены.';
+    optRecur.style.display = 'none';
+    optSimpl.style.display = '';
+  }
+
+  openModal('modal-delete-session');
+
+  function doDelete(mode) {
+    closeModal('modal-delete-session');
+    getCsrfToken().then(csrf => {
+      fetch(`/coach/session/${sessionId}/delete/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrf,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ mode, recurring_id: recurringId }),
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          if (mode === 'all' || mode === 'following') {
+            // Удаляем все карточки этой серии
+            document.querySelectorAll(`[data-recurring="${recurringId}"]`).forEach(el => {
+              el.style.transition = 'opacity 300ms, transform 300ms';
+              el.style.opacity = '0';
+              el.style.transform = 'translateX(14px)';
+              setTimeout(() => el.remove(), 300);
+            });
+          } else {
+            const slot = document.getElementById('session-' + sessionId);
+            if (slot) {
+              slot.style.transition = 'opacity 300ms, transform 300ms';
+              slot.style.opacity = '0';
+              slot.style.transform = 'translateX(14px)';
+              setTimeout(() => slot.remove(), 300);
+            }
+          }
+          const labels = { one: 'Тренировка удалена', following: 'Эта и следующие тренировки удалены', all: 'Все тренировки серии удалены' };
+          showToast(labels[mode] || 'Тренировка удалена');
+        } else {
+          showToast(data.error || 'Ошибка при удалении', true);
         }
-        showToast('Тренировка удалена');
-      }
-    })
-    .catch(() => showToast('Ошибка при удалении', true));
+      })
+      .catch(() => showToast('Ошибка при удалении', true));
+    });
+  }
+
+  // Назначаем обработчики (клонируем чтобы убрать старые)
+  ['delete-opt-one', 'delete-opt-following', 'delete-opt-all', 'delete-opt-simple'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const clone = el.cloneNode(true);
+    el.parentNode.replaceChild(clone, el);
   });
+
+  document.getElementById('delete-opt-one')      ?.addEventListener('click', () => doDelete('one'));
+  document.getElementById('delete-opt-following') ?.addEventListener('click', () => doDelete('following'));
+  document.getElementById('delete-opt-all')       ?.addEventListener('click', () => doDelete('all'));
+  document.getElementById('delete-opt-simple')    ?.addEventListener('click', () => doDelete('one'));
 }
 
 // ---- Исключить ученика (AJAX) ----

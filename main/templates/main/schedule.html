@@ -49,8 +49,19 @@
         <p>Выберите удобное время и запишитесь на тренировку</p>
       </div>
 
-      <!-- ФИЛЬТР ПО ВИДУ СПОРТА -->
+      <!-- ФИЛЬТРЫ -->
       <div class="schedule-filters reveal">
+
+        {% if locations %}
+        <div class="schedule-filters__location">
+          {% for loc in locations %}
+          <button class="location-filter {% if forloop.first %}active{% endif %}" data-location="{{ loc.name }}">
+            <i class="fa-solid fa-location-dot"></i> {{ loc.name }}
+          </button>
+          {% endfor %}
+        </div>
+        {% endif %}
+
         <div class="schedule-filters__sport">
           <button class="sport-filter active" data-sport="all">Все</button>
           <button class="sport-filter" data-sport="volleyball">Волейбол</button>
@@ -58,6 +69,7 @@
           <button class="sport-filter" data-sport="football">Футбол</button>
           <button class="sport-filter" data-sport="fitness">Фитнес</button>
         </div>
+
       </div>
 
       <!-- ДАННЫЕ ДЛЯ JS (скрытый JSON) -->
