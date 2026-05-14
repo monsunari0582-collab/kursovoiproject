@@ -430,19 +430,45 @@ def coach_session_add(request):
         return redirect('persacc')
 
     from .models import Session, RecurringSession
+    from datetime import time as time_type, datetime as dt
     sport      = request.POST.get('sport', '').strip()
     location   = request.POST.get('location', '').strip()
     time_str   = request.POST.get('time', '').strip()
     duration   = int(request.POST.get('duration', 60))
     max_places = int(request.POST.get('max_places', 15))
-    repeat     = request.POST.get('repeat', 'once')  # 'once' или 'weekly'
+    repeat     = request.POST.get('repeat', 'once')
 
     if not all([sport, location, time_str]):
         messages.error(request, 'Заполните все обязательные поля.')
         return redirect('persacc')
 
+    # Проверка рабочего времени 09:00–21:00
+    try:
+        t = dt.strptime(time_str, '%H:%M').time()
+        end_minutes = t.hour * 60 + t.minute + duration
+        if t < time_type(9, 0) or end_minutes > 21 * 60:
+            messages.error(request, 'Тренировка должна проходить в рабочее время (09:00–21:00).')
+            return redirect('persacc')
+    except ValueError:
+        messages.error(request, 'Некорректное время.')
+        return redirect('persacc')
+
+    def check_conflict(date_str, time_str, duration, exclude_id=None):
+        """Проверить пересечение с другими тренировками в том же зале."""
+        from datetime import datetime as dt2
+        new_start = dt2.strptime(f'{date_str} {time_str}', '%Y-%m-%d %H:%M')
+        new_end   = new_start + __import__('datetime').timedelta(minutes=duration)
+        qs = Session.objects.filter(location=location, date=date_str)
+        if exclude_id:
+            qs = qs.exclude(id=exclude_id)
+        for s in qs:
+            s_start = dt2.combine(s.date, s.time)
+            s_end   = s_start + __import__('datetime').timedelta(minutes=s.duration)
+            if new_start < s_end and new_end > s_start:
+                return s
+        return None
+
     if repeat == 'weekly':
-        # Повторяющаяся тренировка
         weekday    = request.POST.get('weekday', '0')
         date_from  = request.POST.get('date_from', '').strip()
         date_until = request.POST.get('date_until', '').strip() or None
@@ -465,13 +491,28 @@ def coach_session_add(request):
             date_until=date_until,
         )
         count = rec.generate_sessions(weeks_ahead=8)
-        messages.success(request, f'Создано {count} тренировок по расписанию.')
+
+        # Проверяем конфликты среди сгенерированных сессий
+        conflicts = []
+        for s in rec.sessions.all():
+            conflict = check_conflict(str(s.date), time_str, duration, exclude_id=s.id)
+            if conflict:
+                conflicts.append(str(s.date))
+
+        if conflicts:
+            messages.warning(request, f'Создано {count} тренировок, но обнаружены конфликты в зале «{location}» на даты: {", ".join(conflicts[:3])}{"..." if len(conflicts) > 3 else ""}.')
+        else:
+            messages.success(request, f'Создано {count} тренировок по расписанию.')
 
     else:
-        # Разовая тренировка
         date_str = request.POST.get('date', '').strip()
         if not date_str:
             messages.error(request, 'Укажите дату.')
+            return redirect('persacc')
+
+        conflict = check_conflict(date_str, time_str, duration)
+        if conflict:
+            messages.error(request, f'В зале «{location}» уже есть тренировка «{conflict.sport_name}» в {conflict.time.strftime("%H:%M")} — {(dt.combine(conflict.date, conflict.time) + __import__("datetime").timedelta(minutes=conflict.duration)).strftime("%H:%M")}. Выберите другое время.')
             return redirect('persacc')
 
         Session.objects.create(
@@ -513,13 +554,41 @@ def coach_session_edit(request, session_id):
         return redirect('persacc')
 
     from .models import Session
+    from datetime import time as time_type, datetime as dt, timedelta
     session = get_object_or_404(Session, id=session_id, coach=request.user)
 
+    new_location   = request.POST.get('location', session.location).strip()
+    new_date       = request.POST.get('date', str(session.date)).strip()
+    new_time_str   = request.POST.get('time', str(session.time)).strip()
+    new_duration   = int(request.POST.get('duration', session.duration))
+
+    # Проверка рабочего времени 09:00–21:00
+    try:
+        t = dt.strptime(new_time_str, '%H:%M').time()
+        end_minutes = t.hour * 60 + t.minute + new_duration
+        if t < time_type(9, 0) or end_minutes > 21 * 60:
+            messages.error(request, 'Тренировка должна проходить в рабочее время (09:00–21:00).')
+            return redirect('persacc')
+    except ValueError:
+        messages.error(request, 'Некорректное время.')
+        return redirect('persacc')
+
+    # Проверка конфликта в зале
+    new_start = dt.strptime(f'{new_date} {new_time_str}', '%Y-%m-%d %H:%M')
+    new_end   = new_start + timedelta(minutes=new_duration)
+    conflicts = Session.objects.filter(location=new_location, date=new_date).exclude(id=session_id)
+    for s in conflicts:
+        s_start = dt.combine(s.date, s.time)
+        s_end   = s_start + timedelta(minutes=s.duration)
+        if new_start < s_end and new_end > s_start:
+            messages.error(request, f'В зале «{new_location}» уже есть тренировка «{s.sport_name}» в {s.time.strftime("%H:%M")}–{s_end.strftime("%H:%M")}. Выберите другое время.')
+            return redirect('persacc')
+
     session.sport      = request.POST.get('sport', session.sport).strip()
-    session.location   = request.POST.get('location', session.location).strip()
-    session.date       = request.POST.get('date', str(session.date)).strip()
-    session.time       = request.POST.get('time', str(session.time)).strip()
-    session.duration   = int(request.POST.get('duration', session.duration))
+    session.location   = new_location
+    session.date       = new_date
+    session.time       = new_time_str
+    session.duration   = new_duration
     session.max_places = int(request.POST.get('max_places', session.max_places))
     session.save()
 

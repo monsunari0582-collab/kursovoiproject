@@ -132,7 +132,7 @@
               <div class="coach-slots" id="slots-all">
                 {% for day in coach_days %}
                   {% for session in day.sessions %}
-              <div class="coach-slot" id="session-{{ session.id }}" data-recurring="{{ session.recurring_id|default:'' }}">
+                  <div class="coach-slot" id="session-{{ session.id }}" data-recurring="{{ session.recurring_id|default:'' }}">
                     <div class="coach-slot__time">
                       <span class="coach-slot__hour">{{ session.time|time:"H:i" }}</span>
                       <span class="coach-slot__dur">{{ day.short }}</span>
@@ -478,7 +478,7 @@
         <div class="coach-modal__row">
           <div class="persacc__field">
             <label>Время</label>
-            <input type="time" name="time" required>
+            <input type="time" name="time" min="09:00" max="21:00" required>
           </div>
           <div class="persacc__field">
             <label>Длит. (мин)</label>
@@ -542,7 +542,7 @@
           </div>
           <div class="persacc__field">
             <label>Время</label>
-            <input type="time" name="time" id="edit_time" required>
+            <input type="time" name="time" id="edit_time" min="09:00" max="21:00" required>
           </div>
         </div>
         <div class="coach-modal__row">
@@ -634,9 +634,7 @@
         </button>
       </div>
       <div class="delete-modal__body">
-        <p class="delete-modal__question" id="delete-modal-question">
-          Это повторяющаяся тренировка. Что именно удалить?
-        </p>
+        <p class="delete-modal__question" id="delete-modal-question"></p>
         <div class="delete-modal__options" id="delete-modal-options">
           <button class="delete-modal__opt" id="delete-opt-one">
             <i class="fa-solid fa-calendar-day"></i>
